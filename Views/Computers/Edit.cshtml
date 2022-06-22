@@ -8,26 +8,25 @@
 
 <h4>Computer</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+<form asp-action="Edit" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <div class="row">
+        <div class="col-md-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <select asp-for="Category" class="form-control"></select>
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Type" class="control-label"></label>
-                <select asp-for="Type" class="form-control"></select>
+                <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<ComputerType>()">
+                    <option>Select a type of computer</option>
+                </select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SpecID" class="control-label"></label>
-                <select asp-for="SpecID" class="form-control" asp-items="ViewBag.SpecID"></select>
-                <span asp-validation-for="SpecID" class="text-danger"></span>
+                <label asp-for="Category" class="control-label"></label>
+                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<ComputerCategory>()">
+                    <option>Select computer category</option>
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -35,31 +34,147 @@
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <div class="input-group">
+                    <input asp-for="Price" class="form-control price" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">VND</span>
+                    </div>
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
             </div>
+
             <div class="form-group">
                 <label asp-for="Discount" class="control-label"></label>
-                <input asp-for="Discount" class="form-control" />
-                <span asp-validation-for="Discount" class="text-danger"></span>
+                <div class="input-group">
+                    <input asp-for="Discount" class="form-control price" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">%</span>
+                    </div>
+                    <span asp-validation-for="Discount" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="Brand" class="control-label"></label>
-                <select asp-for="Brand" class="form-control"></select>
+                <select asp-for="Brand" class="form-control" asp-items="Html.GetEnumSelectList<Brand>()">
+                    <option>Select a computer brand</option>
+                </select>
                 <span asp-validation-for="Brand" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+            @{
+                ComputerSpec spec = ViewBag.Spec;
+            }
+            <div class="form-group spec">
+                Specification
+                <div class="row mb-2">
+                    <div class="col-md-4">
+                        <label class="control-label">CPU</label>
+                        <input value="@spec.CPU" name="spec.CPU" class="form-control"/>
+                    </div>
+                        <div class="col-md-8">
+                            <label class="control-label">CPU Details</label>
+                            <input value="@spec.CPUDetail" name="spec.CPUDetail" class="form-control"/>
+                        </div>
+                    </div>
+                
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="control-label">OS</label>
+                            <input value="@spec.OS" name="spec.OS" class="form-control"/>
+                        </div>
+                    </div>
+                
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <label class="control-label">RAM</label>
+                            <input value="@spec.RAM" name="spec.RAM" class="form-control"/>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="control-label">RAM Details</label>
+                            <input value="@spec.RAMDetail" name="spec.RAMDetail" class="form-control"/>
+                        </div>
+                    </div>
+                
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <label class="control-label">GPU</label>
+                            <input value="@spec.GPU" name="spec.GPU" class="form-control"/>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="control-label">GPU Detail</label>
+                            <input value="@spec.GPUDetail" name="spec.GPUDetail" class="form-control"/>
+                        </div>
+                    
+                    </div>
 
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <label class="control-label">Motherboard</label>
+                            <input value="@spec.Motherboard" name="spec.Motherboard" class="form-control"/>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="control-label">Motherboard Detail</label>
+                            <input value="@spec.MotherboardDetail" name="spec.MotherboardDetail" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <label class="control-label">Screen</label>
+                            <input value="@spec.Screen" name="spec.Screen" class="form-control"/>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="control-label">Screen Detail</label>
+                            <input value="@spec.ScreenDetial" name="spec.ScreenDetail" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-md-4">
+                            <label class="control-label">Storage Drive</label>
+                            <input value="@spec.StorageDrive" name="spec.StorageDrive" class="form-control"/>
+                        </div>
+                            <div class="col-md-8">
+                                <label class="control-label">Storage Drive Detail</label>
+                            <input value="@spec.StorageDriveDetail" name="spec.StorageDriveDetail" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="control-label">WIFI</label>
+                            <input value="@spec.WIFI "name="spec.WIFI" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="control-label">Weight</label>
+                            <input value="@spec.Weight" name="spec.Weight" class="form-control"/>
+                        </div>
+                    </div>
+                
+                    <div class="row mb-2">
+                    <div class="col">
+                        <label class="control-label">Power Supply</label>
+                        <input value="@spec.PowerSupply" name="spec.PowerSupply" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">Change Product Image</label>
+                <input value="" name="Image" type="file" accept=".jpg, .png, .jpeg" onchange="readURL(this)"/>
+                <img id="preview" src="/@ViewBag.Image" width="600" height="600"/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Edit" class="btn btn-primary"/>
+    </div>
+</form>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
