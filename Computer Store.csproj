@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\css\_Layout.css" />
+    <None Include="wwwroot\css\layout.css" />
     <None Include="wwwroot\images\82JW00KJVN_compressed.jpg" />
   </ItemGroup>
 

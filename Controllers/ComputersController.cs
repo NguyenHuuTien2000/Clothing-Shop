@@ -183,7 +183,7 @@ namespace Computer_Store.Controllers
 
             var computer = await _context.Computers
                 .Include(c => c.Spec)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (computer == null)
             {
                 return NotFound();

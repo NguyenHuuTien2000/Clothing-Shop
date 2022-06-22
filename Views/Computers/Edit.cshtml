@@ -8,32 +8,42 @@
 
 <h4>Computer</h4>
 <hr />
-<form asp-action="Edit" enctype="multipart/form-data">
+<form  asp-action="Edit" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" />
     <div class="row">
         <div class="col-md-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
+            <div class="form-group mb-3">
+                <label asp-for="Type" class="control-label mb-2"></label>
                 <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<ComputerType>()">
                     <option>Select a type of computer</option>
                 </select>
+                <i class="fa fa-angle-down"></i>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
+            <div class="form-group mb-3">
+                <label asp-for="Category" class="control-label mb-2"></label>
                 <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<ComputerCategory>()">
                     <option>Select computer category</option>
                 </select>
+                <i class="fa fa-angle-down"></i>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+            <div class="form-group mb-3">
+                <label asp-for="Brand" class="control-label mb-2"></label>
+                <select asp-for="Brand" class="form-control" asp-items="Html.GetEnumSelectList<Brand>()">
+                    <option>Select a computer brand</option>
+                </select>
+                <i class="fa fa-angle-down"></i>
+                <span asp-validation-for="Brand" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label mb-2"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+            <div class="form-group mb-3">
+                <label asp-for="Price" class="control-label mb-2"></label>
                 <div class="input-group">
                     <input asp-for="Price" class="form-control price" />
                     <div class="input-group-append">
@@ -42,9 +52,8 @@
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label asp-for="Discount" class="control-label"></label>
+            <div class="form-group mb-3">
+                <label asp-for="Discount" class="control-label mb-2"></label>
                 <div class="input-group">
                     <input asp-for="Discount" class="form-control price" />
                     <div class="input-group-append">
@@ -54,13 +63,6 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <select asp-for="Brand" class="form-control" asp-items="Html.GetEnumSelectList<Brand>()">
-                    <option>Select a computer brand</option>
-                </select>
-                <span asp-validation-for="Brand" class="text-danger"></span>
-            </div>
             @{
                 ComputerSpec spec = ViewBag.Spec;
             }
