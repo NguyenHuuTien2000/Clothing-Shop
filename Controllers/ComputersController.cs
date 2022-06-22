@@ -18,7 +18,7 @@ namespace Computer_Store.Controllers
         // GET: Computers
         public async Task<IActionResult> Index()
         {
-            var allComputers = _context.Computers;
+            var allComputers = _context.Computers.Include(c => c.Spec);
             return View(await allComputers.ToListAsync());
         }
 
@@ -37,7 +37,8 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
             return View(computer);
         }
 
@@ -80,6 +81,8 @@ namespace Computer_Store.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
             return View(computer);
         }
 
@@ -170,6 +173,8 @@ namespace Computer_Store.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
             return View(computer);
         }
 
@@ -188,7 +193,8 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
             return View(computer);
         }
 

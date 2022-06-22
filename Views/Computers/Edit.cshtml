@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mb-3">
                 <label asp-for="Type" class="control-label mb-2"></label>
-                <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<ComputerType>()">
+                <select asp-for="Type" class="form-control type-select" asp-items="Html.GetEnumSelectList<ComputerType>()">
                     <option>Select a type of computer</option>
                 </select>
                 <i class="fa fa-angle-down"></i>
@@ -45,7 +45,7 @@
             <div class="form-group mb-3">
                 <label asp-for="Price" class="control-label mb-2"></label>
                 <div class="input-group">
-                    <input asp-for="Price" class="form-control price" />
+                    <input asp-for="Price" class="form-control price" value="@Model.DisplayPrice"/>
                     <div class="input-group-append">
                         <span class="input-group-text">VND</span>
                     </div>
@@ -127,7 +127,7 @@
                         </div>
                         <div class="col-md-8">
                             <label class="control-label">Screen Detail</label>
-                            <input value="@spec.ScreenDetial" name="spec.ScreenDetail" class="form-control"/>
+                            <input value="@spec.ScreenDetial" name="spec.ScreenDetial" class="form-control"/>
                         </div>
                     </div>
 
@@ -168,7 +168,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label class="control-label">Change Product Image</label>
-                <input value="" name="Image" type="file" accept=".jpg, .png, .jpeg" onchange="readURL(this)"/>
+                <input name="Image" type="file" accept=".jpg, .png, .jpeg" onchange="readURL(this)"/>
                 <img id="preview" src="/@ViewBag.Image" width="600" height="600"/>
             </div>
         </div>

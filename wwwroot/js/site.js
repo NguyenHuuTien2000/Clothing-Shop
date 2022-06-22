@@ -36,3 +36,19 @@ function readURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+let option = $(".type-select option:selected").val();
+if (option.length == 1) {
+    changeInput($(".type-select"))
+}
+
+function changeInput(input) {
+    let stat = true;
+    if (input.value === '1') {
+        stat = false;
+    }
+    $("input[name='spec.Motherboard']").attr("disabled", stat);
+    $("input[name='spec.MotherboardDetail']").attr("disabled", stat);
+    $("input[name='spec.PowerSupply']").attr("disabled", stat);
+    $("input[name='spec.Weight']").attr("disabled", !stat);
+}

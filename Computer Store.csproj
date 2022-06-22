@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <None Include="wwwroot\css\layout.css" />
-    <None Include="wwwroot\images\82JW00KJVN_compressed.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>
