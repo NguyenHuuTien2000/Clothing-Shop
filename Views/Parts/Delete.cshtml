@@ -6,10 +6,10 @@
 
 <h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Part</h4>
+    <h4>Name: @Html.DisplayFor(model => model.Name)</h4>
     <hr />
+    <img src= "/@Model.Image" width="400" height="400"/>
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Category)
@@ -18,16 +18,16 @@
             @Html.DisplayFor(model => model.Category)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Brand)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Brand)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.SummarySpec)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SummarySpec)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
@@ -41,23 +41,35 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Discount)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Brand)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brand)
-        </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+</div>
+
+<div id="buttons-bottom">
+    <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#confirmModal">
+        Delete
+    </button>
+    <a class="btn btn-outline-info" asp-action="Index">Back to List</a>
+</div>
+
+<div class="modal fade" data-backdrop="static" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this product?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

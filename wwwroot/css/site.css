@@ -31,3 +31,10 @@ body {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
+#buttons-bottom {
+    width: 200px;
+    position: absolute;
+    bottom: 100px;
+    right: 105px;
+}

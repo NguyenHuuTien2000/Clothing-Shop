@@ -112,16 +112,16 @@ namespace Computer_Store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Category,Type,SpecID,Id,Name,Price,Discount,Image,Brand")] Computer computer, IFormFile Image, ComputerSpec spec)
+        public async Task<IActionResult> Edit(int id, [Bind("Category,Type,SpecID,Id,Name,Price,Discount,Brand")] Computer computer, IFormFile? Image, ComputerSpec spec)
         {
             if (id != computer.Id)
             {
                 return NotFound();
             }
 
+            var oldPath = _context.Computers.AsNoTracking().FirstOrDefault(c => c.Id == id).Image;
             if (Image != null)
             {
-                var oldPath = _context.Computers.AsNoTracking().FirstOrDefault(c => c.Id == id).Image;
                 if (oldPath != null)
                 {
                     FileInfo fileInfo = new FileInfo(Path.Combine("wwwroot", oldPath));
@@ -146,6 +146,11 @@ namespace Computer_Store.Controllers
 
                 computer.Image = Path.Combine(imageFolder, Image.FileName);
             }
+            else
+            {
+                computer.Image = oldPath;
+            }
+
 
             if (spec != null)
             {

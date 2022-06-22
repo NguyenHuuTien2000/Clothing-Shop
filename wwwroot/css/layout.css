@@ -30,7 +30,6 @@ form .form-group i {
 
 .navbar .has-menu:hover > .sub-menu {
     display: block;
-    box-shadow: 0px 5px 15px -2px #000000;
 }
 
 .navbar .sub-menu > li {

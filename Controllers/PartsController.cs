@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Computer_Store.Data;
 using Computer_Store.Models;
+using System.Collections;
 
 namespace Computer_Store.Controllers
 {
@@ -22,9 +23,8 @@ namespace Computer_Store.Controllers
         // GET: Parts
         public async Task<IActionResult> Index()
         {
-              return _context.Parts != null ? 
-                          View(await _context.Parts.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Parts'  is null.");
+            var allParts = _context.Parts;
+            return View( await allParts.ToListAsync());
         }
 
         // GET: Parts/Details/5
@@ -40,8 +40,8 @@ namespace Computer_Store.Controllers
             if (part == null)
             {
                 return NotFound();
-            }
-
+}
+            ViewData["PartImage"] = part.Image;
             return View(part);
         }
 
@@ -56,14 +56,34 @@ namespace Computer_Store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Category,SummarySpec,Id,Name,Price,Discount,Image,Brand")] Part part)
+        public async Task<IActionResult> Create([Bind("Category,SummarySpec,Id,Name,Price,Discount,Image,Brand")] Part part, IFormFile Image)
         {
+            if (Image.Length > 0)
+            {
+                string imageFolder = Path.Combine("images", "parts", part.Brand + "");
+                string storedImage = Path.Combine("wwwroot", imageFolder);
+                if (!Directory.Exists(storedImage))
+                {
+                    Directory.CreateDirectory(storedImage);
+                }
+
+                storedImage = Path.Combine(storedImage, Image.FileName);
+                using (Stream fileStream = new FileStream(storedImage, FileMode.Create))
+                {
+                    await Image.CopyToAsync(fileStream);
+                }
+
+                part.Image = Path.Combine(imageFolder, Image.FileName);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(part);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["PartImage"] = part.Image;
             return View(part);
         }
 
@@ -80,6 +100,7 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
+            ViewData["PartImage"] = part.Image;
             return View(part);
         }
 
@@ -88,11 +109,43 @@ namespace Computer_Store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Category,SummarySpec,Id,Name,Price,Discount,Image,Brand")] Part part)
+        public async Task<IActionResult> Edit(int id, [Bind("Category,SummarySpec,Id,Name,Price,Discount,Brand")] Part part, IFormFile? Image)
         {
             if (id != part.Id)
             {
                 return NotFound();
+            }
+
+            var oldPath = _context.Parts.AsNoTracking().FirstOrDefault(c => c.Id == id).Image;
+            if (Image != null)
+            {
+                if (oldPath != null)
+                {
+                    FileInfo fileInfo = new FileInfo(Path.Combine("wwwroot", oldPath));
+                    if (fileInfo.Exists)
+                    {
+                        fileInfo.Delete();
+                    }
+                }
+
+                string imageFolder = Path.Combine("images", "computers", part.Brand + "");
+                string storedImage = Path.Combine("wwwroot", imageFolder);
+                if (!Directory.Exists(storedImage))
+                {
+                    Directory.CreateDirectory(storedImage);
+                }
+                storedImage = Path.Combine(storedImage, Image.FileName);
+
+                using (Stream fileStream = new FileStream(storedImage, FileMode.Create))
+                {
+                    await Image.CopyToAsync(fileStream);
+                }
+
+                part.Image = Path.Combine(imageFolder, Image.FileName);
+            }
+            else
+            {
+                part.Image = oldPath;
             }
 
             if (ModelState.IsValid)
@@ -115,6 +168,7 @@ namespace Computer_Store.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["PartImage"] = part.Image;
             return View(part);
         }
 
@@ -132,7 +186,7 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["PartImage"] = part.Image;
             return View(part);
         }
 
@@ -143,7 +197,7 @@ namespace Computer_Store.Controllers
         {
             if (_context.Parts == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Parts'  is null.");
+                return Problem("No part found in DB");
             }
             var part = await _context.Parts.FindAsync(id);
             if (part != null)

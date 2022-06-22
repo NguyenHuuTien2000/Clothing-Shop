@@ -11,12 +11,6 @@
     <hr />
     <img src= "/@Model.Image" width="400" height="400"/>
     <partial name="_SpecTable"></partial>
-    
-    <div>
-        <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-        <a class="btn btn-outline-info" asp-action="Index">Back to List</a>
-    </div>
-
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Type)
@@ -49,4 +43,8 @@
             @Html.DisplayFor(model => model.DisplayDiscount)
         </dd>
     </dl>
+    <div id="buttons-bottom">
+        <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        <a class="btn btn-outline-info" asp-action="Index">Back to List</a>
+    </div>
 </div>
