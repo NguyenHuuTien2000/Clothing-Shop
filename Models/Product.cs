@@ -8,7 +8,7 @@ namespace Computer_Store.Models
         public int Id { get; set; }
 
         [Required]
-        [RegularExpression(@"[()%.″\w ]*")]
+        [RegularExpression(@"[()%.″\-\w ]*", ErrorMessage = "Name can only inlcude special character: ()%.″-")]
         public string? Name { get; set; }
 
         [Required]

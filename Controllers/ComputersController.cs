@@ -22,7 +22,7 @@ namespace Computer_Store.Controllers
         // GET: Computers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Computers.Include(c => c.PCSpec);
+            var applicationDbContext = _context.Computers.Include(c => c.Spec);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace Computer_Store.Controllers
             }
 
             var computer = await _context.Computers
-                .Include(c => c.PCSpec)
+                .Include(c => c.Spec)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (computer == null)
             {
@@ -48,7 +48,6 @@ namespace Computer_Store.Controllers
         // GET: Computers/Create
         public IActionResult Create()
         {
-            ViewData["SpecID"] = new SelectList(_context.Set<PCSpec>(), "Id", "Id");
             return View();
         }
 
@@ -57,15 +56,15 @@ namespace Computer_Store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Category,PCType,SpecID,Id,Name,Price,Discount,Image,Brand")] Computer computer)
+        public async Task<IActionResult> Create([Bind("Category,Type,Id,Name,Price,Discount,Image,Brand")] Computer computer, IFormFile file, ComputerSpec spec)
         {
+            
             if (ModelState.IsValid)
             {
                 _context.Add(computer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SpecID"] = new SelectList(_context.Set<PCSpec>(), "Id", "Id", computer.SpecID);
             return View(computer);
         }
 
@@ -82,7 +81,7 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
-            ViewData["SpecID"] = new SelectList(_context.Set<PCSpec>(), "Id", "Id", computer.SpecID);
+            ViewData["SpecID"] = new SelectList(_context.Set<ComputerSpec>(), "Id", "Id", computer.SpecID);
             return View(computer);
         }
 
@@ -91,7 +90,7 @@ namespace Computer_Store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Category,PCType,SpecID,Id,Name,Price,Discount,Image,Brand")] Computer computer)
+        public async Task<IActionResult> Edit(int id, [Bind("Category,Type,SpecID,Id,Name,Price,Discount,Image,Brand")] Computer computer)
         {
             if (id != computer.Id)
             {
@@ -118,7 +117,7 @@ namespace Computer_Store.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SpecID"] = new SelectList(_context.Set<PCSpec>(), "Id", "Id", computer.SpecID);
+            ViewData["SpecID"] = new SelectList(_context.Set<ComputerSpec>(), "Id", "Id", computer.SpecID);
             return View(computer);
         }
 
@@ -131,7 +130,7 @@ namespace Computer_Store.Controllers
             }
 
             var computer = await _context.Computers
-                .Include(c => c.PCSpec)
+                .Include(c => c.Spec)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (computer == null)
             {
@@ -164,7 +163,5 @@ namespace Computer_Store.Controllers
         {
           return (_context.Computers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-
-        
     }
 }
