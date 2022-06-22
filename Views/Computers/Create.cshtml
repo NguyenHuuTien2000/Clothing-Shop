@@ -148,15 +148,16 @@
             <div class="form-group">
                 <input type="submit" value="Add" class="btn btn-primary"/>
             </div>
+             <div class="col-md-4">
+                <div class="form-group">
+                <label class="control-label">Select Product Image</label>
+                <input accept="*.jpg, *.png" type="file" name="Image" onchange="readURL(this)"/>
+                <img id="preview"/>
+            </div>
+        </div>
         </form>
     </div>
-    <div class="col-md-4">
-        <div class="form-group">
-            <label class="control-label">Select Product Image</label>
-            <input accept="*.jpg, *.png" type="file" name="Image" onchange="readURL(this)"/>
-            <img id="preview"/>
-        </div>
-    </div>
+   
 </div>
 
 <div>
