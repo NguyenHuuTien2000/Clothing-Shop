@@ -56,11 +56,12 @@ namespace Computer_Store.Controllers
         {
             if (Image.Length > 0 && spec != null)
             {
-                string filePath = Path.Combine(Environment.CurrentDirectory, "Images", Image.FileName);
-                using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                string imagePath = Path.Combine(Environment.CurrentDirectory, "Images", Image.FileName);
+                using (Stream fileStream = new FileStream(imagePath, FileMode.Create))
                 {
                     await Image.CopyToAsync(fileStream);
                 }
+                computer.Image = imagePath;
                 computer.SpecID = spec.Id;
                 computer.Spec = spec;
             }
