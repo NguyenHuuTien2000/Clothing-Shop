@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
-using System.IO;
-using System.Web;
-using System.Web.Mvc;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Computer_Store.Data;
@@ -61,10 +52,26 @@ namespace Computer_Store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Category,Type,Id,Name,Price,Discount,Image,Brand")] Computer computer, IFormFile file, ComputerSpec spec)
+        public async Task<IActionResult> Create([Bind("Category,Type,Id,Name,Price,Discount,Image,Brand")] Computer computer, IFormFile Image, ComputerSpec spec)
         {
-        
-           
+            if (Image.Length > 0 && spec != null)
+            {
+                string imagePath = Path.Combine(Environment.CurrentDirectory, "Images", Image.FileName);
+                using (Stream fileStream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await Image.CopyToAsync(fileStream);
+                }
+                computer.Image = imagePath;
+                computer.SpecID = spec.Id;
+                computer.Spec = spec;
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(computer);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
             return View(computer);
         }
 
