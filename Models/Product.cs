@@ -28,7 +28,7 @@ namespace Computer_Store.Models
 
         public string? DisplayDiscountedPrice
         {
-            get { return String.Format("{0:n0}", Price * (1 - Discount)); }
+            get { return String.Format("{0:n0}", Price * (1 - Discount/100)); }
         }
 
         public string? DisplayDiscount

@@ -31,15 +31,15 @@ namespace Computer_Store.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<IActionResult> ComputerPage(string? type, string? brand)
+        public IActionResult ComputerPage(string? type, string? brand)
         {
-            var allComputers = _context.Computers.Include(c => c.Spec);
+            var allComputers = _context.Computers.Include(c => c.Spec).ToList();
 
             if (type != null)
             {
                 if (Enum.TryParse(type, out ComputerType reqType))
                 {
-                    allComputers.Where(c => c.Type == reqType);
+                    allComputers = allComputers.Where(c => c.Type == reqType).ToList();
                 }
             }
 
@@ -47,11 +47,11 @@ namespace Computer_Store.Controllers
             {
                 if (Enum.TryParse(brand, out Brand reqBrand))
                 {
-                    allComputers.Where(c => c.Brand == reqBrand);
+                    allComputers = allComputers.Where(c => c.Brand == reqBrand).ToList();
                 }
             }
 
-            return View(await allComputers.ToListAsync());
+            return View(allComputers);
         }
     }
 }

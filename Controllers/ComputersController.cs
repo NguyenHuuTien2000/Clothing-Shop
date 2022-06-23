@@ -124,7 +124,7 @@ namespace Computer_Store.Controllers
             {
                 if (oldPath != null)
                 {
-                    FileInfo fileInfo = new FileInfo(Path.Combine("wwwroot", oldPath));
+                    FileInfo fileInfo = new(Path.Combine("wwwroot", oldPath));
                     if (fileInfo.Exists)
                     {
                         fileInfo.Delete();

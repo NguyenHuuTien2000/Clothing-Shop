@@ -7,18 +7,41 @@
         {
             <li>
                 <div class="card">
-                    <img class="card-img-top" src="@item.Image">
+                    <img class="card-img-top" src="\@item.Image">
                     <div class="card-body">
-                        <h5 class="card-title"><a class="nav-link text-dark">@item.Name</a></h5>
+                        <h6 class="card-title"><a class="nav-link text-dark">@item.Name</a></h6>
                         <div class="card-middle">
-                        if (@item.Discount == 0) {
+                        @if (@item.Discount == 0) {
                             <span class="card-price">@item.DisplayPrice</span>
                         } else {
-                            <span class="card-price">@item.DisplayDiscountedPrice</span>
-                            <span class="card-price-discounted">@item.DisplayPrice</span>
-                        }   
+                            <span class="card-price">@item.DisplayDiscountedPrice đ</span>
+                            <span class="card-price-discounted">@item.DisplayPrice đ</span>
+                        }
                         </div>
-                        <a href="#" class="btn btn-primary">Buy</a>
+                        <div class="card-bottom mt-4">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="item-left"><img src="~/images/assets/cpu.png"></td>
+                                        <td class="item-right">@item.Spec.CPU</td>
+                                        <td class="item-left"><img src="~/images/assets/gpu.png"></td>
+                                        <td class="item-right">@item.Spec.GPU</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item-left"><img src="~/images/assets/ram.png"></td>
+                                        <td class="item-right">@item.Spec.RAM</td>
+                                        <td class="item-left"><img src="~/images/assets/ssd.png"></td>
+                                        <td class="item-right">@item.Spec.StorageDrive</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item-left"><img src="~/images/assets/weight.png"></td>
+                                        <td class="item-right">@item.Spec.Weight</td>
+                                        <td class="item-left"><img src="~/images/assets/size.png"></td>
+                                        <td class="item-right">@item.Spec.Screen</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -30,27 +53,6 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <style>
-        .container {
-            max-width: 100%;
-        }
-        .card {
-            width: 300px;
-        }
-        .card-price {
-            font-weight: 600;
-            padding: 5px;
-            background-color: #ff4759;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-        }
-
-        .card-price-discounted {
-            color: #768b9e;
-            font-weight: 400;
-            line-height: 1.5em;
-            padding: 0px;
-        }
-
+        
     </style>
 }

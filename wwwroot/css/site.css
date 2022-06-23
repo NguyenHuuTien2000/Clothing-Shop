@@ -14,10 +14,14 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+ul {
+    list-style: none;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
 .spec-table {
     max-width: 600px !important;
@@ -37,4 +41,63 @@ body {
     position: absolute;
     bottom: 100px;
     right: 105px;
+}
+
+.card {
+    width: 400px;
+}
+
+.card-title > h6 > a {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.card-price {
+    font-weight: 600;
+    padding: 5px;
+    background-color: #ff4759;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.card-price-discounted {
+    color: #768b9e;
+    font-weight: 400;
+    line-height: 1.5em;
+    padding: 0px;
+    text-decoration: line-through;
+}
+
+.card-bottom table {
+    text-align: center;
+    table-layout: fixed;
+    vertical-align: middle;
+    height: 12em;
+    width: 100%;
+    padding: 0.3em;
+    background: #f9f9f9;
+    border-radius: 12px;
+    display: table;
+    border-spacing: 5px;
+    border-collapse: separate;
+}
+
+.card-bottom img {
+    height: auto;
+    width: 30px;
+}
+
+.card-bottom .item-left {
+    padding: 0px;
+    vertical-align: inherit;
+    border-top: none;
+}
+
+.card-bottom .item-right {
+    text-align: left;
+    vertical-align: inherit;
+    border-top: none;
+    padding: 0px;
+    width: auto;
 }

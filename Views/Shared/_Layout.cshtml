@@ -15,6 +15,25 @@
     
 </head>
 <body>
+    <div class="TopHeader bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 text-light">
+                    <i class="fa fa-map-marker"></i>
+                    542 Chánh Phú Hòa, Bến Cát, Bình Dương
+                </div>
+                <div class="col-lg-6">
+                    <i class="fa fa-phone"></i>
+                    <a class="text-light" href="tel:0838409092">08.38 409 092</a>
+                </div>
+                <div class="col-lg-2">
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-instagram"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
     <header class="sticky-top bg-dark">
         <div class="container">
             <div class="row">
@@ -50,10 +69,61 @@
     </div>
 
     <footer class="border-top footer text-muted bg-dark">
-        <div class="container">
-            &copy; 2022 - Computer Store - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="FooterSection">
+            <div class="ContactBlock">
+                <div class="conatiner">
+                    <div class="row">
+                        <div class="col-12 col-lg-3">
+                            <img src="images/logo.jpg" alt="MONA Media">
+                            <p> </p>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <h4>CONTACT</h4>
+                            <ul class="contactList">
+                                <li>
+                                    <i class="fa fa-map-marker"></i>
+                                    542 Chánh Phú Hòa, Bến Cát, Bình Dương
+                                </li>
+                                <li>
+                                    <i class="fa fa-phone"></i>
+                                    <a href="tel:0838409092">08.38 409 092</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-envelope"></i>
+                                    <a href="monahotel@gmail.com">zezfront@gmail.com</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-credit-card-alt"></i>
+                                    2812 1124 7790
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <h4>RELIABLE</h4>
+                            <p></p>
+                            <img id="prizeImg" src="images/prize.png" alt="Hotel Prizes">
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <h4>REGISTER</h4>
+                            <p>To receive offer notification and info from us</p>
+                            <form action="#" method="post">
+                                <input type="email" name="subEmail" id="subEmail" placeholder="Email ...">
+                                <button type="submit"><i class="fa fa-paper-plane"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="BottomFooter">
+            &copy 2022 All right reserved
         </div>
     </footer>
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

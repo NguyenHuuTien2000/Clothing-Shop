@@ -1,3 +1,25 @@
+.TopHeader {
+    margin: 0px;
+    height: 45px;
+    line-height: 45px;
+    border-bottom: 1px solid #808080;
+}
+
+.TopHeader .fa {
+    color: red;
+    margin-right: 5px;
+}
+
+.TopHeader a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+
+a.nav-link:hover {
+    color: red !important;
+}
+
 form .form-group {
     position: relative;
 }
@@ -46,4 +68,79 @@ form .form-group i {
 
 tr > td:nth-child(4) {
     max-width: 200px;
+}
+
+
+
+.FooterSection {
+    color: white;
+    background-color: black;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+    .FooterSection img {
+        width: 100px;
+    }
+
+.ContactBlock {
+    max-width: 1118px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ContactBlock h4 {
+    font-weight: bold;
+    color: red;
+}
+
+.ContactBlock p {
+    margin-top: 20px;
+}
+
+.ContactBlock i {
+    color: red;
+    margin-left: 10px;
+}
+
+.ContactBlock .contactList {
+    margin-top: 20px;
+}
+
+.ContactBlock .contactList li {
+    margin-bottom: 10px;
+}
+
+.ContactBlock .contactList i {
+    margin-left: 0px;
+    margin-right: 5px;
+}
+
+.ContactBlock #prizeImg {
+    width: 100%;
+}
+
+.ContactBlock input {
+    padding-left: 10px;
+    width: 90%;
+}
+
+.ContactBlock button {
+    background-color: inherit;
+    padding: 0px;
+    border: 0px;
+}
+
+.ContactBlock button i {
+    margin: 0px;
+    color: white;
+}
+
+.BottomFooter {
+    padding: 10px;
+    border-top: 1px solid #808080;
+    font-size: small;
+    text-align: center;
+    color: #808080;
+    background-color: black;
 }
