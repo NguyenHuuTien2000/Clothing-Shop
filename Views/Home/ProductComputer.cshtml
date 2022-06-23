@@ -8,7 +8,6 @@
         </div>
         <div class="col-6">
             <h4 class="mb-3">@Html.DisplayFor(model => model.Name)</h4>
-            <partial name="_SpecTable"></partial>
             <div class="price-tag mt-2">
                 <p>Buy now</p>
                 @if (Model.Discount == 0)
@@ -21,9 +20,10 @@
                     <p class="card-price-discounted">@Model.DisplayPrice đ</p>
                 }
             </div>
-            <form>
-                <button type="submit" class="btn btn-outline-dark"> Add to cart</button>
+            <form class="text-center mb-2">
+                <button type="submit" class="btn btn-outline-dark rounded-pill"><i class="fa fa-shopping-cart"></i> Add to cart</button>
             </form>
+            <partial name="_SpecTable"></partial>
         </div>
     </div>
 </div>

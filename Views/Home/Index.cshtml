@@ -2,9 +2,29 @@
     ViewData["Title"] = "Home Page";
 }
 
-<section>
-    <h2>COMPUTERS</h2>
-    <div class=row">
-
+<section class="mt-3">
+    <h2 class="text-center">COMPUTERS</h2>
+    <div class="row mt-2">
+        <div class="col-md-4">
+            <img class="img-fluid" src="~/images/assets/Acer-v2-768x768.jpg"/>
+        </div>
+        <div class="col-md-4">
+            <img class="img-fluid" src="~/images/assets/ROG-768x768.jpg"/>
+        </div>
+        <div class="col-md-4">
+            <img class="img-fluid" src="~/images/assets/msi-768x768.jpg"/>
+        </div>
     </div>
 </section>
+
+<section class="container-fluid mt-3 bg-black">
+    <h2 class="text-center text-light">PARTS</h2>
+    <img class="img-fluid" src="~/images/assets/Linh-kien-PC-1.jpg"/>
+</section>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <style>
+    </style>
+}

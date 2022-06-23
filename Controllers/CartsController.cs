@@ -13,23 +13,23 @@ namespace Computer_Store.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int userId)
-        {
-            if (userId == null)
-            {
-                return NotFound();
-            }
-            var allCartItems = await _context.Carts
-                .Include(c => c.CItems)
-                .ThenInclude(p => p.Product)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(i => i.UserId  == userId);
-            if (allCartItems == null)
-            {
-                return NotFound();
-            }
-            return View(allCartItems);
-        }
+        //public async Task<IActionResult> Index(int userId)
+        //{
+        //    if (userId == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var allCartItems = await _context.Carts
+        //        .Include(c => c.CItems)
+        //        .ThenInclude(p => p.Product)
+        //        .AsNoTracking()
+        //        .FirstOrDefaultAsync(i => i.UserId  == userId);
+        //    if (allCartItems == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(allCartItems);
+        //}
 
 
  

@@ -29,9 +29,7 @@ function readURL(input) {
         var reader = new FileReader();
         reader.onload = function (e) {
             $('#preview')
-                .attr('src', e.target.result)
-                .width(600)
-                .height(600);
+                .attr('src', e.target.result);
         };
         reader.readAsDataURL(input.files[0]);
     }

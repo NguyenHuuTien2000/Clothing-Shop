@@ -15,6 +15,10 @@
     text-decoration: none !important;
 }
 
+.nav-pills .active {
+    background-color: black !important;
+    color: white !important;
+}
 
 a.nav-link:hover {
     color: red !important;
@@ -73,19 +77,18 @@ form .form-group i {
 
 
 .FooterSection {
-    color: white;
     padding-top: 60px;
     padding-bottom: 60px;
 }
-
-    .FooterSection img {
-        width: 100px;
-    }
 
 .ContactBlock {
     max-width: 1118px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.ContactBlock .socialMedia i {
+    font-size: xx-large;
 }
 
 .ContactBlock h4 {
@@ -104,6 +107,7 @@ form .form-group i {
 
 .ContactBlock .contactList {
     margin-top: 20px;
+    padding: 0px;
 }
 
 .ContactBlock .contactList li {

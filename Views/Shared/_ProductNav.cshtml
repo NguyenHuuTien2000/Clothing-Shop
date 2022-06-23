@@ -1,7 +1,7 @@
 ﻿
 
 <li class="nav-item has-menu">
-    <a class="nav-link" asp-controller="Home"
+    <a class="nav-link text-white" asp-controller="Home"
         asp-action="ComputerPage"
         asp-route-type="Laptop">Laptop<i class="fa fa-angle-down"></i></a>
     <ul class="sub-menu bg-dark">
@@ -9,7 +9,7 @@
             foreach(var brand in Enum.GetValues(typeof(Brand)))
             {
                 <li class="nav-item">
-                    <a class="nav-link" 
+                    <a class="nav-link text-white" 
                         asp-controller="Home" 
                         asp-action="ComputerPage" 
                         asp-route-type="Laptop" 
@@ -20,7 +20,7 @@
     </ul>
 </li>
 <li class="nav-item has-menu">
-    <a class="nav-link" asp-controller="Home"
+    <a class="nav-link text-white" asp-controller="Home"
         asp-action="ComputerPage"
         asp-route-type="Desktop">Desktop<i class="fa fa-angle-down"></i></a>
     <ul class="sub-menu bg-dark">
@@ -28,7 +28,7 @@
             foreach(var brand in Enum.GetValues(typeof(Brand)))
             {
                 <li class="nav-item">
-                    <a class="nav-link" 
+                    <a class="nav-link text-white" 
                         asp-controller="Home" 
                         asp-action="ComputerPage" 
                         asp-route-type="Desktop" 
@@ -39,8 +39,8 @@
     </ul>
 </li>
 <li class="nav-item has-menu">
-    <a asp-controller="Home" asp-action="PartPage" class="nav-link">Accessory</a>
+    <a asp-controller="Home" asp-action="PartPage" class="nav-link text-white">Accessory</a>
 </li>
 <li class="nav-item has-menu">
-    <a asp-controller="Home" asp-action="PartPage" class="nav-link">Component</a>
+    <a asp-controller="Home" asp-action="PartPage" class="nav-link text-white">Component</a>
 </li>

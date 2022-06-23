@@ -11,6 +11,10 @@
 
 <form asp-action="Edit" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" />
+    <div id="buttons-bottom" class="form-group">
+        <input type="submit" value="Edit" class="btn btn-primary"/>
+         <a class="btn btn-outline-info" asp-action="Index">Back to List</a>
+    </div>
     <div class="row">
         <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -52,19 +56,11 @@
             <div class="form-group">
                 <label class="control-label">Change Product Image</label>
                 <input name="Image" type="file" accept=".jpg, .png, .jpeg" onchange="readURL(this)"/>
-                <img id="preview" src="/@ViewBag.PartImage" width="600" height="600"/>
+                <img class="img-thumbnail" id="preview" src="/@ViewBag.PartImage" width="600" height="600"/>
             </div>
-        </div>
-        
-        <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
         </div>
     </div>
 </form>
-
-<div>
-    <a class="btn btn-outline-info" asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

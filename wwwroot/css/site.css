@@ -23,6 +23,10 @@ a {
     color: inherit;
 }
 
+form {
+    position: relative;
+}
+
 .spec-table {
     max-width: 600px !important;
     padding: 10px !important;
@@ -38,8 +42,8 @@ a {
 #buttons-bottom {
     width: 200px;
     position: absolute;
-    bottom: 100px;
-    right: 105px;
+    right: 0px;
+    top: -60px;
 }
 
 .card {
@@ -132,4 +136,11 @@ a {
     font-size: 110%;
     color: #dc3545;
     font-weight: 700;
+}
+
+
+#registerForm, .loginForm {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
 }

@@ -3,8 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Computer_Store.Models
 {
-    public class ApplicationUser : IdentityUser<int>
+    public class ApplicationUser : IdentityUser
     {
+        public string? Avatar { get; set; }
+
         [RegularExpression(@"^(\b[A-Z][a-z]*\s)*(\b[A-Z][a-z]*)$")]
         [Required]
         public string? FirstName { get; set; }
@@ -20,9 +22,9 @@ namespace Computer_Store.Models
         public string? Phone { get; set; }
         public DateTime? DateofBirth { get; set; }
 
-        public Cart Cart { get; set; }
+        public Cart? Cart { get; set; }
 
-        public History History{ get; set; }
+        public History? History{ get; set; }
 
     }
 }

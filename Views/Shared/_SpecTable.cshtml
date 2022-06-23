@@ -2,9 +2,9 @@
     ComputerSpec? spec = ViewBag.Spec;
 }
 
-<div class="container spec-table border border-dark">
+<div class="container spec-table border border-dark rounded">
     <div class="row pb-2 border-bottom">
-        <div class="col-2">
+        <div class="col-2 text-black">
             CPU:
         </div>
         <div class="col-10">
@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="row pt-2 pb-2 border-bottom">
-        <div class="col-2">
+        <div class="col-2 text-black">
             OS:
         </div>
         <div class="col-10">
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="row pt-2 pb-2 border-bottom">
-        <div class="col-2">
+        <div class="col-2 text-black">
             RAM:
         </div>
         <div class="col-10">
@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="row pt-2 pb-2 border-bottom">
-        <div class="col-2">
+        <div class="col-2 text-black">
             GPU:
         </div>
         <div class="col-10">
@@ -36,7 +36,7 @@
         </div>
     </div>
     <div class="row pt-2 pb-2 border-bottom">
-        <div class="col-2">
+        <div class="col-2 text-black">
             Screen:
         </div>
         <div class="col-10">
@@ -47,7 +47,7 @@
         if (spec.Motherboard != null)
         {
             <div class="row pt-2 pb-2 border-bottom">
-                <div class="col-2">
+                <div class="col-2 text-black">
                     Motherboard:
                 </div>
                 <div class="col-10">
@@ -57,7 +57,7 @@
         }
     }
     <div class="row pt-2 pb-2 border-bottom">
-        <div class="col-3">
+        <div class="col-3 text-black">
             Storage Drive:
         </div>
         <div class="col-9">
@@ -65,7 +65,7 @@
         </div>
     </div>
     <div class="row pt-2 pb-2 border-bottom">
-        <div class="col-2">
+        <div class="col-2 text-black">
             WIFI:
         </div>
         <div class="col-10">
@@ -75,7 +75,7 @@
     @{
         if (spec.Weight != null)
         {
-            <div class="row pb-2">
+            <div class="row pb-2 text-black">
                 <div class="col-2">
                     Weight:
                 </div>
@@ -88,7 +88,7 @@
     @{
         if (spec.PowerSupply != null)
         {
-            <div class="row pb-2">
+            <div class="row pb-2 text-black">
                 <div class="col-2">
                     Power Supply:
                 </div>
