@@ -16,6 +16,14 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
+
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    option.Cookie.Name = "Hyper CS Cookie";
+    option.Cookie.HttpOnly = true;
+    option.ExpireTimeSpan = TimeSpan.FromDays(30);
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
