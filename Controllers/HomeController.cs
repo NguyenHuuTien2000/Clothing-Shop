@@ -1,5 +1,6 @@
 ﻿using Computer_Store.Data;
 using Computer_Store.Models;
+using Computer_Store.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;

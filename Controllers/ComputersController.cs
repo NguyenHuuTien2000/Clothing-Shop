@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Computer_Store.Data;
 using Computer_Store.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Computer_Store.Controllers
 {
+    [Authorize(Roles = "Admin,Moderator")]
     public class ComputersController : Controller
     {
         private readonly ApplicationDbContext _context;

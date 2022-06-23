@@ -1,4 +1,4 @@
-namespace Computer_Store.Models
+namespace Computer_Store.Models.ViewModel
 {
     public class ErrorViewModel
     {

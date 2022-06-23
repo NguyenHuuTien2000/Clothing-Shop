@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Computer_Store.Data;
 using Computer_Store.Models;
 using System.Collections;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Computer_Store.Controllers
 {
+    [Authorize(Roles = "Admin,Moderator")]
     public class PartsController : Controller
     {
         private readonly ApplicationDbContext _context;

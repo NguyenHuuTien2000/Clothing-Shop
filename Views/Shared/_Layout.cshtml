@@ -45,12 +45,7 @@
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item has-menu"><a class="nav-link text-white">Manage Product<i class="fa fa-angle-down"></i></a>
-                                <ul class="sub-menu bg-dark">
-                                    <li class="nav-item"><a class="nav-link text-white" asp-controller="Computers" asp-action="Index">Computer</a></li>
-                                    <li class="nav-item"><a class="nav-link text-white" asp-controller="Parts" asp-action="Index">Part</a></li>
-                                </ul>
-                            </li>
+                            <partial name="_ManagePage" />
                             <partial name="_ProductNav" />
                         </ul>
                         <partial name="_LoginPartial" />
