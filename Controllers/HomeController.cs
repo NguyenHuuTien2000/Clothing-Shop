@@ -31,9 +31,20 @@ namespace Computer_Store.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public IActionResult ProductComputer(int? id)
+        {
+            var computer = _context.Computers
+                .Include(c => c.Spec)
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Id == id);
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
+            return View(computer);
+        }
+
         public IActionResult ComputerPage(string? type, string? brand)
         {
-            var allComputers = _context.Computers.Include(c => c.Spec).ToList();
+            var allComputers = _context.Computers.Include(c => c.Spec).AsNoTracking().ToList();
 
             if (type != null)
             {

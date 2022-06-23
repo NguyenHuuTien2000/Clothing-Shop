@@ -47,7 +47,7 @@ a {
     width: 400px;
 }
 
-.card-title > h6 > a {
+.card-title > a {
     padding-left: 0px;
     padding-right: 0px;
 }

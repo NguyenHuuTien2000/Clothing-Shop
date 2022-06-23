@@ -14,6 +14,10 @@ namespace Computer_Store.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Computer> Computers { get; set; }
         public DbSet<Part> Parts { get; set; }
-        
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItems> CartItems { get; set; }
+        public DbSet<History> History { get; set; }
+        public DbSet<HistoryItems> HistoryItems { get; set; }
+
     }
 }

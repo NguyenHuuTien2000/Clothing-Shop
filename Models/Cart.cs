@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public int UserId { get; set; }
 
-        public IEnumerable<CartItems> CItems { get; set; };
+        public IEnumerable<CartItems> CItems { get; set; }
     }
 }

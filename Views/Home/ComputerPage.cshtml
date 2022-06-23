@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Computer_Store.Models.Computer>
 
-<div class="container">
+<div class="container mt-5">
     <ul class="row row-cols-3">
         @{
         foreach (var item in Model)
@@ -9,7 +9,10 @@
                 <div class="card">
                     <img class="card-img-top" src="\@item.Image">
                     <div class="card-body">
-                        <h6 class="card-title"><a class="nav-link text-dark">@item.Name</a></h6>
+                        <h6 class="card-title"><a class="nav-link text-dark" 
+                                                asp-controller="Home"
+                                                asp-action="ProductComputer"
+                                                asp-route-id="@item.Id">@item.Name</a></h6>
                         <div class="card-middle">
                         @if (@item.Discount == 0) {
                             <span class="card-price">@item.DisplayPrice</span>
@@ -52,7 +55,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <style>
-        
-    </style>
 }

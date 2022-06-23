@@ -7,15 +7,13 @@ namespace Computer_Store.Models
     {
         public int Id { get; set; }
 
-        public int ProductID { get; set; }
-
-        public int quantity { get; set; }
+        public Product Product{ get; set; }
 
         [Required]
         [ForeignKey("History")]
         public int HistoryID { get; set; }
 
-        public History History  { get; set; }
+        public History MyHistory  { get; set; }
 
 
     }
