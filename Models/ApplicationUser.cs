@@ -15,6 +15,14 @@ namespace Computer_Store.Models
         public string Fullname { get => FirstName + " " + LastName; }
 
         public string? Address { get; set; }
-        public DateTime DateofBirth { get; set; }
+
+        [RegularExpression(@"^0[0-9]{9,10}$")]
+        public string? Phone { get; set; }
+        public DateTime? DateofBirth { get; set; }
+
+        public Cart Cart { get; set; }
+
+        public Orders Order{ get; set; }
+
     }
 }
