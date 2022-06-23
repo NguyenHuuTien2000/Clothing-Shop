@@ -31,12 +31,12 @@ namespace Computer_Store.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult ProductComputer(int? id)
+        public IActionResult ProductComputer(int id)
         {
             var computer = _context.Computers
                 .Include(c => c.Spec)
                 .AsNoTracking()
-                .FirstOrDefault(x => x.Id == id);
+                .Single(x => x.Id == id);
             ViewData["Image"] = computer.Image;
             ViewData["Spec"] = computer.Spec;
             return View(computer);

@@ -66,7 +66,7 @@ form .form-group i {
     padding: 12px 8px;
 }
 
-tr > td:nth-child(4) {
+.index-table tr > td:nth-child(4) {
     max-width: 200px;
 }
 
@@ -74,7 +74,6 @@ tr > td:nth-child(4) {
 
 .FooterSection {
     color: white;
-    background-color: black;
     padding-top: 60px;
     padding-bottom: 60px;
 }
@@ -142,5 +141,4 @@ tr > td:nth-child(4) {
     font-size: small;
     text-align: center;
     color: #808080;
-    background-color: black;
 }

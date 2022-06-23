@@ -8,6 +8,9 @@
             <li>
                 <div class="card">
                     <img class="card-img-top" src="\@item.Image">
+                    @if (@item.Discount != 0) {
+                        <span class="onsale">@item.DisplayDiscount</span>
+                    }
                     <div class="card-body">
                         <h6 class="card-title"><a class="nav-link text-dark" 
                                                 asp-controller="Home"
