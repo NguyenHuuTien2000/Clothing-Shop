@@ -12,39 +12,54 @@
     <div class="row">
         <div class="col-md-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<ComputerType>()">
+            <div class="form-group mb-3">
+                <label asp-for="Type" class="control-label mb-2"></label>
+                <select asp-for="Type" class="form-control type-select" onchange="changeInput(this)" asp-items="Html.GetEnumSelectList<ComputerType>()">
                     <option>Select a type of computer</option>
                 </select>
+                <i class="fa fa-angle-down"></i>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
+            <div class="form-group mb-3">
+                <label asp-for="Category" class="control-label mb-2"></label>
                 <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<ComputerCategory>()">
                     <option>Select computer category</option>
                 </select>
+                <i class="fa fa-angle-down"></i>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+            <div class="form-group mb-3">
+                <label asp-for="Brand" class="control-label mb-2"></label>
+                <select asp-for="Brand" class="form-control" asp-items="Html.GetEnumSelectList<Brand>()">
+                    <option>Select a computer brand</option>
+                </select>
+                <i class="fa fa-angle-down"></i>
+                <span asp-validation-for="Brand" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label mb-2"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+            <div class="form-group mb-3">
+                <label asp-for="Price" class="control-label mb-2"></label>
+                <div class="input-group">
+                    <input asp-for="Price" class="form-control price"/>
+                    <div class="input-group-append">
+                        <span class="input-group-text">VND</span>
+                    </div>
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Discount" class="control-label"></label>
-                <input asp-for="Discount" class="form-control" />
-                <span asp-validation-for="Discount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <select asp-for="Brand" class="form-control" asp-items="Html.GetEnumSelectList<Brand>()"></select>
-                <span asp-validation-for="Brand" class="text-danger"></span>
+            <div class="form-group mb-3">
+                <label asp-for="Discount" class="control-label mb-2"></label>
+                <div class="input-group">
+                    <input asp-for="Discount" class="form-control price" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">%</span>
+                    </div>
+                    <span asp-validation-for="Discount" class="text-danger"></span>
+                </div>
             </div>
 
             <div class="form-group spec">
@@ -60,14 +75,14 @@
                     </div>
                 </div>
                 
-                    <div class="row mb-2">
+                <div class="row mb-2">
                     <div class="col">
                         <label class="control-label">OS</label>
                         <input name="spec.OS" class="form-control"/>
                     </div>
                 </div>
                 
-                    <div class="row mb-2">
+                 <div class="row mb-2">
                     <div class="col-md-4">
                         <label class="control-label">RAM</label>
                         <input name="spec.RAM" class="form-control"/>
@@ -78,7 +93,7 @@
                     </div>
                 </div>
                 
-                    <div class="row mb-2">
+                 <div class="row mb-2">
                     <div class="col-md-4">
                         <label class="control-label">GPU</label>
                         <input name="spec.GPU" class="form-control"/>
@@ -90,7 +105,7 @@
                     
                 </div>
 
-                    <div class="row mb-2">
+                 <div class="row mb-2">
                     <div class="col-md-4">
                         <label class="control-label">Motherboard</label>
                         <input name="spec.Motherboard" class="form-control"/>
@@ -101,18 +116,18 @@
                     </div>
                 </div>
 
-                    <div class="row mb-2">
+                 <div class="row mb-2">
                     <div class="col-md-4">
                         <label class="control-label">Screen</label>
                         <input name="spec.Screen" class="form-control"/>
                     </div>
                     <div class="col-md-8">
                         <label class="control-label">Screen Detail</label>
-                        <input name="spec.ScreenDetail" class="form-control"/>
+                        <input name="spec.ScreenDetial" class="form-control"/>
                     </div>
                 </div>
 
-                    <div class="row mb-2">
+                 <div class="row mb-2">
                     <div class="col-md-4">
                         <label class="control-label">Storage Drive</label>
                         <input name="spec.StorageDrive" class="form-control"/>
@@ -123,21 +138,21 @@
                     </div>
                 </div>
 
-                    <div class="row mb-2">
+                 <div class="row mb-2">
                     <div class="col">
                         <label class="control-label">WIFI</label>
                         <input name="spec.WIFI" class="form-control"/>
                     </div>
                 </div>
 
-                    <div class="row mb-2">
+                 <div class="row mb-2">
                     <div class="col">
                         <label class="control-label">Weight</label>
                         <input name="spec.Weight" class="form-control"/>
                     </div>
                 </div>
                 
-                    <div class="row mb-2">
+                 <div class="row mb-2">
                     <div class="col">
                         <label class="control-label">Power Supply</label>
                         <input name="spec.PowerSupply" class="form-control"/>
@@ -145,51 +160,22 @@
                 </div>
             </div>
 
+        </div>
+        <div class="col-md-4">
             <div class="form-group">
-                <input type="submit" value="Add" class="btn btn-primary"/>
+                <label class="control-label">Select Product Image</label>
+                <input required name="Image" type="file" accept=".jpg, .png, .jpeg" onchange="readURL(this)"/>
+                <img id="preview"/>
             </div>
-        </form>
-    </div>
-    <div class="col-md-4">
-        <div class="form-group">
-            <label class="control-label">Select Product Image</label>
-            <input accept="*.jpg, *.png" type="file" name="Image" onchange="readURL(this)"/>
-            <img id="preview"/>
         </div>
     </div>
-</div>
+    <div id="buttons-bottom" class="form-group">
+        <input type="submit" value="Add" class="btn btn-primary"/>
+         <a class="btn btn-outline-info" asp-action="Index">Back to List</a>
+    </div>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <style>
-        .spec {
-            border: 1px solid grey;
-            padding: 10px;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        img {
-            margin-top: 10px;
-        }
-
-    </style>
-    <script>
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#preview')
-                    .attr('src', e.target.result)
-                    .width(600)
-                    .height(600);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
 }

@@ -8,54 +8,62 @@
 
 <h4>Part</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<form asp-action="Create" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <select asp-for="Category" class="form-control"></select>
+            <div class="form-group mb-3">
+                <label asp-for="Category" class="control-label mb-2"></label>
+                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<PartCategory>()">
+                    <option>Select part category</option>
+                </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="SummarySpec" class="control-label"></label>
-                <input asp-for="SummarySpec" class="form-control" />
+            <div class="form-group mb-3">
+                <label asp-for="Brand" class="control-label mb-2"></label>
+                <select asp-for="Brand" class="form-control" asp-items="Html.GetEnumSelectList<Brand>()">
+                    <option>Select a brand</option>
+                </select>
+                <span asp-validation-for="Brand" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="SummarySpec" class="control-label mb-2"></label>
+                <textarea asp-for="SummarySpec" rows="6" class="form-control" ></textarea>
                 <span asp-validation-for="SummarySpec" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label mb-2"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+            <div class="form-group mb-3">
+                <label asp-for="Price" class="control-label mb-2"></label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Discount" class="control-label"></label>
+            <div class="form-group mb-3">
+                <label asp-for="Discount" class="control-label mb-2"></label>
                 <input asp-for="Discount" class="form-control" />
                 <span asp-validation-for="Discount" class="text-danger"></span>
             </div>
+        </div>
+
+        <div class="col-md-4">
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <label class="control-label">Select Product Image</label>
+                <input required name="Image" type="file" accept=".jpg, .png, .jpeg" onchange="readURL(this)"/>
+                <img id="preview"/>
             </div>
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <select asp-for="Brand" class="form-control"></select>
-                <span asp-validation-for="Brand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+        
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
     </div>
-</div>
+</form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-outline-info" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

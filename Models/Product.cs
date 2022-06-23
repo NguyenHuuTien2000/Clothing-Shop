@@ -20,5 +20,20 @@ namespace Computer_Store.Models
         public string? Image { get; set; }
 
         public Brand Brand { get; set; }
+
+        public string? DisplayPrice
+        {
+            get { return String.Format("{0:n0}", Price); }
+        }
+
+        public string? DisplayDiscountedPrice
+        {
+            get { return String.Format("{0:n0}", Price * (1 - Discount)); }
+        }
+
+        public string? DisplayDiscount
+        {
+            get { return $"-{Discount}%"; }
+        }
     }
 }

@@ -36,14 +36,18 @@ namespace Computer_Store.Models
 
         public Computer? Computer { get; set; }
 
+        [Required]
         public string? CPU { get; set; }
         public string? CPUDetail { get; set; }
 
+        [Required]
         public string? OS { get; set; }
 
+        [Required]
         public string? RAM { get; set; }
         public string? RAMDetail { get; set; }
 
+        [Required]
         public string? GPU { get; set; }
         public string? GPUDetail { get; set; }
 
@@ -53,6 +57,7 @@ namespace Computer_Store.Models
         public string? Screen { get; set; }
         public string? ScreenDetial { get; set; }
 
+        [Required]
         public string? StorageDrive { get; set; }
         public string? StorageDriveDetail { get; set; }
 

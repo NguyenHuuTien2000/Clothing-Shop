@@ -1,0 +1,101 @@
+﻿@{
+    ComputerSpec? spec = ViewBag.Spec;
+}
+
+<div class="container spec-table border border-dark">
+    <div class="row pb-2 border-bottom">
+        <div class="col-2">
+            CPU:
+        </div>
+        <div class="col-10">
+            @spec.CPUDetail
+        </div>
+    </div>
+    <div class="row pt-2 pb-2 border-bottom">
+        <div class="col-2">
+            OS:
+        </div>
+        <div class="col-10">
+            @spec.OS
+        </div>
+    </div>
+    <div class="row pt-2 pb-2 border-bottom">
+        <div class="col-2">
+            RAM:
+        </div>
+        <div class="col-10">
+            @spec.RAMDetail
+        </div>
+    </div>
+    <div class="row pt-2 pb-2 border-bottom">
+        <div class="col-2">
+            GPU:
+        </div>
+        <div class="col-10">
+            @spec.GPUDetail
+        </div>
+    </div>
+    <div class="row pt-2 pb-2 border-bottom">
+        <div class="col-2">
+            Screen:
+        </div>
+        <div class="col-10">
+            @spec.ScreenDetial
+        </div>
+    </div>
+    @{
+        if (spec.Motherboard != null)
+        {
+            <div class="row pt-2 pb-2 border-bottom">
+                <div class="col-2">
+                    Motherboard:
+                </div>
+                <div class="col-10">
+                    @spec.MotherboardDetail
+                </div>
+            </div>
+        }
+    }
+    <div class="row pt-2 pb-2 border-bottom">
+        <div class="col-3">
+            Storage Drive:
+        </div>
+        <div class="col-9">
+            @spec.StorageDriveDetail
+        </div>
+    </div>
+    <div class="row pt-2 pb-2 border-bottom">
+        <div class="col-2">
+            WIFI:
+        </div>
+        <div class="col-10">
+            @spec.WIFI
+        </div>
+    </div>
+    @{
+        if (spec.Weight != null)
+        {
+            <div class="row pb-2">
+                <div class="col-2">
+                    Weight:
+                </div>
+                <div class="col-10">
+                    @spec.Weight
+                </div>
+            </div>
+        }
+    }
+    @{
+        if (spec.PowerSupply != null)
+        {
+            <div class="row pb-2">
+                <div class="col-2">
+                    Power Supply:
+                </div>
+                <div class="col-10">
+                    @spec.PowerSupply
+                </div>
+            </div>
+        }
+    }
+</div>

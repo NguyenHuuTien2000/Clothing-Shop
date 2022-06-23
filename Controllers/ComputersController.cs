@@ -18,8 +18,8 @@ namespace Computer_Store.Controllers
         // GET: Computers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Computers.Include(c => c.Spec);
-            return View(await applicationDbContext.ToListAsync());
+            var allComputers = _context.Computers.Include(c => c.Spec);
+            return View(await allComputers.ToListAsync());
         }
 
         // GET: Computers/Details/5
@@ -37,7 +37,8 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
             return View(computer);
         }
 
@@ -56,12 +57,20 @@ namespace Computer_Store.Controllers
         {
             if (Image.Length > 0 && spec != null)
             {
-                string imagePath = Path.Combine(Environment.CurrentDirectory, "Images", Image.FileName);
-                using (Stream fileStream = new FileStream(imagePath, FileMode.Create))
+                string imageFolder = Path.Combine("images", "computers", computer.Brand + "");
+                string storedImage = Path.Combine("wwwroot", imageFolder);
+                if (!Directory.Exists(storedImage))
+                {
+                    Directory.CreateDirectory(storedImage);
+                }
+
+                storedImage = Path.Combine(storedImage, Image.FileName);
+                using (Stream fileStream = new FileStream(storedImage, FileMode.Create))
                 {
                     await Image.CopyToAsync(fileStream);
                 }
-                computer.Image = imagePath;
+
+                computer.Image = Path.Combine(imageFolder, Image.FileName);
                 computer.SpecID = spec.Id;
                 computer.Spec = spec;
             }
@@ -72,6 +81,8 @@ namespace Computer_Store.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
             return View(computer);
         }
 
@@ -83,12 +94,16 @@ namespace Computer_Store.Controllers
                 return NotFound();
             }
 
-            var computer = await _context.Computers.FindAsync(id);
+            var computer = await _context.Computers
+                .Include(c => c.Spec)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
             if (computer == null)
             {
                 return NotFound();
             }
-            ViewData["SpecID"] = new SelectList(_context.Set<ComputerSpec>(), "Id", "Id", computer.SpecID);
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
             return View(computer);
         }
 
@@ -97,11 +112,50 @@ namespace Computer_Store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Category,Type,SpecID,Id,Name,Price,Discount,Image,Brand")] Computer computer)
+        public async Task<IActionResult> Edit(int id, [Bind("Category,Type,SpecID,Id,Name,Price,Discount,Brand")] Computer computer, IFormFile? Image, ComputerSpec spec)
         {
             if (id != computer.Id)
             {
                 return NotFound();
+            }
+
+            var oldPath = _context.Computers.AsNoTracking().FirstOrDefault(c => c.Id == id).Image;
+            if (Image != null)
+            {
+                if (oldPath != null)
+                {
+                    FileInfo fileInfo = new FileInfo(Path.Combine("wwwroot", oldPath));
+                    if (fileInfo.Exists)
+                    {
+                        fileInfo.Delete();
+                    }
+                }
+
+                string imageFolder = Path.Combine("images", "computers", computer.Brand + "");
+                string storedImage = Path.Combine("wwwroot", imageFolder);
+                if (!Directory.Exists(storedImage))
+                {
+                    Directory.CreateDirectory(storedImage);
+                }
+                storedImage = Path.Combine(storedImage, Image.FileName);
+
+                using (Stream fileStream = new FileStream(storedImage, FileMode.Create))
+                {
+                    await Image.CopyToAsync(fileStream);
+                }
+
+                computer.Image = Path.Combine(imageFolder, Image.FileName);
+            }
+            else
+            {
+                computer.Image = oldPath;
+            }
+
+
+            if (spec != null)
+            {
+                computer.SpecID = spec.Id;
+                computer.Spec = spec;
             }
 
             if (ModelState.IsValid)
@@ -124,7 +178,8 @@ namespace Computer_Store.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SpecID"] = new SelectList(_context.Set<ComputerSpec>(), "Id", "Id", computer.SpecID);
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
             return View(computer);
         }
 
@@ -138,12 +193,13 @@ namespace Computer_Store.Controllers
 
             var computer = await _context.Computers
                 .Include(c => c.Spec)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (computer == null)
             {
                 return NotFound();
             }
-
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
             return View(computer);
         }
 
@@ -154,9 +210,11 @@ namespace Computer_Store.Controllers
         {
             if (_context.Computers == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Computers'  is null.");
+                return Problem("No computer found in DB");
             }
-            var computer = await _context.Computers.FindAsync(id);
+            var computer = await _context.Computers
+                .Include(c => c.Spec)
+                .SingleOrDefaultAsync(c => c.Id == id);
             if (computer != null)
             {
                 _context.Computers.Remove(computer);

@@ -1,11 +1,21 @@
-﻿.navbar .sub-menu {
+form .form-group {
+    position: relative;
+}
+
+form .form-group i {
+    position: absolute;
+    right: 5px;
+    bottom: 10px;
+    font-weight: 700;
+}
+
+.navbar .sub-menu {
     display: none;
     position: absolute;
     width: 170px;
     list-style: none;
     margin: 0px;
     padding: 10px;
-    background-color: white;
 }
 
 .navbar .has-menu > a {
@@ -13,14 +23,13 @@
 }
 
 .navbar .has-menu i {
-    margin-left: 3px;
+    margin-left: 5px;
     font-size: 15px;
     font-weight: 700;
 }
 
 .navbar .has-menu:hover > .sub-menu {
     display: block;
-    box-shadow: 0px 5px 15px -2px #000000;
 }
 
 .navbar .sub-menu > li {
@@ -35,7 +44,6 @@
     padding: 12px 8px;
 }
 
-.navbar .sub-menu > li:hover > a {
-    background-color: black;
-    color: white !important;
+tr > td:nth-child(4) {
+    max-width: 200px;
 }

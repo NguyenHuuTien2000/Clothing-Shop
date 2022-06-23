@@ -1,5 +1,6 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    scroll-behavior: smooth;
 }
 
 @media (min-width: 768px) {
@@ -15,4 +16,25 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+
+.spec-table {
+    max-width: 600px !important;
+    padding: 10px !important;
+    float: right;
+}
+
+.spec {
+    border: 1px solid grey;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#buttons-bottom {
+    width: 200px;
+    position: absolute;
+    bottom: 100px;
+    right: 105px;
 }
