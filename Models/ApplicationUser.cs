@@ -27,4 +27,13 @@ namespace Computer_Store.Models
         public History? History{ get; set; }
 
     }
+
+    public enum Roles
+    {
+        Admin,
+        Moderator,
+        B_User,
+        A_User,
+        S_User
+    }
 }

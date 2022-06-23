@@ -107,17 +107,6 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (Request.Form.Files.Count > 0)
-            {
-                IFormFile file = Request.Form.Files.FirstOrDefault();
-                using (var dataStream = new MemoryStream())
-                {
-                    await file.CopyToAsync(dataStream);
-                    user.ProfilePicture = dataStream.ToArray();
-                }
-                await _userManager.UpdateAsync(user);
-            }
-
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -128,6 +117,27 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
             {
                 await LoadAsync(user);
                 return Page();
+            }
+
+            if (Request.Form.Files.Count > 0)
+            {
+                IFormFile profilePic = Request.Form.Files.FirstOrDefault();
+
+                string imageFolder = Path.Combine("images", "users", user.Id + "");
+                string storedImage = Path.Combine("wwwroot", imageFolder);
+                if (!Directory.Exists(storedImage))
+                {
+                    Directory.CreateDirectory(storedImage);
+                }
+
+                storedImage = Path.Combine(storedImage, profilePic.FileName);
+                using (Stream fileStream = new FileStream(storedImage, FileMode.Create))
+                {
+                    await profilePic.CopyToAsync(fileStream);
+                }
+                user.Avatar = Path.Combine(imageFolder, profilePic.FileName);
+
+                await _userManager.UpdateAsync(user);
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
@@ -143,11 +153,13 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
 
             var firstName = user.FirstName;
             var lastName = user.LastName;
+
             if (Input.FirstName != firstName)
             {
                 user.FirstName = Input.FirstName;
                 await _userManager.UpdateAsync(user);
             }
+
             if (Input.LastName != lastName)
             {
                 user.LastName = Input.LastName;
