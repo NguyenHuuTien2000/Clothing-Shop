@@ -3,17 +3,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Computer_Store.Models
 {
-    public class CartItems
-    {   
-
+    public class HistoryItems
+    {
         public int Id { get; set; }
-        
+
         public int ProductID { get; set; }
 
+        public int quantity { get; set; }
+
         [Required]
-        [ForeignKey("Cart")]
-        public int CartID { get; set; }
- 
-        public Cart Cart { get; set; }  
+        [ForeignKey("History")]
+        public int HistoryID { get; set; }
+
+        public History History  { get; set; }
+
+
     }
 }

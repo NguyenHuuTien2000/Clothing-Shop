@@ -22,5 +22,7 @@ namespace Computer_Store.Models
 
         public Cart Cart { get; set; }
 
+        public History History{ get; set; }
+
     }
 }
