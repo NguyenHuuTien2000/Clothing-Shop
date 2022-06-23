@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Computer_Store.Models.Computer>
+
+<div class="container">
+    <ul class="row row-cols-3">
+        @{
+        foreach (var item in Model)
+        {
+            <li>
+                <div class="card">
+                    <img class="card-img-top" src="@item.Image">
+                    <div class="card-body">
+                        <h5 class="card-title"><a class="nav-link text-dark">@item.Name</a></h5>
+                        <div class="card-middle">
+                        if (@item.Discount == 0) {
+                            <span class="card-price">@item.DisplayPrice</span>
+                        } else {
+                            <span class="card-price">@item.DisplayDiscountedPrice</span>
+                            <span class="card-price-discounted">@item.DisplayPrice</span>
+                        }   
+                        </div>
+                        <a href="#" class="btn btn-primary">Buy</a>
+                    </div>
+                </div>
+            </li>
+        }
+        }
+    </ul>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <style>
+        .container {
+            max-width: 100%;
+        }
+        .card {
+            width: 300px;
+        }
+        .card-price {
+            font-weight: 600;
+            padding: 5px;
+            background-color: #ff4759;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .card-price-discounted {
+            color: #768b9e;
+            font-weight: 400;
+            line-height: 1.5em;
+            padding: 0px;
+        }
+
+    </style>
+}
