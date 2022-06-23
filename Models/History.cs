@@ -10,7 +10,6 @@ namespace Computer_Store.Models
         public DateTime CreateDate { get; set; }
         public IEnumerable<HistoryItems> HItems { get; set; }    
     }
-
     public class HistoryItems
     {
         public int Id { get; set; }
