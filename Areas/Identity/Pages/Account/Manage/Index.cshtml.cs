@@ -70,6 +70,8 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
 
             [Phone]
             [Display(Name = "Phone number")]
+            [MaxLength(11, ErrorMessage = "Phone number must be 10 or 11 digit long")]
+            [MinLength(10, ErrorMessage = "Phone number must be 10 or 11 digit long")]
             public string PhoneNumber { get; set; }
         }
 

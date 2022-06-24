@@ -4,6 +4,9 @@
     ViewData["Title"] = "Cart";
 }
 
+@{
+
+}
 <h1>Your Cart</h1>
 
 <table class="table table-bordered table-striped align-middle cart-table">
@@ -28,7 +31,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <img src=@item.Product.Image class="img-thumbnail" width="150">
+                <img src=\@item.Product.Image class="img-thumbnail" width="150">
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.Name)
@@ -36,12 +39,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Product.Brand)
             </td>
-                if (item.Product.Discount == 0)
+            <td>
+                @if (item.Product.Discount == 0)
                 {
-                    @Html.DisplayFor(modelItem => item.Product.DisplayPrice) VND
+                    @Html.DisplayFor(modelItem => item.Product.DisplayPrice)
                 } else {
-                    @Html.DisplayFor(modelItem => item.Product.DisplayDiscountedPrice) VND
+                    @Html.DisplayFor(modelItem => item.Product.DisplayDiscountedPrice)
                 }
+            </td>
             <td>
                 <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Remove</a>
             </td>
@@ -49,5 +54,5 @@
 }
     </tbody>
 </table>
-<a class="btn btn-outline-primary rounded rounded-pill">Buy</a>
+<a class="btn btn-outline-primary rounded rounded-pill btn-lg">Buy</a>
 
