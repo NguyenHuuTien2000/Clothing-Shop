@@ -1,8 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-
-@if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+﻿@if (User.IsInRole("Moderator"))
 {
     <li class="nav-item has-menu"><a class="nav-link text-white">Manage Product<i class="fa fa-angle-down"></i></a>
         <ul class="sub-menu bg-dark">
