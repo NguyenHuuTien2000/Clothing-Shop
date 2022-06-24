@@ -100,5 +100,45 @@ namespace Computer_Store.Controllers
 
             return View(allParts);
         }
+
+        public IActionResult AddToCart(string? uid, int? pid)
+        {
+            var cart = _context.Carts.Include(c => c.CartItems).Single(x => x.UserId == uid);
+            var product = _context.Products.FirstOrDefault(p => p.Id == pid);
+            var cartItem = new CartItems();
+            cartItem.CartID = cart.Id;
+            cartItem.ProductID = product.Id;
+            cartItem.Product = product;
+            cartItem.MyCart = cart;
+            if (cart.CartItems == null)
+            {
+                cart.CartItems = new List<CartItems>();
+            }
+            cart.CartItems.Add(cartItem);
+            _context.Update(cart);
+            _context.CartItems.Add(cartItem);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult CartPage(string? uid)
+        {
+            var cart = _context.Carts.Include(d => d.CartItems).FirstOrDefault(c => c.UserId == uid);
+            cart.CartItems.ToList();
+            return View(cart.CartItems.ToList());
+        }
+
+        public IActionResult removeAllItemCart(string? uid)
+        {
+            var cart = _context.Carts.Where(c => c.UserId == uid).Include(d => d.CartItems).FirstOrDefault();
+            cart.CartItems.Clear();
+            if (ModelState.IsValid)
+            {
+                _context.Update(cart);
+                _context.SaveChangesAsync();
+                return RedirectToPage("BuySuccess");
+            }
+            return View(cart);
+        }
     }
 }

@@ -7,9 +7,9 @@ namespace Computer_Store.Models
     {
         [Key]
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
-        public IEnumerable<CartItems>? CartItems { get; set; }
+        public ICollection<CartItems>? CartItems { get; set; }
     }
 
     public class CartItems
