@@ -101,6 +101,19 @@ namespace Computer_Store.Controllers
             return View(allParts);
         }
 
+        public IActionResult CartPage(string? uid)
+        {
+            var cart = _context.Carts
+                .Include(d => d.CartItems)
+                .ThenInclude(p => p.Product)
+                .FirstOrDefault(c => c.UserId == uid);
+            if (cart == null || cart.CartItems == null)
+            {
+                return View();
+            }
+            return View(cart.CartItems.ToList());
+        }
+
         public IActionResult AddToCart(string? uid, int? pid)
         {
             var cart = _context.Carts.Include(c => c.CartItems).Single(x => x.UserId == uid);
@@ -115,20 +128,26 @@ namespace Computer_Store.Controllers
                 cart.CartItems = new List<CartItems>();
             }
             cart.CartItems.Add(cartItem);
-            _context.Update(cart);
-            _context.CartItems.Add(cartItem);
+            _context.Carts.Update(cart);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("CartPage", new { uid });
         }
 
-        public IActionResult CartPage(string? uid)
+        public IActionResult RemoveAllItemCart(string? uid)
         {
-            var cart = _context.Carts.Include(d => d.CartItems).FirstOrDefault(c => c.UserId == uid);
-            cart.CartItems.ToList();
-            return View(cart.CartItems.ToList());
+            var cart = _context.Carts.Where(c => c.UserId == uid).Include(d => d.CartItems).FirstOrDefault();
+            if (cart == null)
+            {
+                return View();
+            }
+            cart.CartItems.Clear();
+            _context.Update(cart);
+            _context.SaveChangesAsync();
+            return RedirectToPage("BuySuccess");
+            return View(cart);
         }
 
-        public IActionResult removeAllItemCart(string? uid)
+        public IActionResult RemoveItemCart(string? uid)
         {
             var cart = _context.Carts.Where(c => c.UserId == uid).Include(d => d.CartItems).FirstOrDefault();
             cart.CartItems.Clear();
