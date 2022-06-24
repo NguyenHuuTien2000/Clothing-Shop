@@ -154,6 +154,12 @@ namespace Computer_Store.Areas.Identity.Pages.Account
                     };
                     _context.Add(cart);
 
+                    var history = new History
+                    {
+                        UserId = user.Id
+                    };
+                    _context.Add(history);
+
                     _logger.LogInformation("User created a new account with password.");
                     await _userManager.AddToRoleAsync(user, Roles.B_User.ToString());
                     var userId = await _userManager.GetUserIdAsync(user);

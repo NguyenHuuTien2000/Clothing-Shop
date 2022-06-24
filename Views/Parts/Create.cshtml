@@ -21,6 +21,7 @@
                 <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<PartCategory>()">
                     <option>Select part category</option>
                 </select>
+                <i class="fa fa-angle-down"></i>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
@@ -28,6 +29,7 @@
                 <select asp-for="Brand" class="form-control" asp-items="Html.GetEnumSelectList<Brand>()">
                     <option>Select a brand</option>
                 </select>
+                <i class="fa fa-angle-down"></i>
                 <span asp-validation-for="Brand" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">

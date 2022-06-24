@@ -8,7 +8,7 @@ namespace Computer_Store.Models
         public int Id { get; set; }
 
         [Required]
-        [RegularExpression(@"[()%.″\-\w ]*", ErrorMessage = "Name can only inlcude special character: ()%.″-")]
+        [RegularExpression(@"[()%.″\-\w ]*", ErrorMessage = "Apart from alphanumeric, only these special characters are allowed: ()%.″-")]
         public string? Name { get; set; }
 
         [Required]
@@ -27,12 +27,12 @@ namespace Computer_Store.Models
 
         public string? DisplayPrice
         {
-            get { return String.Format("{0:n0}", Price); }
+            get { return string.Format("{0:n0}", Price); }
         }
 
         public string? DisplayDiscountedPrice
         {
-            get { return String.Format("{0:n0}", Price * (1 - Discount/100)); }
+            get { return string.Format("{0:n0}", Price * (1 - Discount/100)); }
         }
 
         public string? DisplayDiscount

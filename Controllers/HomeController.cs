@@ -12,6 +12,7 @@ namespace Computer_Store.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private string UserID;
 
         public HomeController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
@@ -20,11 +21,6 @@ namespace Computer_Store.Controllers
         }
 
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
         {
             return View();
         }
@@ -101,12 +97,14 @@ namespace Computer_Store.Controllers
             return View(allParts);
         }
 
-        public IActionResult CartPage(string? uid)
+        public IActionResult CartPage()
         {
+            UserID = _userManager.GetUserId(User);
+
             var cart = _context.Carts
                 .Include(d => d.CartItems)
                 .ThenInclude(p => p.Product)
-                .FirstOrDefault(c => c.UserId == uid);
+                .FirstOrDefault(c => c.UserId == UserID);
             if (cart == null || cart.CartItems == null)
             {
                 return View();
@@ -114,10 +112,19 @@ namespace Computer_Store.Controllers
             return View(cart.CartItems.ToList());
         }
 
-        public IActionResult AddToCart(string? uid, int? pid)
+        public IActionResult AddToCart(int? pid)
         {
-            var cart = _context.Carts.Include(c => c.CartItems).Single(x => x.UserId == uid);
+            UserID = _userManager.GetUserId(User);
+
+            var cart = _context.Carts
+                .Include(c => c.CartItems)
+                .Single(x => x.UserId == UserID);
+
             var product = _context.Products.FirstOrDefault(p => p.Id == pid);
+            if (product == null)
+            {
+                return NotFound();
+            }
             var cartItem = new CartItems();
             cartItem.CartID = cart.Id;
             cartItem.ProductID = product.Id;
@@ -130,68 +137,69 @@ namespace Computer_Store.Controllers
             cart.CartItems.Add(cartItem);
             _context.Carts.Update(cart);
             _context.SaveChanges();
-            return RedirectToAction("CartPage", new { uid });
+            return RedirectToAction(nameof(CartPage));
         }
 
-        public IActionResult RemoveAllItemCart(string? uid)
+        public IActionResult RemoveItem(int? id)
         {
-            var cart = _context.Carts.Where(c => c.UserId == uid).Include(d => d.CartItems).FirstOrDefault();
-            if (cart == null)
+            UserID = _userManager.GetUserId(User);
+
+            var cart = _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(c => c.Product)
+                .Single(x => x.UserId == UserID);
+
+            if (cart.CartItems == null)
+            {
+                return View(cart);
+            }
+
+            var itemList = cart.CartItems.ToList();
+            foreach (var item in itemList)
+            {
+                if (item.Id == id)
+                {
+                    cart.CartItems.Remove(item);
+                }
+            }
+            _context.Carts.Update(cart);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(CartPage));
+        }
+
+        public IActionResult RemoveAllItemCart()
+        {
+            var cart = _context.Carts
+                .Include(d => d.CartItems)
+                .Single();
+            if (cart == null || cart.CartItems == null)
             {
                 return View();
             }
+
             cart.CartItems.Clear();
-            _context.Update(cart);
+            _context.Carts.Update(cart);
             _context.SaveChangesAsync();
-            return RedirectToPage("BuySuccess");
-            return View(cart);
-        }
-
-        public IActionResult RemoveItemCart(string? uid)
-        {
-            var cart = _context.Carts.Where(c => c.UserId == uid).Include(d => d.CartItems).FirstOrDefault();
-            cart.CartItems.Clear();
-            if (ModelState.IsValid)
-            {
-                _context.Update(cart);
-                _context.SaveChangesAsync();
-                return RedirectToPage("BuySuccess");
-            }
-            return View(cart);
-        }
-
-        public IActionResult removeItem(string? uid, int? pid)
-        {
-            var cart = _context.Carts.Single(x => x.UserId == uid);
-            var product = _context.Products.FirstOrDefault(p => p.Id == pid);
-            var cartItem = new CartItems();
-            cartItem.CartID = cart.Id;
-            cartItem.ProductID = product.Id;
-            cartItem.Product = product;
-            cart.CartItems.Remove(cartItem);
-
-            _context.Update(cart);
-            _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-
-            return View(cart);
+            return RedirectToAction(nameof(Buy));
         }
 
 
-        public IActionResult Buy(string? uid, int? pid)
+        public IActionResult Buy(int? pid)
         {
-            var history = _context.History.Single(x => x.UserId == uid);
-            var product = _context.Products.FirstOrDefault(p => p.Id == pid);
+            UserID = _userManager.GetUserId(User);
+
+            var history = _context.History.Single(x => x.UserId == UserID);
+            var product = _context.Products.Single(p => p.Id == pid);
+
             var historyStuff = new HistoryItems();
             historyStuff.HistoryID = history.Id;
             historyStuff.ProductId = product.Id;
             historyStuff.Product = product;
             history.HistoryItems.Add(historyStuff);
+
             _context.Update(history);
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-
-            return View(history);
         }
 
 

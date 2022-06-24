@@ -32,6 +32,11 @@ form {
     padding: 10px !important;
 }
 
+.spec-table .row div:first-child {
+    font-weight: 600;
+    font-size: larger;
+}
+
 .spec {
     border: 1px solid grey;
     padding: 10px;
@@ -143,4 +148,10 @@ form {
     width: 300px;
     margin-left: auto;
     margin-right: auto;
+}
+
+#cart-empty {
+    padding: 50px;
+    text-align: center;
+    height: 300px;
 }

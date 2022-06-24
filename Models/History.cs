@@ -9,7 +9,7 @@ namespace Computer_Store.Models
         public int Id { get; set; }
 
         [ForeignKey("User")]
-        public String UserId { get; set; }
+        public string UserId { get; set; }
 
         public DateTime CreateDate { get; set; }
 
