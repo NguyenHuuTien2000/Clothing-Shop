@@ -140,5 +140,24 @@ namespace Computer_Store.Controllers
             }
             return View(cart);
         }
+
+        public IActionResult removeItem(string? uid, int? pid)
+        {
+            var cart = _context.Carts.Single(x => x.UserId == uid);
+            var product = _context.Products.FirstOrDefault(p => p.Id == pid);
+            var cartItem = new CartItems();
+            cartItem.CartID = cart.Id;
+            cartItem.ProductID = product.Id;
+            cartItem.Product = product;
+            cart.CartItems.Remove(cartItem);
+
+            _context.Update(cart);
+            _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+            return View(cart);
+        }
+
+       
     }
 }
