@@ -158,6 +158,25 @@ namespace Computer_Store.Controllers
             return View(cart);
         }
 
-       
+
+        public IActionResult Buy(string? uid, int? pid)
+        {
+            var history = _context.History.Single(x => x.UserId == uid);
+            var product = _context.Products.FirstOrDefault(p => p.Id == pid);
+            var historyStuff = new HistoryItems();
+            historyStuff.HistoryID = history.Id;
+            historyStuff.ProductId = product.Id;
+            historyStuff.Product = product;
+            history.HistoryItems.Add(historyStuff);
+            _context.Update(history);
+            _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+            return View(history);
+        }
+
+
+        
+
     }
 }

@@ -21,6 +21,10 @@ namespace Computer_Store.Models
 
         public Brand Brand { get; set; }
 
+
+        public int? Sell { get; set; }
+
+
         public string? DisplayPrice
         {
             get { return String.Format("{0:n0}", Price); }
