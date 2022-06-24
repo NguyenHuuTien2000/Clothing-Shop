@@ -29,12 +29,6 @@ namespace Computer_Store.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult AddToCart(string? uid, int? pid)
-        {
-
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -73,6 +67,38 @@ namespace Computer_Store.Controllers
             }
 
             return View(allComputers);
+        }
+
+        public IActionResult ProductPart(int id)
+        {
+            var part = _context.Parts
+                .AsNoTracking()
+                .Single(x => x.Id == id);
+            ViewData["Image"] = part.Image;
+            return View(part);
+        }
+
+        public IActionResult PartPage(string? category, string? brand)
+        {
+            var allParts = _context.Parts.AsNoTracking().ToList();
+
+            if (category != null)
+            {
+                if (Enum.TryParse(category, out PartCategory reqCategory))
+                {
+                    allParts = allParts.Where(c => c.Category == reqCategory).ToList();
+                }
+            }
+
+            if (brand != null)
+            {
+                if (Enum.TryParse(brand, out Brand reqBrand))
+                {
+                    allParts = allParts.Where(c => c.Brand == reqBrand).ToList();
+                }
+            }
+
+            return View(allParts);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model Computer_Store.Models.Computer
+﻿@model Computer_Store.Models.Part
 
 <div class="container mt-5">
     <div class="row">
@@ -19,7 +19,7 @@
                     <p class="card-price-discounted">@Model.DisplayPrice đ</p>
                 }
             </div>
-            <form method="post" asp-action="AddToCart"  class="text-center mb-2">
+            <form method="post" asp-action="AddToCart" class="text-center mb-2">
                 @if (SignInManager.IsSignedIn(User))
                 {
                     string id = UserManager.GetUserAsync(User).Result.Id;
@@ -30,7 +30,7 @@
                     <button type="button" data-bs-toggle="modal" data-bs-target="#noticeModal" class="btn btn-outline-dark rounded-pill"><i class="fa fa-shopping-cart"></i> Add to cart</button>
                 }
             </form>
-            <partial name="_SpecTable"></partial>
+            <p>@Model.SummarySpec</p>
         </div>
     </div>
 </div>
