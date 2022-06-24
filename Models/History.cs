@@ -9,11 +9,11 @@ namespace Computer_Store.Models
         public int Id { get; set; }
 
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public String UserId { get; set; }
 
         public DateTime CreateDate { get; set; }
 
-        public IEnumerable<HistoryItems> HistoryItems { get; set; }    
+        public ICollection<HistoryItems> HistoryItems { get; set; }    
     }
     public class HistoryItems
     {
