@@ -196,11 +196,15 @@ namespace Computer_Store.Controllers
             historyStuff.ProductId = product.Id;
             historyStuff.Product = product;
             history.HistoryItems.Add(historyStuff);
-
+            product.Sell += 1;
             _context.Update(history);
+            _context.Update(product);
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
+
 
 
         

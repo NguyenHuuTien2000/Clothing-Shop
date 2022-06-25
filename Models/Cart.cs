@@ -8,11 +8,14 @@ namespace Computer_Store.Models
         [Key]
         public int Id { get; set; }
         public string UserId { get; set; }
+       
+        public ICollection<CartItem>? CartItems { get; set; }
 
-        public ICollection<CartItems>? CartItems { get; set; }
+        public double? SumPayment { get; set; } = 0;
+        
     }
 
-    public class CartItems
+    public class CartItem
     {
         [Key]
         public int Id { get; set; }
