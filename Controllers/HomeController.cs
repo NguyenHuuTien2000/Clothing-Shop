@@ -218,7 +218,6 @@ namespace Computer_Store.Controllers
         {
             UserID = _userManager.GetUserId(User);
             var cart = _context.Carts
-                 .Include(d => d.SumPayment)
                 .Include(c => c.CartItems)
                 .ThenInclude(b => b.Product)
                 .Single(x => x.UserId == UserID);
@@ -229,6 +228,10 @@ namespace Computer_Store.Controllers
                 historyStuff.HistoryID = history.Id;
                 historyStuff.ProductId = c.ProductID;
                 historyStuff.Product = c.Product;
+                if (history.HistoryItems == null)
+                {
+                    history.HistoryItems = new List<HistoryItems>();
+                }
                 history.HistoryItems.Add(historyStuff);
                 historyStuff.CreateDate = DateTime.Now;
                 c.Product.Sell++;
