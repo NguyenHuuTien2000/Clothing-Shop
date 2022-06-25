@@ -162,11 +162,19 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
+            foreach (CartItem ci in cart.CartItems)
+            {
+                if (ci.ProductID == product.Id)
+                {
+                    return RedirectToAction(nameof(CartPage));
+                }
+            }
             var cartItem = new CartItem();
             cartItem.CartID = cart.Id;
             cartItem.ProductID = product.Id;
             cartItem.Product = product;
             cartItem.MyCart = cart;
+            cartItem.Quantity = 1;
             if (cart.CartItems == null)
             {
                 cart.CartItems = new List<CartItem>();
@@ -222,6 +230,7 @@ namespace Computer_Store.Controllers
 
         public IActionResult OrderPage()
         {
+
             return View();
         }
 
