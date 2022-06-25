@@ -20,6 +20,7 @@ namespace Computer_Store.Models
 
         [RegularExpression(@"^0[0-9]{9,10}$")]
         public string? Phone { get; set; }
+
         public DateTime? DateofBirth { get; set; }
 
         public Cart? Cart { get; set; }

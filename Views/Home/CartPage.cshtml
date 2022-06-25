@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Cart";
-    bool haveItem = Model != null;
+    bool haveItem = Model.Count() >= 1;
 }
 @if (haveItem)
 {
@@ -61,7 +61,7 @@
 }
 else {
     <div id="cart-empty" class="bg-black mt-3">
-        <h1 class="text-white">Your Cart seems to be empty</h1>
+        <h1 class="text-white mb-5">Your Cart seems to be empty</h1>
         <a class="btn btn-secondary btn-lg" asp-action="Index">Go back to the Main Page</a>
     </div>
 }
