@@ -25,7 +25,6 @@ namespace Computer_Store.Models
         public Product Product { get; set; }
         public DateTime CreateDate { get; set; }
 
-
         [Required]
         [ForeignKey("History")]
         public int HistoryID { get; set; }
