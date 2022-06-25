@@ -62,7 +62,8 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-            public DateTime DateofBirth { get; set; }
+            [Display(Name = "Date of Birth")]
+            public DateTime? DateofBirth { get; set; }
 
             [Display(Name = "Username")]
             public string Username { get; set; }
@@ -87,6 +88,8 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
             var firstName = user.FirstName;
             var lastName = user.LastName;
             var profilePicture = user.Avatar;
+            var address = user.Address;
+            var dateOfBirth = user.DateofBirth;
 
             Username = userName;
 
@@ -96,7 +99,9 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
                 Username = userName,
                 FirstName = firstName,
                 LastName = lastName,
-                ProfilePicture = profilePicture
+                ProfilePicture = profilePicture,
+                Address = address,
+                DateofBirth = dateOfBirth
             };
         }
 
@@ -160,6 +165,8 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
 
             var firstName = user.FirstName;
             var lastName = user.LastName;
+            var address = user.Address;
+            var dob = user.DateofBirth;
 
             if (Input.FirstName != firstName)
             {
@@ -170,6 +177,18 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
             if (Input.LastName != lastName)
             {
                 user.LastName = Input.LastName;
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (Input.Address != address)
+            {
+                user.Address = Input.Address;
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (Input.DateofBirth != dob)
+            {
+                user.DateofBirth = Input.DateofBirth;
                 await _userManager.UpdateAsync(user);
             }
 
