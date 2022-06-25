@@ -119,7 +119,29 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js//chat.js"></script>
+    <script src="https://getchat.app/assets/js/min/getchatapp.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          var gcaMain = new GetChatApp({
+            'mobileNumber' : '',
+            'titleMessage' : '👋 Chat with me on WhatsApp!',
+            'welcomeMessage': 'Hello, How can I help you? <br /> <br /> ~Your Name',
+            'position' : 'right'
+            'platforms' : {
+                'whatsapp' : false,
+                'facebook' : true,
+                'email' : false,
+                'instagram' : false,
+                'telegram' : false,
+            },
+            'facebookPageId' : '100002241837333',
+            'gcaEmailAddress' : '',
+            'gcaEmailSubject' : '',
+            'gcaInstagramUsername' : '',
+            'gcaTelegramUsername' : '',
+          });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
