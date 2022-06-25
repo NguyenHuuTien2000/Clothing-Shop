@@ -207,6 +207,7 @@ namespace Computer_Store.Controllers
                 historyStuff.ProductId = c.ProductID;
                 historyStuff.Product = c.Product;
                 history.HistoryItems.Add(historyStuff);
+                historyStuff.CreateDate = DateTime.Now;
                 c.Product.Sell++;
                 cart.SumPayment += c.Product.FinalPrice;
             }
@@ -215,7 +216,7 @@ namespace Computer_Store.Controllers
 
             user.Expense += cart.SumPayment;
 
-
+            
 
             _context.Update(history);
             _context.Update(cart);

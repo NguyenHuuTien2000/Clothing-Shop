@@ -11,8 +11,6 @@ namespace Computer_Store.Models
         [ForeignKey("User")]
         public string UserId { get; set; }
 
-        public DateTime CreateDate { get; set; }
-
         public ICollection<HistoryItems> HistoryItems { get; set; }    
     }
     public class HistoryItems
@@ -23,7 +21,10 @@ namespace Computer_Store.Models
         [ForeignKey("Product")]
         public int ProductId { get; set; }
 
+
         public Product Product { get; set; }
+        public DateTime CreateDate { get; set; }
+
 
         [Required]
         [ForeignKey("History")]
