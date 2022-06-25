@@ -1,5 +1,6 @@
 ﻿using Computer_Store.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Computer_Store.Data
@@ -15,7 +16,7 @@ namespace Computer_Store.Data
             await roleManager.CreateAsync(new IdentityRole(Roles.S_User.ToString()));
         }
 
-        public static async Task SeedAdminAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedAdminAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             var defaultUser = new ApplicationUser
             {
@@ -38,6 +39,18 @@ namespace Computer_Store.Data
                     await userManager.AddToRoleAsync(defaultUser, Roles.B_User.ToString());
                     await userManager.AddToRoleAsync(defaultUser, Roles.A_User.ToString());
                     await userManager.AddToRoleAsync(defaultUser, Roles.S_User.ToString());
+
+                    var cart = new Cart
+                    {
+                        UserId = defaultUser.Id
+};
+                    context.Add(cart);
+
+                    var history = new History
+                    {
+                        UserId = defaultUser.Id
+};
+                    context.Add(history);
                 }
 
             }

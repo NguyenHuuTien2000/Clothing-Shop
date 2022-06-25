@@ -22,7 +22,10 @@
             <div class="text-center mb-2">
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <a asp-controller="Home" asp-action="AddToCart" asp-route-pid=@Model.Id class="btn btn-outline-dark rounded-pill"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                    <a asp-controller="Home"
+                       asp-action="AddToCart"
+                       asp-route-pid=@Model.Id
+                       class="btn btn-outline-dark rounded-pill"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                 }
                 else
                 {
