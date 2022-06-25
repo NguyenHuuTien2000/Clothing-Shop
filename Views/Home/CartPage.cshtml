@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Cart";
     bool haveItem = Model.Count() >= 1;
+    Cart cart = ViewBag.Cart;
 }
 @if (haveItem)
 {
@@ -54,7 +55,7 @@
     </table>
     <div class="align-content-end">
         <span>
-            
+            <strong>@cart.SumPayment VND</strong>
         </span>
         <a asp-action="ConfirmOrder" class="btn btn-outline-primary rounded rounded-pill btn-lg w-25">Buy</a>
     </div>

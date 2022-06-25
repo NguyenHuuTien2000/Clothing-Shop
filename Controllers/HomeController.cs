@@ -131,6 +131,7 @@ namespace Computer_Store.Controllers
             {
                 return View();
             }
+            ViewData["Cart"] = cart;
             return View(cart.CartItems.ToList());
         }
 
@@ -238,7 +239,7 @@ namespace Computer_Store.Controllers
                 cart.SumPayment += c.Product.FinalPrice;
             }
 
-            var user = _context.Users.Include(c => c.Expense).Single(i => i.Id == UserID);
+            var user = _context.Users.Single(i => i.Id == UserID);
 
             user.Expense += cart.SumPayment;
 

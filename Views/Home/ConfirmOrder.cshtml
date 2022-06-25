@@ -1,12 +1,40 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Confirm Order";
     ApplicationUser user = await UserManager.GetUserAsync(User);
 }
 
-<form method="post" class="checkout-form" enctype="multipart/form-data">
+<form method="post" class="checkout-form mt-5" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6 checkout-details">
             <h3 class="border border-bottom border-2">Checkout information</h3>
+            <div>
+                <p><strong>First Name</strong></p>
+                <p>@user.FirstName</p>
+            </div>
+            <div>
+                <p><strong>Last Name</strong></p>
+                <p>@user.LastName</p>
+            </div>
+            <div>
+                <p><strong>Address</strong></p>
+                <p>@user.Address</p>
+            </div>
+            <div>
+                <p><strong>Phone</strong></p>
+                <p>@user.Phone</p>
+            </div>
+            <div>
+                <p><strong>Email</strong></p>
+                <p>@user.Email</p>
+            </div>
+            <div>
+                <p><strong>Alternate Delivery Address</strong></p>
+                <textarea class="w-100" rows="6"></textarea>
+            </div>
+        </div>
+        <div class="col-md-6 order-details bg-secondary rounded-2">
+            <h3 class="border border-bottom border-2">Order information</h3>
             <div class="w-50">
                 <p><strong>First Name</strong></p>
                 <p>@user.FirstName</p>
@@ -15,9 +43,18 @@
                 <p><strong>Last Name</strong></p>
                 <p>@user.LastName</p>
             </div>
-        </div>
-        <div class="col-md-6 order-details">
-
+            <div>
+                <p><strong>Address</strong></p>
+                <p>@user.Address</p>
+            </div>
+            <div>
+                <p><strong>Phone</strong></p>
+                <p>@user.Phone</p>
+            </div>
+            <div>
+                <p><strong>Email</strong></p>
+                <p>@user.Email</p>
+            </div>
         </div>
     </div>
 </form>
