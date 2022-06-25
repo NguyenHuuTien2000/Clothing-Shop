@@ -70,7 +70,7 @@ namespace Computer_Store.Data
                     Brand = brand,
                     Category = category,
                     Price = rand.Next(10_000_000, 100_000_000),
-                    Discount = rand.Next(0, 30),
+                    Discount = rand.Next(0, 20),
                     Spec = spec,
                     SpecID = spec.Id,
                     Name = String.Join(" ", type, category, brand, name[rand.Next(0,name.Length)], spec.CPU, spec.RAM, spec.GPU, spec.StorageDrive, spec.Screen),

@@ -155,3 +155,7 @@ form {
     text-align: center;
     height: 300px;
 }
+
+.cart-icon {
+    font-size: 28px;
+}

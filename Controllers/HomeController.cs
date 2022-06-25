@@ -224,12 +224,5 @@ namespace Computer_Store.Controllers
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-
-
-
-
-        
-
     }
 }

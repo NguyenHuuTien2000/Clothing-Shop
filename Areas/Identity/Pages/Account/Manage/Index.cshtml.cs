@@ -62,6 +62,8 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
+            public DateTime DateofBirth { get; set; }
+
             [Display(Name = "Username")]
             public string Username { get; set; }
 
@@ -73,6 +75,9 @@ namespace Computer_Store.Areas.Identity.Pages.Account.Manage
             [MaxLength(11, ErrorMessage = "Phone number must be 10 or 11 digit long")]
             [MinLength(10, ErrorMessage = "Phone number must be 10 or 11 digit long")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Address")]
+            public string Address { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
