@@ -8,7 +8,7 @@ i9 11900H-Intel Core
 i9 12900H-Intel Core
 R9 5900HX-AMD Ryzen
 R9 5900HS-AMD Ryzen
-R7 6800-AMD Ryzen
+R7 6800H-AMD Ryzen
 R7 5800H-AMD Ryzen
 R5 5600H-AMD Ryzen
 R5 5625U-AMD Ryzen

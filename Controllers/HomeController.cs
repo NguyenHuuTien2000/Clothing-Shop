@@ -84,10 +84,6 @@ namespace Computer_Store.Controllers
                     break;
 
             }
-
-
-
-
             return View(allComputers);
         }
 
@@ -145,6 +141,7 @@ namespace Computer_Store.Controllers
             var cart = _context.Carts
                 .Include(c => c.CartItems)
                 .FirstOrDefault(x => x.UserId == UserID);
+
             if (cart == null)
             {
                 cart = new Cart
@@ -242,13 +239,11 @@ namespace Computer_Store.Controllers
 
             user.Expense += cart.SumPayment;
 
-            
-
             _context.Update(history);
             _context.Update(cart);
             _context.Update(user);
             _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View();
         }
     }
 }
