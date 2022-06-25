@@ -35,8 +35,8 @@ namespace Computer_Store.Controllers
                 thisViewModel.Roles = await GetUserRoles(user);
                 userRolesViewModel.Add(thisViewModel);
             }
-            var matchNames = userRolesViewModel.Where(s => s.UserName == searchString).ToList();
-            return View(matchNames);
+            userRolesViewModel = userRolesViewModel.Where(s => s.UserName == searchString).ToList();
+            return View(userRolesViewModel);
         }
 
         private async Task<List<string>> GetUserRoles(ApplicationUser user)
