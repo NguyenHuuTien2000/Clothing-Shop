@@ -25,7 +25,7 @@ namespace Computer_Store.Models
         [ForeignKey("Product")]
         public int ProductID { get; set; }
 
-        public int Quantity { get; set; }
+        public int Quantity { get; set; } = 0
         public Product Product { get; set; }
 
         [Required]
