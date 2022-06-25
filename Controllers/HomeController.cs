@@ -225,7 +225,6 @@ namespace Computer_Store.Controllers
             return View();
         }
 
-
         public IActionResult ConfirmOrder()
         {
             UserID = _userManager.GetUserId(User);

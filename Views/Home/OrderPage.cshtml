@@ -7,34 +7,38 @@
 <form method="post" class="checkout-form mt-5" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6 checkout-details">
-            <h3 class="border border-bottom border-2">Checkout information</h3>
-            <div>
-                <p><strong>First Name</strong></p>
-                <p>@user.FirstName</p>
-            </div>
-            <div>
-                <p><strong>Last Name</strong></p>
-                <p>@user.LastName</p>
+            <h3 class="border-bottom border-2 p-3 border-dark ps-0">Checkout information</h3>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>First Name</strong></p>
+                    <p>@user.FirstName</p>
+                </div>
+                <div class="col-sm-6">
+                    <p><strong>Last Name</strong></p>
+                    <p>@user.LastName</p>
+                </div>
             </div>
             <div>
                 <p><strong>Address</strong></p>
                 <p>@user.Address</p>
             </div>
-            <div>
-                <p><strong>Phone</strong></p>
-                <p>@user.Phone</p>
-            </div>
-            <div>
-                <p><strong>Email</strong></p>
-                <p>@user.Email</p>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Phone Number</strong></p>
+                    <p>@user.Phone</p>
+                </div>
+                <div class="col-sm-6">
+                    <p><strong>Address</strong></p>
+                    <p>@user.Address</p>
+                </div>
             </div>
             <div>
                 <p><strong>Alternate Delivery Address</strong></p>
-                <textarea class="w-100" rows="6"></textarea>
+                <textarea name="A" class="w-100" rows="6"></textarea>
             </div>
         </div>
-        <div class="col-md-6 order-details bg-secondary rounded-2">
-            <h3 class="border border-bottom border-2">Order information</h3>
+        <div class="col-md-6 order-details bg-light rounded-2">
+            <h3 class="border-bottom border-2 p-3 border-dark ps-0">Order information</h3>
             <div class="w-50">
                 <p><strong>First Name</strong></p>
                 <p>@user.FirstName</p>
