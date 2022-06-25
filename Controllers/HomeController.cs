@@ -132,14 +132,14 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
-            var cartItem = new CartItems();
+            var cartItem = new CartItem();
             cartItem.CartID = cart.Id;
             cartItem.ProductID = product.Id;
             cartItem.Product = product;
             cartItem.MyCart = cart;
             if (cart.CartItems == null)
             {
-                cart.CartItems = new List<CartItems>();
+                cart.CartItems = new List<CartItem>();
             }
             cart.CartItems.Add(cartItem);
             _context.Carts.Update(cart);
@@ -191,21 +191,30 @@ namespace Computer_Store.Controllers
         }
 
 
-        public IActionResult ConfirmOrder(int? pid)
+        public IActionResult ConfirmOrder()
         {
             UserID = _userManager.GetUserId(User);
-
+            var cart = _context.Carts
+                 .Include(d => d.SumPayment)
+                .Include(c => c.CartItems)
+                .ThenInclude(b => b.Product)
+                .Single(x => x.UserId == UserID);
             var history = _context.History.Single(x => x.UserId == UserID);
-            var product = _context.Products.Single(p => p.Id == pid);
+            foreach (CartItem c in cart.CartItems)
+            {
+                var historyStuff = new HistoryItems();
+                historyStuff.HistoryID = history.Id;
+                historyStuff.ProductId = c.ProductID;
+                historyStuff.Product = c.Product;
+                history.HistoryItems.Add(historyStuff);
+                c.Product.Sell++;
+                cart.SumPayment += c.Product.FinalPrice;
+            }
 
-            var historyStuff = new HistoryItems();
-            historyStuff.HistoryID = history.Id;
-            historyStuff.ProductId = product.Id;
-            historyStuff.Product = product;
-            history.HistoryItems.Add(historyStuff);
-            product.Sell += 1;
+
+
             _context.Update(history);
-            _context.Update(product);
+            _context.Update(cart);
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

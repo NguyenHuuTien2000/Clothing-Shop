@@ -12,6 +12,7 @@ namespace Computer_Store.Models
         public ICollection<CartItem>? CartItems { get; set; }
 
         public double? SumPayment { get; set; } = 0;
+
         
     }
 
