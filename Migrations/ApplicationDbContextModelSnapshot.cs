@@ -125,6 +125,9 @@ namespace Computer_Store.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<double?>("SumPayment")
+                        .HasColumnType("float");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -134,7 +137,7 @@ namespace Computer_Store.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("Computer_Store.Models.CartItems", b =>
+            modelBuilder.Entity("Computer_Store.Models.CartItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -487,7 +490,7 @@ namespace Computer_Store.Migrations
                     b.Navigation("History");
                 });
 
-            modelBuilder.Entity("Computer_Store.Models.CartItems", b =>
+            modelBuilder.Entity("Computer_Store.Models.CartItem", b =>
                 {
                     b.HasOne("Computer_Store.Models.Cart", "MyCart")
                         .WithMany("CartItems")

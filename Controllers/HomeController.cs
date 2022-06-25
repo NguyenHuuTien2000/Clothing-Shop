@@ -132,14 +132,14 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
-            var cartItem = new CartItems();
+            var cartItem = new CartItem();
             cartItem.CartID = cart.Id;
             cartItem.ProductID = product.Id;
             cartItem.Product = product;
             cartItem.MyCart = cart;
             if (cart.CartItems == null)
             {
-                cart.CartItems = new List<CartItems>();
+                cart.CartItems = new List<CartItem>();
             }
             cart.CartItems.Add(cartItem);
             _context.Carts.Update(cart);
@@ -190,7 +190,6 @@ namespace Computer_Store.Controllers
             return RedirectToAction(nameof(ConfirmOrder));
         }
 
-
         public IActionResult ConfirmOrder(int? pid)
         {
             UserID = _userManager.GetUserId(User);
@@ -209,12 +208,5 @@ namespace Computer_Store.Controllers
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-
-
-
-
-        
-
     }
 }

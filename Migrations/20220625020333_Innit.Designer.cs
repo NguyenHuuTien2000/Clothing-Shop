@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Computer_Store.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220623142718_InnitAgain")]
-    partial class InnitAgain
+    [Migration("20220625020333_Innit")]
+    partial class Innit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,7 +38,7 @@ namespace Computer_Store.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CartId")
+                    b.Property<int?>("CartId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -59,7 +59,7 @@ namespace Computer_Store.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HistoryId")
+                    b.Property<int?>("HistoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
@@ -127,15 +127,19 @@ namespace Computer_Store.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<double?>("SumPayment")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("Computer_Store.Models.CartItems", b =>
+            modelBuilder.Entity("Computer_Store.Models.CartItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -235,8 +239,9 @@ namespace Computer_Store.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -294,6 +299,9 @@ namespace Computer_Store.Migrations
                     b.Property<double?>("Price")
                         .IsRequired()
                         .HasColumnType("float");
+
+                    b.Property<int?>("Sell")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -473,22 +481,18 @@ namespace Computer_Store.Migrations
                 {
                     b.HasOne("Computer_Store.Models.Cart", "Cart")
                         .WithMany()
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CartId");
 
                     b.HasOne("Computer_Store.Models.History", "History")
                         .WithMany()
-                        .HasForeignKey("HistoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HistoryId");
 
                     b.Navigation("Cart");
 
                     b.Navigation("History");
                 });
 
-            modelBuilder.Entity("Computer_Store.Models.CartItems", b =>
+            modelBuilder.Entity("Computer_Store.Models.CartItem", b =>
                 {
                     b.HasOne("Computer_Store.Models.Cart", "MyCart")
                         .WithMany("CartItems")
