@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Cart";
     bool haveItem = Model.Count() >= 1;
-    Cart cart = ViewBag.Cart;
 }
 @if (haveItem)
 {
@@ -41,10 +40,10 @@
                 <td>
                     @if (item.Product.Discount == 0)
                     {
-                        @Html.DisplayFor(modelItem => item.Product.DisplayPrice)
+                        @Html.DisplayFor(modelItem => item.Product.DisplayPrice);
                     } else {
                         @Html.DisplayFor(modelItem => item.Product.DisplayDiscountedPrice)
-                    }
+                    } VND
                 </td>
                 <td>
                     <a class="btn btn-outline-danger" asp-action="RemoveItem" asp-route-id="@item.Id">Remove</a>
@@ -53,11 +52,11 @@
     }
         </tbody>
     </table>
-    <div class="align-content-end">
-        <span>
-            <strong>@cart.SumPayment VND</strong>
+    <div class="price-summary">
+        <span class="me-2">
+            <strong>Total: @ViewBag.Total VND</strong>
         </span>
-        <a asp-action="ConfirmOrder" class="btn btn-outline-primary rounded rounded-pill btn-lg w-25">Buy</a>
+        <a asp-page="ConfirmOrder" class="btn btn-outline-primary rounded rounded-pill btn-lg w-25">Buy</a>
     </div>
 }
 else {

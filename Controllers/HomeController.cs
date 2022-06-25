@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.IO.Pipelines;
 
 namespace Computer_Store.Controllers
 {
@@ -131,7 +132,12 @@ namespace Computer_Store.Controllers
             {
                 return View();
             }
-            ViewData["Cart"] = cart;
+            double? currTotal = 0; 
+            foreach (CartItem ci in cart.CartItems)
+            {
+                currTotal += ci.Product.FinalPrice;
+}
+            ViewData["Total"] = string.Format("{0:n0}", currTotal);
             return View(cart.CartItems.ToList());
         }
 
@@ -214,6 +220,11 @@ namespace Computer_Store.Controllers
             return RedirectToAction(nameof(ConfirmOrder));
         }
 
+        public IActionResult OrderPage()
+        {
+            return View();
+        }
+
 
         public IActionResult ConfirmOrder()
         {
@@ -222,6 +233,7 @@ namespace Computer_Store.Controllers
                 .Include(c => c.CartItems)
                 .ThenInclude(b => b.Product)
                 .Single(x => x.UserId == UserID);
+
             var history = _context.History.Single(x => x.UserId == UserID);
             foreach (CartItem c in cart.CartItems)
             {

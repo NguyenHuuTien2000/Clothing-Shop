@@ -159,3 +159,7 @@ form {
 .cart-icon {
     font-size: 28px;
 }
+
+.price-summary {
+    text-align: end;
+}
