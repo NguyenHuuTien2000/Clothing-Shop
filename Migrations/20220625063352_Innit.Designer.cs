@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Computer_Store.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220625020333_Innit")]
+    [Migration("20220625063352_Innit")]
     partial class Innit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,9 @@ namespace Computer_Store.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<double?>("Expense")
+                        .HasColumnType("float");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -153,6 +156,9 @@ namespace Computer_Store.Migrations
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CartID");
@@ -236,9 +242,6 @@ namespace Computer_Store.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -255,6 +258,9 @@ namespace Computer_Store.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("HistoryID")
                         .HasColumnType("int");

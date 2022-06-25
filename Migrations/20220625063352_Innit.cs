@@ -71,8 +71,7 @@ namespace Computer_Store.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,6 +142,7 @@ namespace Computer_Store.Migrations
                     DateofBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CartId = table.Column<int>(type: "int", nullable: true),
                     HistoryId = table.Column<int>(type: "int", nullable: true),
+                    Expense = table.Column<double>(type: "float", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -180,6 +180,7 @@ namespace Computer_Store.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductID = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     CartID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -206,6 +207,7 @@ namespace Computer_Store.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HistoryID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
