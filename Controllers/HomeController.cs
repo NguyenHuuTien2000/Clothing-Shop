@@ -211,10 +211,15 @@ namespace Computer_Store.Controllers
                 cart.SumPayment += c.Product.FinalPrice;
             }
 
+            var user = _context.Users.Include(c => c.Expense).Single(i => i.Id == UserID);
+
+            user.Expense += cart.SumPayment;
+
 
 
             _context.Update(history);
             _context.Update(cart);
+            _context.Update(user);
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -27,6 +27,8 @@ namespace Computer_Store.Models
 
         public History? History{ get; set; }
 
+        public double? Expense { get; set; } = 0;
+
     }
 
     public enum Roles
