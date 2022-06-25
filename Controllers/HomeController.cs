@@ -118,7 +118,14 @@ namespace Computer_Store.Controllers
 
             var cart = _context.Carts
                 .Include(c => c.CartItems)
-                .Single(x => x.UserId == UserID);
+                .FirstOrDefault(x => x.UserId == UserID);
+            if (cart == null)
+            {
+                cart = new Cart
+                {
+                    UserId = UserID
+                };
+            }
 
             var product = _context.Products.FirstOrDefault(p => p.Id == pid);
             if (product == null)
@@ -180,11 +187,11 @@ namespace Computer_Store.Controllers
             cart.CartItems.Clear();
             _context.Carts.Update(cart);
             _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Buy));
+            return RedirectToAction(nameof(ConfirmOrder));
         }
 
 
-        public IActionResult Buy(int? pid)
+        public IActionResult ConfirmOrder(int? pid)
         {
             UserID = _userManager.GetUserId(User);
 

@@ -22,7 +22,7 @@ namespace Computer_Store.Models
         public Brand Brand { get; set; }
 
 
-        public int? Sell { get; set; }
+        public int? Sell { get; set; } = 0;
 
 
         public string? DisplayPrice
@@ -30,9 +30,14 @@ namespace Computer_Store.Models
             get { return string.Format("{0:n0}", Price); }
         }
 
+        public double? FinalPrice
+        {
+            get { return Discount > 0? Price * (1 - Discount / 100) : Price; }
+        } 
+
         public string? DisplayDiscountedPrice
         {
-            get { return string.Format("{0:n0}", Price * (1 - Discount/100)); }
+            get { return string.Format("{0:n0}", FinalPrice); }
         }
 
         public string? DisplayDiscount
