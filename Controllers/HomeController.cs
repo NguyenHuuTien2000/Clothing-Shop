@@ -190,21 +190,36 @@ namespace Computer_Store.Controllers
             return RedirectToAction(nameof(ConfirmOrder));
         }
 
-        public IActionResult ConfirmOrder(int? pid)
+
+        public IActionResult ConfirmOrder()
         {
             UserID = _userManager.GetUserId(User);
-
+            var cart = _context.Carts
+                 .Include(d => d.SumPayment)
+                .Include(c => c.CartItems)
+                .ThenInclude(b => b.Product)
+                .Single(x => x.UserId == UserID);
             var history = _context.History.Single(x => x.UserId == UserID);
-            var product = _context.Products.Single(p => p.Id == pid);
+            foreach (CartItem c in cart.CartItems)
+            {
+                var historyStuff = new HistoryItems();
+                historyStuff.HistoryID = history.Id;
+                historyStuff.ProductId = c.ProductID;
+                historyStuff.Product = c.Product;
+                history.HistoryItems.Add(historyStuff);
+                c.Product.Sell++;
+                cart.SumPayment += c.Product.FinalPrice;
+            }
 
-            var historyStuff = new HistoryItems();
-            historyStuff.HistoryID = history.Id;
-            historyStuff.ProductId = product.Id;
-            historyStuff.Product = product;
-            history.HistoryItems.Add(historyStuff);
-            product.Sell += 1;
+            var user = _context.Users.Include(c => c.Expense).Single(i => i.Id == UserID);
+
+            user.Expense += cart.SumPayment;
+
+
+
             _context.Update(history);
-            _context.Update(product);
+            _context.Update(cart);
+            _context.Update(user);
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
