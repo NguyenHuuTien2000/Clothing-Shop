@@ -19,10 +19,12 @@ namespace Computer_Store.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
+            ViewData["NameSort"] = searchString;
             var users = await _userManager.Users.ToListAsync();
             var userRolesViewModel = new List<UserRolesViewModel>();
+
             foreach (ApplicationUser user in users)
             {
                 var thisViewModel = new UserRolesViewModel();
@@ -33,7 +35,8 @@ namespace Computer_Store.Controllers
                 thisViewModel.Roles = await GetUserRoles(user);
                 userRolesViewModel.Add(thisViewModel);
             }
-            return View(userRolesViewModel);
+            var matchNames = userRolesViewModel.Where(s => s.UserName == searchString).ToList();
+            return View(matchNames);
         }
 
         private async Task<List<string>> GetUserRoles(ApplicationUser user)

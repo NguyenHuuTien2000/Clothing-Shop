@@ -42,8 +42,12 @@ namespace Computer_Store.Controllers
             return View(computer);
         }
 
-        public IActionResult ComputerPage(string? type, string? brand)
+        public IActionResult ComputerPage(string? type, string? brand, string searchString, string sortOrder)
         {
+            ViewData["PriceSort"] = String.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";
+            ViewData["NameSort"] = searchString;
+
+
             var allComputers = _context.Computers.Include(c => c.Spec).AsNoTracking().ToList();
 
             if (type != null)
@@ -61,6 +65,28 @@ namespace Computer_Store.Controllers
                     allComputers = allComputers.Where(c => c.Brand == reqBrand).ToList();
                 }
             }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                allComputers = allComputers.Where(s => s.Name.Contains(searchString)).ToList();
+            }
+
+            switch(sortOrder)
+            {
+                case "price_desc":
+                    allComputers = allComputers.OrderByDescending(p => p.FinalPrice).ToList();
+                    break;
+                case "price_asc":
+                    allComputers = allComputers.OrderBy(p => p.FinalPrice).ToList();
+                    break;
+                default:
+                    allComputers = allComputers.OrderBy(n => n.Name).ToList();
+                    break;
+
+            }
+
+
+
 
             return View(allComputers);
         }
