@@ -4,7 +4,7 @@
     ApplicationUser user = await UserManager.GetUserAsync(User);
 }
 
-<form method="post" class="checkout-form mt-5" enctype="multipart/form-data">
+<form method="post" class="checkout-form mt-5" asp-action="">
     <div class="row">
         <div class="col-md-6 checkout-details">
             <h3 class="border-bottom border-2 p-3 border-dark ps-0">Delivery information</h3>
@@ -28,13 +28,13 @@
                     <p>@user.Phone</p>
                 </div>
                 <div class="col-sm-6">
-                    <p><strong>Address</strong></p>
-                    <p>@user.Address</p>
+                    <p><strong>Email</strong></p>
+                    <p>@user.Email</p>
                 </div>
             </div>
             <div>
                 <p><strong>Alternate Delivery Address</strong></p>
-                <textarea name="ADelivery" class="w-100" rows="6"></textarea>
+                <textarea name="AltDelivery" class="w-100" rows="6"></textarea>
             </div>
         </div>
         <div class="col-md-6 order-details bg-light rounded-2">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             }
-            <div class="row p-3">
+            <div class="row p-3 pt-0">
                 <div class="col-9">
                     <strong>Total</strong>
                 </div>
@@ -66,6 +66,36 @@
                     <strong>@ViewBag.Total VND</strong>
                 </div>
             </div>
+            <div class="row p-3">
+                <div class="col-12 border-bottom border-dark">
+                    <strong>Payment method</strong>
+                </div>
+            </div>
+            <div class="row p-3 pt-0">
+                <div class="col-12">
+                    <input type="radio" id="bank" name="payment" value="Bank">
+                    <label for="bank">Bank Transfer</label><br>
+                    <input type="radio" id="cod" name="payment" value="COD">
+                    <label for="cod">Cash on Delivery</label><br>
+                </div>
+            </div>
+            <div id="bank-detail">
+                <p>Bank name: Name placeholder</p>
+                <p>Account number: 12345678901234</p>
+                <p>Account name: Hyper Corp</p>
+            </div>
+            <button type="submit" class="btn btn-outline-dark w-100">Confirm</button>
         </div>
     </div>
 </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        if ($("#bank").is(':cheked')) {
+            $("#bank-detail").show();
+        } else {
+            $("#bank-detail").hide();
+        }
+    </script>
+}

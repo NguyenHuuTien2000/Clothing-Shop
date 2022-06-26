@@ -48,7 +48,7 @@ namespace Computer_Store.Data
             ComputerSpec spec;
             Random rand = new Random();
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 30; i++)
             {
                 string[] cpuDetail = cpus[rand.Next(0, cpus.Length)].Split('-');
                 string[] gpuDetail = gpu[rand.Next(0, gpu.Length)].Split('-');
@@ -77,7 +77,7 @@ namespace Computer_Store.Data
                 string brandName = Enum.GetName(brand);
                 string[] nameArray = nameMap[brandName];
                 string name = nameArray[rand.Next(0, nameArray.Length)];
-                string imgPath = Path.Combine("images", "computers", brandName, rand.Next(1, 5) + ".jpg");
+                string imgPath = Path.Combine("images", "computers", brandName, rand.Next(1, 6) + ".jpg");
 
                 computer = new Computer
                 {
