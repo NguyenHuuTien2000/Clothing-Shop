@@ -44,13 +44,23 @@
             </div>
             <div class="form-group mb-3">
                 <label asp-for="Price" class="control-label mb-2"></label>
-                <input asp-for="Price" class="form-control price" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <div class="input-group">
+                    <input asp-for="Price" class="form-control price"/>
+                    <div class="input-group-append">
+                        <span class="input-group-text">VND</span>
+                    </div>
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group mb-3">
                 <label asp-for="Discount" class="control-label mb-2"></label>
-                <input type="number" asp-for="Discount" class="form-control" />
-                <span asp-validation-for="Discount" class="text-danger"></span>
+                <div class="input-group">
+                    <input type="number" asp-for="Discount" class="form-control" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">%</span>
+                    </div>
+                    <span asp-validation-for="Discount" class="text-danger"></span>
+                </div>
             </div>
         </div>
 
