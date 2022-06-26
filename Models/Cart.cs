@@ -13,7 +13,10 @@ namespace Computer_Store.Models
 
         public double? SumPayment { get; set; } = 0;
 
-        
+        public string? DisplaySumPayment
+        {
+            get { return string.Format("{0:n0}", SumPayment); }
+        }
     }
 
     public class CartItem
@@ -25,7 +28,7 @@ namespace Computer_Store.Models
         [ForeignKey("Product")]
         public int ProductID { get; set; }
 
-        public int Quantity { get; set; } = 0
+        public int Quantity { get; set; } = 0;
         public Product Product { get; set; }
 
         [Required]

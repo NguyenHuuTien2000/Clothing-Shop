@@ -136,7 +136,7 @@ namespace Computer_Store.Controllers
             foreach (CartItem ci in cart.CartItems)
             {
                 currTotal += ci.Product.FinalPrice;
-}
+            }
             ViewData["Total"] = string.Format("{0:n0}", currTotal);
             return View(cart.CartItems.ToList());
         }
@@ -230,8 +230,18 @@ namespace Computer_Store.Controllers
 
         public IActionResult OrderPage()
         {
-
-            return View();
+            UserID = _userManager.GetUserId(User);
+            var cart = _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(b => b.Product)
+                .Single(x => x.UserId == UserID);
+            double? currTotal = 0;
+            foreach (CartItem ci in cart.CartItems)
+            {
+                currTotal += ci.Product.FinalPrice;
+            }
+            ViewData["Total"] = string.Format("{0:n0}", currTotal);
+            return View(cart);
         }
 
         public IActionResult ConfirmOrder()
