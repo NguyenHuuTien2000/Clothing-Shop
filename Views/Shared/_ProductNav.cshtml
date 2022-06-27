@@ -25,6 +25,7 @@
         asp-route-type="Desktop">Desktop<i class="fa fa-angle-down"></i></a>
     <ul class="sub-menu bg-dark">
         @{
+            
             foreach(var brand in Enum.GetValues(typeof(Brand)))
             {
                 <li class="nav-item">

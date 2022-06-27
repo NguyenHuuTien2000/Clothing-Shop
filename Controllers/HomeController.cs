@@ -55,7 +55,19 @@ namespace Computer_Store.Controllers
             {
                 if (Enum.TryParse(brand, out Brand reqBrand))
                 {
-                    allComputers = allComputers.Where(c => c.Brand == reqBrand).ToList();
+                    if (reqBrand == Brand.AMD)
+                    {
+                        allComputers = allComputers.Where(c => c.Spec.CPUDetail.Contains("AMD")).ToList();
+                    } 
+                    else if (reqBrand == Brand.Intel)
+                    {
+                        allComputers = allComputers.Where(c => c.Spec.CPUDetail.Contains("Intel")).ToList();
+                    } 
+                    else
+                    {
+                        allComputers = allComputers.Where(c => c.Brand == reqBrand).ToList();
+                    }
+
                 }
             }
 
