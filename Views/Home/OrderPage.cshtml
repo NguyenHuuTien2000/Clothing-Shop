@@ -1,60 +1,101 @@
-﻿
+﻿@model Cart
 @{
     ViewData["Title"] = "Confirm Order";
     ApplicationUser user = await UserManager.GetUserAsync(User);
 }
 
-<form method="post" class="checkout-form mt-5" enctype="multipart/form-data">
+<form method="post" class="checkout-form mt-5" asp-action="ConfirmOrder">
     <div class="row">
         <div class="col-md-6 checkout-details">
-            <h3 class="border border-bottom border-2">Checkout information</h3>
-            <div>
-                <p><strong>First Name</strong></p>
-                <p>@user.FirstName</p>
-            </div>
-            <div>
-                <p><strong>Last Name</strong></p>
-                <p>@user.LastName</p>
+            <h3 class="border-bottom border-2 p-3 border-dark ps-0">Delivery information</h3>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>First Name</strong></p>
+                    <p>@user.FirstName</p>
+                </div>
+                <div class="col-sm-6">
+                    <p><strong>Last Name</strong></p>
+                    <p>@user.LastName</p>
+                </div>
             </div>
             <div>
                 <p><strong>Address</strong></p>
                 <p>@user.Address</p>
             </div>
-            <div>
-                <p><strong>Phone</strong></p>
-                <p>@user.Phone</p>
-            </div>
-            <div>
-                <p><strong>Email</strong></p>
-                <p>@user.Email</p>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Phone Number</strong></p>
+                    <p>@user.Phone</p>
+                </div>
+                <div class="col-sm-6">
+                    <p><strong>Email</strong></p>
+                    <p>@user.Email</p>
+                </div>
             </div>
             <div>
                 <p><strong>Alternate Delivery Address</strong></p>
-                <textarea class="w-100" rows="6"></textarea>
+                <textarea name="AltDelivery" class="w-100" rows="6"></textarea>
             </div>
         </div>
-        <div class="col-md-6 order-details bg-secondary rounded-2">
-            <h3 class="border border-bottom border-2">Order information</h3>
-            <div class="w-50">
-                <p><strong>First Name</strong></p>
-                <p>@user.FirstName</p>
+        <div class="col-md-6 order-details bg-light rounded-2">
+            <h3 class="border-bottom border-2 p-3 border-dark ps-0">Order information</h3>
+            <div class="row p-3">
+                <div class="col-10 border-bottom border-dark ">
+                    <strong>Product</strong>
+                </div>
+                <div class="col-2 border-bottom border-dark ">
+                    <strong>Price</strong>
+                </div>
             </div>
-            <div class="w-50">
-                <p><strong>Last Name</strong></p>
-                <p>@user.LastName</p>
+            @foreach (var item in Model.CartItems)
+            {
+                <div class="row p-3 pt-0">
+                    <div class="col-9 border-bottom border-dark pb-3">
+                        @item.Product.Name
+                    </div>
+                    <div class="col-3 border-bottom border-dark pb-3">
+                        @item.Product.DisplayDiscountedPrice VND
+                    </div>
+                </div>
+            }
+            <div class="row p-3 pt-0">
+                <div class="col-9">
+                    <strong>Total</strong>
+                </div>
+                <div class="col-3">
+                    <strong>@ViewBag.Total VND</strong>
+                </div>
             </div>
-            <div>
-                <p><strong>Address</strong></p>
-                <p>@user.Address</p>
+            <div class="row p-3">
+                <div class="col-12 border-bottom border-dark">
+                    <strong>Payment method</strong>
+                </div>
             </div>
-            <div>
-                <p><strong>Phone</strong></p>
-                <p>@user.Phone</p>
+            <div class="row p-3 pt-0">
+                <div class="col-12">
+                    <input type="radio" id="bank" name="payment" value="Bank">
+                    <label for="bank">Bank Transfer</label><br>
+                    <input type="radio" id="cod" name="payment" value="COD">
+                    <label for="cod">Cash on Delivery</label><br>
+                </div>
             </div>
-            <div>
-                <p><strong>Email</strong></p>
-                <p>@user.Email</p>
+            <div id="bank-detail">
+                <p>Bank name: Name placeholder</p>
+                <p>Account number: 12345678901234</p>
+                <p>Account name: Hyper Corp</p>
             </div>
+            <button type="submit" class="btn btn-outline-dark w-100">Confirm</button>
         </div>
     </div>
 </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        if ($("#bank").is(':cheked')) {
+            $("#bank-detail").show();
+        } else {
+            $("#bank-detail").hide();
+        }
+    </script>
+}

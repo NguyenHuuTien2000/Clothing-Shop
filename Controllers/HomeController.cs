@@ -32,20 +32,11 @@ namespace Computer_Store.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult ProductComputer(int id)
-        {
-            var computer = _context.Computers
-                .Include(c => c.Spec)
-                .AsNoTracking()
-                .Single(x => x.Id == id);
-            ViewData["Image"] = computer.Image;
-            ViewData["Spec"] = computer.Spec;
-            return View(computer);
-        }
+        
 
         public IActionResult ComputerPage(string? type, string? brand, string searchString, string sortOrder)
         {
-            ViewData["PriceSort"] = String.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";
+            ViewData["PriceSort"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";
             ViewData["NameSort"] = searchString;
 
 
@@ -67,38 +58,36 @@ namespace Computer_Store.Controllers
                 }
             }
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                allComputers = allComputers.Where(s => s.Name.Contains(searchString)).ToList();
+                searchString = searchString.ToLower();
+                allComputers = allComputers.Where(s => s.Name.ToLower().Contains(searchString)).ToList();
             }
 
-            switch(sortOrder)
+            ViewData["CurrentSort"] = "Ascending";
+
+            switch (sortOrder)
             {
                 case "price_desc":
                     allComputers = allComputers.OrderByDescending(p => p.FinalPrice).ToList();
+                    ViewData["CurrentSort"] = "Descending";
                     break;
                 case "price_asc":
                     allComputers = allComputers.OrderBy(p => p.FinalPrice).ToList();
                     break;
                 default:
-                    allComputers = allComputers.OrderBy(n => n.Name).ToList();
+                    allComputers = allComputers.OrderBy(p => p.FinalPrice).ToList();
                     break;
-
             }
+
             return View(allComputers);
         }
 
-        public IActionResult ProductPart(int id)
+        public IActionResult PartPage(string? category, string? brand, string searchString, string sortOrder)
         {
-            var part = _context.Parts
-                .AsNoTracking()
-                .Single(x => x.Id == id);
-            ViewData["Image"] = part.Image;
-            return View(part);
-        }
+            ViewData["PriceSort"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";
+            ViewData["NameSort"] = searchString;
 
-        public IActionResult PartPage(string? category, string? brand)
-        {
             var allParts = _context.Parts.AsNoTracking().ToList();
 
             if (category != null)
@@ -117,7 +106,49 @@ namespace Computer_Store.Controllers
                 }
             }
 
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                allParts = allParts.Where(s => s.Name.ToLower().Contains(searchString)).ToList();
+            }
+
+            ViewData["CurrentSort"] = "Ascending";
+
+            switch (sortOrder)
+            {
+                case "price_desc":
+                    allParts = allParts.OrderByDescending(p => p.FinalPrice).ToList();
+                    ViewData["CurrentSort"] = "Descending";
+                    break;
+                case "price_asc":
+                    allParts = allParts.OrderBy(p => p.FinalPrice).ToList();
+                    break;
+                default:
+                    allParts = allParts.OrderBy(p => p.FinalPrice).ToList();
+                    break;
+            }
+
             return View(allParts);
+        }
+
+        public IActionResult ProductComputer(int id)
+        {
+            var computer = _context.Computers
+                .Include(c => c.Spec)
+                .AsNoTracking()
+                .Single(x => x.Id == id);
+            ViewData["Image"] = computer.Image;
+            ViewData["Spec"] = computer.Spec;
+            return View(computer);
+        }
+
+        public IActionResult ProductPart(int id)
+        {
+            var part = _context.Parts
+                .AsNoTracking()
+                .Single(x => x.Id == id);
+            ViewData["Image"] = part.Image;
+            return View(part);
         }
 
         public IActionResult CartPage()
@@ -136,7 +167,7 @@ namespace Computer_Store.Controllers
             foreach (CartItem ci in cart.CartItems)
             {
                 currTotal += ci.Product.FinalPrice;
-}
+            }
             ViewData["Total"] = string.Format("{0:n0}", currTotal);
             return View(cart.CartItems.ToList());
         }
@@ -212,28 +243,37 @@ namespace Computer_Store.Controllers
             return RedirectToAction(nameof(CartPage));
         }
 
-        public IActionResult RemoveAllItemCart()
-        {
-            var cart = _context.Carts
-                .Include(d => d.CartItems)
-                .Single();
-            if (cart == null || cart.CartItems == null)
-            {
-                return View();
-            }
+        //public IActionResult RemoveAllItemCart()
+        //{
+        //    var cart = _context.Carts
+        //        .Include(d => d.CartItems)
+        //        .Single();
+        //    if (cart == null || cart.CartItems == null)
+        //    {
+        //        return View();
+        //    }
 
-            cart.CartItems.Clear();
-            _context.Carts.Update(cart);
-            _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ConfirmOrder));
-        }
+        //    cart.CartItems.Clear();
+        //    _context.Carts.Update(cart);
+        //    _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(ConfirmOrder));
+        //}
 
         public IActionResult OrderPage()
         {
-
-            return View();
+            UserID = _userManager.GetUserId(User);
+            var cart = _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(b => b.Product)
+                .Single(x => x.UserId == UserID);
+            double? currTotal = 0;
+            foreach (CartItem ci in cart.CartItems)
+            {
+                currTotal += ci.Product.FinalPrice;
+            }
+            ViewData["Total"] = string.Format("{0:n0}", currTotal);
+            return View(cart);
         }
-
 
         public IActionResult ConfirmOrder()
         {

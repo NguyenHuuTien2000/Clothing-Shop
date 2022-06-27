@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Computer_Store.Data;
 using Computer_Store.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Drawing.Drawing2D;
 
 namespace Computer_Store.Controllers
 {
@@ -18,10 +19,36 @@ namespace Computer_Store.Controllers
         }
 
         // GET: Computers
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string searchString, string sortOrder)
         {
-            var allComputers = _context.Computers.Include(c => c.Spec);
-            return View(await allComputers.ToListAsync());
+            ViewData["PriceSort"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";
+            ViewData["NameSort"] = searchString;
+
+            var allComputers = _context.Computers.Include(c => c.Spec).AsNoTracking().ToList();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                allComputers = allComputers.Where(s => s.Name.ToLower().Contains(searchString)).ToList();
+            }
+
+            ViewData["CurrentSort"] = "Ascending";
+
+            switch (sortOrder)
+            {
+                case "price_desc":
+                    allComputers = allComputers.OrderByDescending(p => p.FinalPrice).ToList();
+                    ViewData["CurrentSort"] = "Descending";
+                    break;
+                case "price_asc":
+                    allComputers = allComputers.OrderBy(p => p.FinalPrice).ToList();
+                    break;
+                default:
+                    allComputers = allComputers.OrderBy(p => p.FinalPrice).ToList();
+                    break;
+            }
+
+            return View(allComputers);
         }
 
         // GET: Computers/Details/5

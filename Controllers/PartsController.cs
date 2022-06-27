@@ -24,10 +24,52 @@ namespace Computer_Store.Controllers
         }
 
         // GET: Parts
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string searchString, string sortOrder)
         {
-            var allParts = _context.Parts;
-            return View( await allParts.ToListAsync());
+            ViewData["PriceSort"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";
+            ViewData["NameSort"] = searchString;
+
+            var allParts = _context.Parts.AsNoTracking().ToList();
+
+            //if (category != null)
+            //{
+            //    if (Enum.TryParse(category, out PartCategory reqCategory))
+            //    {
+            //        allParts = allParts.Where(c => c.Category == reqCategory).ToList();
+            //    }
+            //}
+
+            //if (brand != null)
+            //{
+            //    if (Enum.TryParse(brand, out Brand reqBrand))
+            //    {
+            //        allParts = allParts.Where(c => c.Brand == reqBrand).ToList();
+            //    }
+            //}
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                allParts = allParts.Where(s => s.Name.ToLower().Contains(searchString)).ToList();
+            }
+
+            ViewData["CurrentSort"] = "Ascending";
+
+            switch (sortOrder)
+            {
+                case "price_desc":
+                    allParts = allParts.OrderByDescending(p => p.FinalPrice).ToList();
+                    ViewData["CurrentSort"] = "Descending";
+                    break;
+                case "price_asc":
+                    allParts = allParts.OrderBy(p => p.FinalPrice).ToList();
+                    break;
+                default:
+                    allParts = allParts.OrderBy(p => p.FinalPrice).ToList();
+                    break;
+            }
+
+            return View(allParts);
         }
 
         // GET: Parts/Details/5
@@ -131,7 +173,7 @@ namespace Computer_Store.Controllers
                     }
                 }
 
-                string imageFolder = Path.Combine("images", "computers", part.Brand + "");
+                string imageFolder = Path.Combine("images", "parts", part.Brand + "");
                 string storedImage = Path.Combine("wwwroot", imageFolder);
                 if (!Directory.Exists(storedImage))
                 {
