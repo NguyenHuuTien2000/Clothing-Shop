@@ -74,7 +74,7 @@ namespace Computer_Store.Data
                 };
 
                 Brand brand = (Brand)brands.GetValue(rand.Next(0, brands.Length - 2));
-                ComputerCategory category = (ComputerCategory)brands.GetValue(rand.Next(0, categories.Length));
+                ComputerCategory category = (ComputerCategory)categories.GetValue(rand.Next(0, categories.Length));
                 string brandName = Enum.GetName(brand);
                 string[] nameArray = nameMap[brandName];
                 string name = nameArray[rand.Next(0, nameArray.Length)];
