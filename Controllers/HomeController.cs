@@ -260,7 +260,7 @@ namespace Computer_Store.Controllers
         //    return RedirectToAction(nameof(ConfirmOrder));
         //}
 
-        public IActionResult OrderPage()
+        public async Task<IActionResult> OrderPage()
         {
             UserID = _userManager.GetUserId(User);
             var cart = _context.Carts
@@ -270,7 +270,7 @@ namespace Computer_Store.Controllers
             double? currTotal = 0;
             ApplicationUser user = _context.Users.Single(i => i.Id == UserID);
             double userDiscount = 0;
-            string roles = _userManager.GetRolesAsync(user).ToString();
+            List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
             if (roles.Contains("A_User"))
             {
                 userDiscount = 5;

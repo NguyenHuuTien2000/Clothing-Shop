@@ -4,8 +4,8 @@
         <canvas id="chart" class="w-100"></canvas>
     </div>
     <div class="col-3 bg-light p-3">
-        <p><strong>Total Revenue: </strong>num VND</p>
-        <p><strong>Total Unit: </strong>num Units</p>
+        <p><strong>Total Revenue: </strong><span id="total-revenue"></span> VND</p>
+        <p><strong>Total Unit: </strong><span id="total-unit"></span> Units</p>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
@@ -31,11 +31,23 @@
             let labels = [];
             let totalUnit = [];
             let totalRevenue = [];
+            
+            let revenue = 0;
+            let units = 0;
+
             for (let result of data) {
                 labels.push(result.date);
                 totalUnit.push(result.totalUnit);
                 totalRevenue.push(result.totalRevenue);
+
+                revenue += result.totalRevenue;
+                units += result.totalUnit;
             }
+
+            let formatter = Intl.NumberFormat('en-US');
+
+            $('#total-revenue').text(formatter.format(revenue));
+            $('#total-unit').text(formatter.format(units));
 
             let options = {
                 responsive: true,
