@@ -24,6 +24,9 @@ namespace Computer_Store.Data
                 Email = "admin@gmail.com",
                 FirstName = "Lucia",
                 LastName = "Frost Plume",
+                Address = "73 Tự Cường, Phường 4, Tân Bình, Hồ Chí Minh",
+                PhoneNumber = "0123456789",
+                Phone = "0123456789",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };

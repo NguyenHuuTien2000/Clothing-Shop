@@ -1,5 +1,5 @@
-﻿@*@model Cart
-*@@{
+﻿@model Cart
+@{
     ViewData["Title"] = "Confirm Order";
     ApplicationUser user = await UserManager.GetUserAsync(User);
 }
@@ -34,7 +34,7 @@
             </div>
             <div>
                 <p><strong>Alternate Delivery Address</strong></p>
-                <textarea name="AltDelivery" class="w-100" rows="6"></textarea>
+                <textarea name="altDelivery" class="w-100" rows="6"></textarea>
             </div>
         </div>
         <div class="col-md-6 order-details bg-light rounded-2">
@@ -73,13 +73,13 @@
             </div>
             <div class="row p-3 pt-0">
                 <div class="col-12">
-                    <input type="radio" id="bank" name="payment" value="Bank">
+                    <input type="radio" onchange="showBank()" id="bank" name="payment" value="Bank">
                     <label for="bank">Bank Transfer</label><br>
-                    <input type="radio" id="cod" name="payment" value="COD">
+                    <input type="radio" onchange="showBank()" id="cod" name="payment" value="COD">
                     <label for="cod">Cash on Delivery</label><br>
                 </div>
             </div>
-            <div id="bank-detail">
+            <div id="bank-detail" class="ps-3">
                 <p>Bank name: Name placeholder</p>
                 <p>Account number: 12345678901234</p>
                 <p>Account name: Hyper Corp</p>
@@ -92,10 +92,6 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
-        if ($("#bank").is(':cheked')) {
-            $("#bank-detail").show();
-        } else {
-            $("#bank-detail").hide();
-        }
+        
     </script>
 }

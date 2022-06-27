@@ -50,3 +50,11 @@ function changeInput(input) {
     $("input[name='spec.PowerSupply']").attr("disabled", stat);
     $("input[name='spec.Weight']").attr("disabled", !stat);
 }
+
+function showBank() {
+    if ($("#bank").prop("checked")) {
+        $("#bank-detail").show();
+    } else {
+        $("#bank-detail").hide();
+    }
+}
