@@ -19,12 +19,51 @@ namespace Computer_Store.Controllers
         }
 
         // GET: Computers
-        public IActionResult Index(string searchString, string sortOrder)
+        public IActionResult Index(string? type, string? brand, string? category, string searchString, string sortOrder)
         {
             ViewData["PriceSort"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";
             ViewData["NameSort"] = searchString;
 
             var allComputers = _context.Computers.Include(c => c.Spec).AsNoTracking().ToList();
+
+            if (type != null)
+            {
+                ViewData["Type"] = type;
+                if (Enum.TryParse(type, out ComputerType reqType))
+                {
+                    allComputers = allComputers.Where(c => c.Type == reqType).ToList();
+                }
+            }
+
+            if (category != null)
+            {
+                ViewData["Category"] = category;
+                if (Enum.TryParse(category, out ComputerCategory reqCategory))
+                {
+                    allComputers = allComputers.Where(c => c.Category == reqCategory).ToList();
+                }
+            }
+
+            if (brand != null)
+            {
+                ViewData["Brand"] = brand;
+                if (Enum.TryParse(brand, out Brand reqBrand))
+                {
+                    if (reqBrand == Brand.AMD)
+                    {
+                        allComputers = allComputers.Where(c => c.Spec.CPUDetail.Contains("AMD")).ToList();
+                    }
+                    else if (reqBrand == Brand.Intel)
+                    {
+                        allComputers = allComputers.Where(c => c.Spec.CPUDetail.Contains("Intel")).ToList();
+                    }
+                    else
+                    {
+                        allComputers = allComputers.Where(c => c.Brand == reqBrand).ToList();
+                    }
+
+                }
+            }
 
             if (!string.IsNullOrEmpty(searchString))
             {

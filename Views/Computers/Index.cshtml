@@ -9,57 +9,103 @@
 <p>
     <a class="btn btn-outline-primary" asp-action="Create">Create New</a>
 </p>
-<div class="row mb-3 border-bottom border-dark pb-2">
-    <form asp-action="Index" method="get" class="col-4">
+<form asp-action="Index" class="row mb-3 border-bottom border-dark pb-2">
+    <div class="col-4">
         <div class="input-group no-color">
             <input class="form-control" placeholder="Search" type="text" name="searchString" value="@ViewData["NameSort"]" />
             <button type="submit" class="btn btn-outline-primary"><i class="fa fa-search"></i></button>
             <a asp-action="ComputerPage" class="btn btn-secondary ms-1">Full List</a>
         </div>
-    </form>
+    </div>
     <div class="col-2 pe-0">
         Price sort <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             @ViewData["CurrentSort"]
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>
-                <a class="dropdown-item" asp-action="Index" asp-route-searchString="@ViewData["NameSort"]" asp-route-sortOrder="price_asc">Ascending</a>
+                <a class="dropdown-item"
+                    asp-action="Index"
+                    asp-route-searchString="@ViewData["NameSort"]"
+                    asp-route-sortOrder="price_asc"
+                    asp-route-type="@ViewBag.Type"
+                    asp-route-category="@ViewBag.Category"
+                    asp-route-brand="@ViewBag.Brand">Ascending</a>
             </li>
             <li>
-                <a class="dropdown-item" asp-action="Index" asp-route-searchString="@ViewData["NameSort"]" asp-route-sortOrder="price_desc">Descending</a>
+                <a class="dropdown-item"
+                    asp-action="Index"
+                    asp-route-searchString="@ViewData["NameSort"]"
+                    asp-route-sortOrder="price_desc"
+                    asp-route-type="@ViewBag.Type"
+                    asp-route-category="@ViewBag.Category"
+                    asp-route-brand="@ViewBag.Brand">Descending</a>
             </li>
         </ul>
     </div>
-    <form asp-action="Index" method="get" class="col-6 p-0">
+    <div class="col-6 p-0">
         <div class="row">
-            <span class="col-1 ps-0">
-                Filter
-            </span>
-            <select class="form-select col-3">
-              <option selected>Type</option>
+            <div class="col-1 pt-1">Filter</div>
+            <select class="form-select col-3" name="type">
+                @if (ViewBag.Type == null)
+                {
+                    <option selected>Type</option>
+                }
+                else
+                {
+                    <option value="@ViewBag.Type" selected>@ViewBag.Type</option>
+                }
+
                 @foreach(var item in Enum.GetValues(typeof(ComputerType)))
                 {
+                    if (item == ViewBag.Type)
+                    {
+                        continue;
+                    }
                     <option value="@item">@item</option>
                 }
             </select>
-            <select class="form-select col-4 ms-1">
-              <option selected>Category</option>
+            <select class="form-select col-4 ms-1" name="category">
+                @if (ViewBag.Category == null)
+                {
+                    <option selected>Type</option>
+                }
+                else
+                {
+                    <option value="@ViewBag.Category" selected>@ViewBag.Category</option>
+                }
+
                 @foreach(var item in Enum.GetValues(typeof(ComputerCategory)))
                 {
+                    if (item == ViewBag.Category)
+                    {
+                        continue;
+                    }
                     <option value="@item">@item</option>
                 }
             </select>
-            <select class="form-select col-3 ms-1">
-              <option selected>Brand</option>
+            <select class="form-select col-2 ms-1" name="brand">
+                @if (ViewBag.Brand == null)
+                {
+                    <option selected>Type</option>
+                }
+                else
+                {
+                    <option value="@ViewBag.Brand" selected>@ViewBag.Brand</option>
+                }
+
                 @foreach(var item in Enum.GetValues(typeof(Brand)))
                 {
+                    if (item == ViewBag.Brand)
+                    {
+                        continue;
+                    }
                     <option value="@item">@item</option>
                 }
             </select>
             <button type="submit" class="btn btn-outline-info col-1 ms-1"><i class="fa fa-filter"></i></button>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 <table class="table table-bordered table-striped align-middle index-table">
     <thead class="table-dark">
         <tr>

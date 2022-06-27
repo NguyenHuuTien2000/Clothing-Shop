@@ -256,22 +256,6 @@ namespace Computer_Store.Controllers
             return RedirectToAction(nameof(CartPage));
         }
 
-        //public IActionResult RemoveAllItemCart()
-        //{
-        //    var cart = _context.Carts
-        //        .Include(d => d.CartItems)
-        //        .Single();
-        //    if (cart == null || cart.CartItems == null)
-        //    {
-        //        return View();
-        //    }
-
-        //    cart.CartItems.Clear();
-        //    _context.Carts.Update(cart);
-        //    _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(ConfirmOrder));
-        //}
-
         public async Task<IActionResult> OrderPage()
         {
             UserID = _userManager.GetUserId(User);
@@ -279,10 +263,12 @@ namespace Computer_Store.Controllers
                 .Include(c => c.CartItems)
                 .ThenInclude(b => b.Product)
                 .Single(x => x.UserId == UserID);
+
             double? currTotal = 0;
             ApplicationUser user = _context.Users.Single(i => i.Id == UserID);
             double userDiscount = 0;
             List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
+
             if (roles.Contains("A_User"))
             {
                 userDiscount = 5;
@@ -291,6 +277,7 @@ namespace Computer_Store.Controllers
             {
                 userDiscount = 10;
             }
+
             foreach (CartItem ci in cart.CartItems)
             {
                 currTotal += ci.Product.Price* (1- (ci.Product.Discount + userDiscount)/100);

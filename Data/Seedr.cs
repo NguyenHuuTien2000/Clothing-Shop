@@ -85,7 +85,7 @@ namespace Computer_Store.Data
                     Type = type,
                     Brand = brand,
                     Category = category,
-                    Price = rand.Next(10_000_000, 100_000_000),
+                    Price = rand.Next(10_000, 100_001) * 1_000,
                     Discount = rand.Next(0, 20),
                     Spec = spec,
                     SpecID = spec.Id,
@@ -117,8 +117,6 @@ namespace Computer_Store.Data
 
             for (int i = 0; i < 30; i++)
             {
-
-
                 PartCategory category = (PartCategory)categories.GetValue(rand.Next(0, categories.Length - 4));
                 Brand brand = (Brand)brands.GetValue(rand.Next(0, brands.Length));
                 string categoriesName = Enum.GetName(category);
@@ -128,7 +126,7 @@ namespace Computer_Store.Data
                 {
                     Brand = brand,
                     Category = category,
-                    Price = rand.Next(10_000_000, 100_000_001),
+                    Price = rand.Next(5_000, 20_001) * 1_000,
                     Discount = rand.Next(0, 21),
                     Name = string.Join(" ", category, "Place holder"),
                     Image = imgPath
