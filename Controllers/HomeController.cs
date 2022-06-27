@@ -238,6 +238,18 @@ namespace Computer_Store.Controllers
         public IActionResult ConfirmOrder()
         {
             UserID = _userManager.GetUserId(User);
+            ApplicationUser user = _context.Users.Single(i => i.Id == UserID);
+            double userDiscount = 0;
+            string roles = _userManager.GetRolesAsync(user).ToString();
+            if (roles.Contains("A_User"))
+            {
+                userDiscount = 5;
+            }
+            if (roles.Contains("S_User"))
+            {
+                userDiscount = 10;
+            }
+            ViewData["userDiscount"] = userDiscount; 
             var cart = _context.Carts
                 .Include(c => c.CartItems)
                 .ThenInclude(b => b.Product)
@@ -257,13 +269,11 @@ namespace Computer_Store.Controllers
                 history.HistoryItems.Add(historyStuff);
                 historyStuff.CreateDate = DateTime.Now;
                 c.Product.Sell++;
-                cart.SumPayment += c.Product.FinalPrice;
+                cart.SumPayment += c.Product.Price * (1 - c.Product.Discount - userDiscount);
             }
 
-            var user = _context.Users.Single(i => i.Id == UserID);
-
+            
             user.Expense += cart.SumPayment;
-
             _context.Update(history);
             _context.Update(cart);
             _context.Update(user);
