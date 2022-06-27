@@ -293,8 +293,6 @@ namespace Computer_Store.Controllers
             ApplicationUser user = _userManager.Users.Single(i => i.Id == UserID);
             double userDiscount = 0;
             List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
-            ApplicationUser user = _context.Users.Single(i => i.Id == UserID);
-            double userDiscount = 0;            
             var todateReport = _context.DailyReports.Single (d => DateTime.Compare(d.Date, DateTime.Today) == 0);
             
             if (todateReport == null)
@@ -306,7 +304,6 @@ namespace Computer_Store.Controllers
                 };
             }
 
-            string roles = _userManager.GetRolesAsync(user).ToString();
             if (roles.Contains("A_User"))
             {
                 userDiscount = 5;
@@ -364,11 +361,9 @@ namespace Computer_Store.Controllers
             _context.Update(history);
             _context.Update(cart);
             _context.Update(user);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(HistoryPage));
             _context.Update(todateReport);
-
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+         
             return View(RedirectToAction(nameof(HistoryPage)));
         }
  
