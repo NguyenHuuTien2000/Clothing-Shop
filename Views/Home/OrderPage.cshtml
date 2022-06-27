@@ -1,5 +1,5 @@
-﻿@*@model Cart
-*@@{
+﻿@model Cart
+@{
     ViewData["Title"] = "Confirm Order";
     ApplicationUser user = await UserManager.GetUserAsync(User);
 }
@@ -34,7 +34,7 @@
             </div>
             <div>
                 <p><strong>Alternate Delivery Address</strong></p>
-                <textarea name="AltDelivery" class="w-100" rows="6"></textarea>
+                <textarea name="altDelivery" class="w-100" rows="6"></textarea>
             </div>
         </div>
         <div class="col-md-6 order-details bg-light rounded-2">
@@ -92,7 +92,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
-        if ($("#bank").is(':cheked')) {
+        if ($("#bank").is(":checked")) {
             $("#bank-detail").show();
         } else {
             $("#bank-detail").hide();

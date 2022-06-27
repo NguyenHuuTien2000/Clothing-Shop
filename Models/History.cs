@@ -13,6 +13,7 @@ namespace Computer_Store.Models
 
         public ICollection<HistoryItems> HistoryItems { get; set; }    
     }
+
     public class HistoryItems
     {
         [Key]
@@ -21,6 +22,8 @@ namespace Computer_Store.Models
         [ForeignKey("Product")]
         public int ProductId { get; set; }
 
+        public string? DeliveryAddress { get; set; }
+        public string? Payment { get; set; }
 
         public Product Product { get; set; }
         public DateTime CreateDate { get; set; }

@@ -287,12 +287,12 @@ namespace Computer_Store.Controllers
             return View(cart);
         }
 
-        public IActionResult ConfirmOrder()
+        public async Task<IActionResult> ConfirmOrder(string? altDelivery, string? payment)
         {
             UserID = _userManager.GetUserId(User);
-            ApplicationUser user = _context.Users.Single(i => i.Id == UserID);
+            ApplicationUser user = _userManager.Users.Single(i => i.Id == UserID);
             double userDiscount = 0;
-            string roles = _userManager.GetRolesAsync(user).ToString();
+            List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
             if (roles.Contains("A_User"))
             {
                 userDiscount = 5;
@@ -301,6 +301,17 @@ namespace Computer_Store.Controllers
             {
                 userDiscount = 10;
             }
+
+            if (altDelivery == null)
+            {
+                altDelivery = user.Address;
+            }
+
+            if (payment == null)
+            {
+                payment = "COD";
+            }
+
             ViewData["userDiscount"] = userDiscount; 
             var cart = _context.Carts
                 .Include(c => c.CartItems)
@@ -314,6 +325,8 @@ namespace Computer_Store.Controllers
                 historyStuff.HistoryID = history.Id;
                 historyStuff.ProductId = c.ProductID;
                 historyStuff.Product = c.Product;
+                historyStuff.DeliveryAddress = altDelivery;
+                historyStuff.Payment = payment;
                 if (history.HistoryItems == null)
                 {
                     history.HistoryItems = new List<HistoryItems>();
@@ -330,8 +343,8 @@ namespace Computer_Store.Controllers
             _context.Update(history);
             _context.Update(cart);
             _context.Update(user);
-            _context.SaveChangesAsync();
-            return View(RedirectToAction(nameof(HistoryPage)));
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(HistoryPage));
         }
  
         public IActionResult HistoryPage()

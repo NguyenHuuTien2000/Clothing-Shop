@@ -6,7 +6,7 @@
 }
 @if (haveItem)
 {
-    <h1>Your History</h1>
+    <h1>Your Purchase History</h1>
     <table class="table table-bordered table-striped align-middle cart-table">
         <thead class="table-dark">
             <tr>
@@ -22,7 +22,12 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Product.Price) (Discount Applied)
                 </th>
-                <th></th>
+                <th>
+                    Payment
+                </th>
+                <th>
+                    Deliveried To
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -40,14 +45,17 @@
                 <td>
                     @if (item.Product.Discount == 0)
                     {
-                        @Html.DisplayFor(modelItem => item.Product.DisplayPrice);
+                        @Html.DisplayFor(modelItem => item.Product.DisplayPrice)
                     } else {
                         @Html.DisplayFor(modelItem => item.Product.DisplayDiscountedPrice)
                     } VND
                 </td>
-              @*  <td>
-                    <a class="btn btn-outline-danger" asp-action="RemoveItem" asp-route-id="@item.Id">Remove</a>
-                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Payment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryAddress)
+                </td>
             </tr>
     }
         </tbody>
@@ -61,7 +69,7 @@
 }
 else {
     <div id="cart-empty" class="bg-black mt-3">
-        <h1 class="text-white mb-5">Your History seems to be empty</h1>
+        <h1 class="text-white mb-5">Your Purchases seems to be empty</h1>
         <a class="btn btn-secondary btn-lg" asp-action="Index">Go back to the Main Page</a>
     </div>
 }
