@@ -27,6 +27,8 @@ namespace Computer_Store.Models
     {
         Gaming,
         Workstation,
+
+        [Display(Name = "Content Creation")]
         Content_Creation
     }
 

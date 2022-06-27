@@ -378,7 +378,7 @@ namespace Computer_Store.Controllers
             _context.Update(todateReport);
             await _context.SaveChangesAsync();
          
-            return View(RedirectToAction(nameof(HistoryPage)));
+            return RedirectToAction(nameof(HistoryPage));
         }
  
         public ActionResult SaleReport()
