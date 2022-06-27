@@ -17,8 +17,8 @@
             <a asp-action="ComputerPage" class="btn btn-secondary ms-1">Full List</a>
         </div>
     </form>
-    <div class="col-3">
-        Sort by Price <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="col-2 pe-0">
+        Price sort <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             @ViewData["CurrentSort"]
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -30,6 +30,35 @@
             </li>
         </ul>
     </div>
+    <form asp-action="Index" method="get" class="col-6 p-0">
+        <div class="row">
+            <span class="col-1 ps-0">
+                Filter
+            </span>
+            <select class="form-select col-3">
+              <option selected>Type</option>
+                @foreach(var item in Enum.GetValues(typeof(ComputerType)))
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+            <select class="form-select col-4 ms-1">
+              <option selected>Category</option>
+                @foreach(var item in Enum.GetValues(typeof(ComputerCategory)))
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+            <select class="form-select col-3 ms-1">
+              <option selected>Brand</option>
+                @foreach(var item in Enum.GetValues(typeof(Brand)))
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-outline-info col-1 ms-1"><i class="fa fa-filter"></i></button>
+        </div>
+    </form>
 </div>
 <table class="table table-bordered table-striped align-middle index-table">
     <thead class="table-dark">
