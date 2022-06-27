@@ -345,7 +345,7 @@ namespace Computer_Store.Controllers
                     history.HistoryItems = new List<HistoryItems>();
                 }
                 history.HistoryItems.Add(historyStuff);
-                historyStuff.CreateDate = DateTime.Now;
+                historyStuff.CreateDate = DateTime.Today;
                 todateReport.TotalRevenue += cart.SumPayment;
                 c.Product.Sell++;
             }
