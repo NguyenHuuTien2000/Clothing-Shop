@@ -1,5 +1,69 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<Computer_Store.Models.HistoryItems>
+
 @{
+    ViewData["Title"] = "History";
+    bool haveItem = Model.Count() >= 1;
 }
+@if (haveItem)
+{
+    <h1>Your History</h1>
+    <table class="table table-bordered table-striped align-middle cart-table">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product.Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product.Brand)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product.Price) (Discount Applied)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    <img src=\@item.Product.Image class="img-thumbnail" width="150">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Brand)
+                </td>
+                <td>
+                    @if (item.Product.Discount == 0)
+                    {
+                        @Html.DisplayFor(modelItem => item.Product.DisplayPrice);
+                    } else {
+                        @Html.DisplayFor(modelItem => item.Product.DisplayDiscountedPrice)
+                    } VND
+                </td>
+              @*  <td>
+                    <a class="btn btn-outline-danger" asp-action="RemoveItem" asp-route-id="@item.Id">Remove</a>
+                </td>*@
+            </tr>
+    }
+        </tbody>
+    </table>
+    <div class="price-summary">
+        <span class="me-2">
+            <strong>Total: @ViewBag.Total VND</strong>
+        </span>
+@*        <a asp-action="OrderPage" class="btn btn-outline-primary rounded rounded-pill btn-lg w-25">Order</a>
+*@    </div>
+}
+else {
+    <div id="cart-empty" class="bg-black mt-3">
+        <h1 class="text-white mb-5">Your History seems to be empty</h1>
+        <a class="btn btn-secondary btn-lg" asp-action="Index">Go back to the Main Page</a>
+    </div>
+}
+
+

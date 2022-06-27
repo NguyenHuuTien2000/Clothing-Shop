@@ -267,10 +267,22 @@ namespace Computer_Store.Controllers
                 .ThenInclude(b => b.Product)
                 .Single(x => x.UserId == UserID);
             double? currTotal = 0;
+            ApplicationUser user = _context.Users.Single(i => i.Id == UserID);
+            double userDiscount = 0;
+            string roles = _userManager.GetRolesAsync(user).ToString();
+            if (roles.Contains("A_User"))
+            {
+                userDiscount = 5;
+            }
+            if (roles.Contains("S_User"))
+            {
+                userDiscount = 10;
+            }
             foreach (CartItem ci in cart.CartItems)
             {
-                currTotal += ci.Product.FinalPrice;
+                currTotal += ci.Product.Price* (1- (ci.Product.Discount + userDiscount)/100);
             }
+            cart.SumPayment = currTotal;
             ViewData["Total"] = string.Format("{0:n0}", currTotal);
             return View(cart);
         }
@@ -278,6 +290,18 @@ namespace Computer_Store.Controllers
         public IActionResult ConfirmOrder()
         {
             UserID = _userManager.GetUserId(User);
+            ApplicationUser user = _context.Users.Single(i => i.Id == UserID);
+            double userDiscount = 0;
+            string roles = _userManager.GetRolesAsync(user).ToString();
+            if (roles.Contains("A_User"))
+            {
+                userDiscount = 5;
+            }
+            if (roles.Contains("S_User"))
+            {
+                userDiscount = 10;
+            }
+            ViewData["userDiscount"] = userDiscount; 
             var cart = _context.Carts
                 .Include(c => c.CartItems)
                 .ThenInclude(b => b.Product)
@@ -297,18 +321,39 @@ namespace Computer_Store.Controllers
                 history.HistoryItems.Add(historyStuff);
                 historyStuff.CreateDate = DateTime.Now;
                 c.Product.Sell++;
-                cart.SumPayment += c.Product.FinalPrice;
             }
-
-            var user = _context.Users.Single(i => i.Id == UserID);
-
             user.Expense += cart.SumPayment;
 
+            cart.CartItems.Clear();
+            cart.SumPayment = 0;
+            
             _context.Update(history);
             _context.Update(cart);
             _context.Update(user);
             _context.SaveChangesAsync();
-            return View();
+            return View(RedirectToAction(nameof(HistoryPage)));
         }
+ 
+        public IActionResult HistoryPage()
+        {
+            UserID = _userManager.GetUserId(User);
+
+            var history = _context.History
+                .Include(d => d.HistoryItems)
+                .ThenInclude(p => p.Product)
+                .FirstOrDefault(c => c.UserId == UserID);
+            if (history == null || history.HistoryItems == null)
+            {
+                return View();
+            }
+            double? currTotal = 0;
+            foreach (HistoryItems ci in history.HistoryItems)
+            {
+                currTotal += ci.Product.FinalPrice;
+            }
+            ViewData["Total"] = string.Format("{0:n0}", currTotal);
+            return View(history.HistoryItems.ToList());
+        }
+
     }
 }
