@@ -371,6 +371,7 @@ namespace Computer_Store.Controllers
         {
             UserID = _userManager.GetUserId(User);
             var dailyReport = _context.DailyReports.ToList();
+            dailyReport.Sort((a, b) => DateTime.Compare(b.Date, a.Date));
             return View(dailyReport);
         }
         public IActionResult HistoryPage()
