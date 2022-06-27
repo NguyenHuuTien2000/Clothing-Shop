@@ -291,7 +291,18 @@ namespace Computer_Store.Controllers
         {
             UserID = _userManager.GetUserId(User);
             ApplicationUser user = _context.Users.Single(i => i.Id == UserID);
-            double userDiscount = 0;
+            double userDiscount = 0;            
+            var todateReport = _context.DailyReports.Single (d => DateTime.Compare(d.Date, DateTime.Today) == 0);
+            
+            if (todateReport == null)
+            {
+                todateReport = new DailyReport
+                {
+                    Date = DateTime.Today,
+                    TotalRevenue = 0
+                };
+            }
+
             string roles = _userManager.GetRolesAsync(user).ToString();
             if (roles.Contains("A_User"))
             {
@@ -301,6 +312,7 @@ namespace Computer_Store.Controllers
             {
                 userDiscount = 10;
             }
+
             ViewData["userDiscount"] = userDiscount; 
             var cart = _context.Carts
                 .Include(c => c.CartItems)
@@ -308,6 +320,7 @@ namespace Computer_Store.Controllers
                 .Single(x => x.UserId == UserID);
 
             var history = _context.History.Single(x => x.UserId == UserID);
+            
             foreach (CartItem c in cart.CartItems)
             {
                 var historyStuff = new HistoryItems();
@@ -320,20 +333,33 @@ namespace Computer_Store.Controllers
                 }
                 history.HistoryItems.Add(historyStuff);
                 historyStuff.CreateDate = DateTime.Now;
+                todateReport.TotalRevenue += cart.SumPayment;
                 c.Product.Sell++;
             }
             user.Expense += cart.SumPayment;
 
             cart.CartItems.Clear();
             cart.SumPayment = 0;
-            
+            var sortedList = _context.Products.ToList();
+            sortedList.Sort((a, b) => b.Sell - a.Sell);
+            todateReport.MostBoughtCategory = sortedList[0].Name;
+            todateReport.SecondBoughtCategory = sortedList[1].Name;
+
             _context.Update(history);
             _context.Update(cart);
             _context.Update(user);
+            _context.Update(todateReport);
+
             _context.SaveChangesAsync();
             return View(RedirectToAction(nameof(HistoryPage)));
         }
  
+        public ActionResult SaleReport()
+        {
+            UserID = _userManager.GetUserId(User);
+            var dailyReport = _context.DailyReports.ToList();
+            return View(dailyReport);
+        }
         public IActionResult HistoryPage()
         {
             UserID = _userManager.GetUserId(User);
@@ -354,6 +380,7 @@ namespace Computer_Store.Controllers
             ViewData["Total"] = string.Format("{0:n0}", currTotal);
             return View(history.HistoryItems.ToList());
         }
+
 
     }
 }
