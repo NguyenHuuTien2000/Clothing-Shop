@@ -91,6 +91,7 @@ namespace Computer_Store.Data
                     Name = String.Join(" ", type, category, brand, name, spec.CPU, spec.RAM, spec.GPU, spec.StorageDrive, spec.Screen),
                     Image = imgPath
                 };
+
                 context.Add(spec);
                 context.Add(computer);
                 context.SaveChanges();
