@@ -8,6 +8,7 @@ namespace Computer_Store.Data
         public static void Seed(ApplicationDbContext context)
         {
             SeedLaptop(context);
+            SeedPart(context);
         }
 
         public static void SeedLaptop(ApplicationDbContext context)
@@ -25,7 +26,7 @@ namespace Computer_Store.Data
             string[] ram = File.ReadAllLines(Path.Combine(path, "ram.txt"));
             string[] screen = File.ReadAllLines(Path.Combine(path, "screen.txt"));
             string[] drive = File.ReadAllLines(Path.Combine(path, "drive.txt"));
-            string[] weight = {"2 Kg", "2.1 Kg", "2.2 Kg", "2.3 Kg", "2.4 Kg", "2.5 Kg", "2.6 Kg" };
+            string[] weight = { "2 Kg", "2.1 Kg", "2.2 Kg", "2.3 Kg", "2.4 Kg", "2.5 Kg", "2.6 Kg" };
             string[] wifi = { "11ax, 2×2 + BT5.1", "Intel Wi-Fi 6 AX201(2*2 ax) + BT5", "Killer Wi-Fi 6 AX1650i (2*2 ax) + BT5" };
 
             Array brands = Enum.GetValues(typeof(Brand));
@@ -68,8 +69,8 @@ namespace Computer_Store.Data
                     StorageDriveDetail = driveDetail[0] + " " + driveDetail[1],
                     Screen = screenDetail[0],
                     ScreenDetial = screenDetail[0] + " " + screenDetail[1],
-                    Weight = weight[rand.Next(0,weight.Length)],
-                    WIFI = wifi[rand.Next(0,wifi.Length)]
+                    Weight = weight[rand.Next(0, weight.Length)],
+                    WIFI = wifi[rand.Next(0, wifi.Length)]
                 };
 
                 Brand brand = (Brand)brands.GetValue(rand.Next(0, brands.Length - 2));
@@ -96,6 +97,58 @@ namespace Computer_Store.Data
                 context.Add(computer);
                 context.SaveChanges();
             }
+
         }
+        public static void SeedPart(ApplicationDbContext context)
+        {
+            Enum.TryParse("Part", out PartCategory type);
+            if (context.Parts.Where(c => c.Category == type).Count() >= 20)
+            {
+                return;
+            }
+            string path = Path.Combine(Environment.CurrentDirectory, "Data", "stuff");
+
+
+            Array brands = Enum.GetValues(typeof(Brand));
+            Array categories = Enum.GetValues(typeof(PartCategory));
+
+            Dictionary<string, string[]> nameMap = new Dictionary<string, string[]>();
+            nameMap.Add("Acer", new string[] { "Nitro 5", "Aspire 7", "Helios 300", "Helios 500", "Trition 500" });
+
+            nameMap.Add("Asus", new string[] { "Vivobook", "TUF F15", "TUF A17", "ROG", "Strix SCAR", "ROG Zephyrus" });
+
+            nameMap.Add("Dell", new string[] { "G15", "Alienware", "G3" });
+
+            nameMap.Add("Gigabyte", new string[] { "G5", "AERO 5", "Aorus 15P", "U4D", "Aorus 5" });
+
+            nameMap.Add("Lenovo", new string[] { "Ideapad Gaming 3", "Ideapad Gaming 5", "Legion 5", "Legion 7", "Ideapad 5 Pro" });
+
+            nameMap.Add("Msi", new string[] { "Alpha", "Delta", "GP76", "GF65", "Bravo" });
+
+            Part part;
+            Random rand = new Random();
+
+            for (int i = 0; i < 30; i++)
+            {
+
+
+                PartCategory category = (PartCategory)brands.GetValue(rand.Next(0, categories.Length - 4));
+                string categoriesName = Enum.GetName(category);
+                string imgPath = Path.Combine("images", "parts", categoriesName, rand.Next(1, 3) + ".jpg");
+
+                part = new Part
+                {
+                    Category = category,
+                    Price = rand.Next(10_000_000, 100_000_000),
+                    Discount = rand.Next(0, 20),
+                    Name = String.Join(" ", category, "Place holder"),
+                    Image = imgPath
+                };
+
+                context.Add(part);
+                context.SaveChanges();
+            }
+        }
+
     }
 }

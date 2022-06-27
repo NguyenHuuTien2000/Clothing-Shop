@@ -13,7 +13,7 @@ namespace Computer_Store.Models
 
     public enum PartCategory
     {
-        VGA,
+        
         CPU,
         Mainboard,
         RAM,
@@ -22,5 +22,6 @@ namespace Computer_Store.Models
         Keyboard,
         Mouse,
         HeadPhone,
+        VGA,
     }
 }
