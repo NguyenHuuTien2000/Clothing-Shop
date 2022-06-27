@@ -1,6 +1,7 @@
 ﻿using Computer_Store.Data;
 using Computer_Store.Models;
 using Computer_Store.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -293,14 +294,15 @@ namespace Computer_Store.Controllers
             ApplicationUser user = _userManager.Users.Single(i => i.Id == UserID);
             double userDiscount = 0;
             List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
-            var todateReport = _context.DailyReports.Single (d => DateTime.Compare(d.Date, DateTime.Today) == 0);
+            var todateReport = _context.DailyReports.FirstOrDefault(d => DateTime.Compare(d.Date, DateTime.Today) == 0);
             
             if (todateReport == null)
             {
                 todateReport = new DailyReport
                 {
                     Date = DateTime.Today,
-                    TotalRevenue = 0
+                    TotalRevenue = 0,
+                    TotalUnit = 0
                 };
             }
 
@@ -345,11 +347,14 @@ namespace Computer_Store.Controllers
                     history.HistoryItems = new List<HistoryItems>();
                 }
                 history.HistoryItems.Add(historyStuff);
-                historyStuff.CreateDate = DateTime.Now;
+                historyStuff.CreateDate = DateTime.Today;
+
                 todateReport.TotalRevenue += cart.SumPayment;
+                
                 c.Product.Sell++;
             }
             user.Expense += cart.SumPayment;
+            todateReport.TotalUnit = cart.CartItems.Count;
 
             cart.CartItems.Clear();
             cart.SumPayment = 0;
@@ -364,16 +369,23 @@ namespace Computer_Store.Controllers
             _context.Update(todateReport);
             await _context.SaveChangesAsync();
          
-            return View(RedirectToAction(nameof(HistoryPage)));
+            return RedirectToAction(nameof(HistoryPage));
         }
- 
+
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult SaleReport()
         {
-            UserID = _userManager.GetUserId(User);
-            var dailyReport = _context.DailyReports.ToList();
-            dailyReport.Sort((a, b) => DateTime.Compare(b.Date, a.Date));
-            return View(dailyReport);
+            return View();
         }
+
+        //[HttpGet]
+        //public IEnumerable<DailyReport> Get()
+        //{
+        //    var dailyReport = _context.DailyReports.ToList();
+        //    dailyReport.Sort((a, b) => DateTime.Compare(b.Date, a.Date));
+        //    return dailyReport;
+        //}
+
         public IActionResult HistoryPage()
         {
             UserID = _userManager.GetUserId(User);

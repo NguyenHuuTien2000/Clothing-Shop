@@ -48,7 +48,7 @@ namespace Computer_Store.Data
             ComputerSpec spec;
             Random rand = new Random();
 
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 40; i++)
             {
                 string[] cpuDetail = cpus[rand.Next(0, cpus.Length)].Split('-');
                 string[] gpuDetail = gpu[rand.Next(0, gpu.Length)].Split('-');

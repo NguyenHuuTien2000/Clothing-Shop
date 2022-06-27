@@ -1,34 +1,76 @@
-﻿@model IEnumerable<DailyReport>
+﻿
 <div class="mt-3 row">
-    <div class="col-8">
-        <canvas id="chart" width="400"></canvas>
+    <div class="col-9">
+        <canvas id="chart" class="w-100"></canvas>
+    </div>
+    <div class="col-3 bg-light p-3">
+        <p><strong>Total Revenue: </strong>num VND</p>
+        <p><strong>Total Unit: </strong>num Units</p>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
-        const ctx = $("#chart");
-        const mixedChart = new Chart(ctx, {
-            data: {
-                datasets: [{
-                    type: 'bar',
-                    label: 'Bar Dataset',
-                    data: [10, 20, 30, 40],
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                    spanGaps: true,
-                }, {
-                    type: 'line',
-                    label: 'Line Dataset',
-                    data: [17, 24, 43, 32],
-                    borderColor: 'rgb(54, 162, 235)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    skipNull: true,
-                }],
-                labels: ['January', 'February', 'March', 'April']
-            },
-            options: options
+        $(document).ready(function () {  
+            $.ajax({  
+                url: '/api/Report',  
+                dataType: "json",  
+                method: 'get',  
+                success: function(data) { 
+                    drawScript(data);
+                },  
+                error: function (err) {  
+                    alert(err);  
+                }
+            });  
         });
+
+        function drawScript(data) {
+            let labels = [];
+            let totalUnit = [];
+            let totalRevenue = [];
+            for (let result of data) {
+                labels.push(result.date);
+                totalUnit.push(result.totalUnit);
+                totalRevenue.push(result.totalRevenue);
+            }
+
+            let options = {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Daily sales'
+                    },
+                },
+            };
+            const ctx = $("#chart");
+            const mixedChart = new Chart(ctx, {
+                data: {
+                    datasets: [{
+                        type: 'bar',
+                        label: 'Unit Sold',
+                        data: totalUnit,
+                        borderColor: 'rgb(255, 99, 132)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        spanGaps: true,
+                    }, {
+                        type: 'line',
+                        label: 'Revenue',
+                        data: totalRevenue,
+                        borderColor: 'rgb(54, 162, 235)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        skipNull: true,
+                    }],
+                    labels: labels
+                },
+                options: options
+            });
+        }
     </script>
 }
