@@ -66,6 +66,23 @@ namespace Computer_Store.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DailyReports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalRevenue = table.Column<double>(type: "float", nullable: true),
+                    TotalUnit = table.Column<double>(type: "float", nullable: true),
+                    MostBoughtCategory = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecondBoughtCategory = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DailyReports", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "History",
                 columns: table => new
                 {
@@ -110,7 +127,7 @@ namespace Computer_Store.Migrations
                     Discount = table.Column<double>(type: "float", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Brand = table.Column<int>(type: "int", nullable: false),
-                    Sell = table.Column<int>(type: "int", nullable: true),
+                    Sell = table.Column<int>(type: "int", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Computer_Category = table.Column<int>(type: "int", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: true),
@@ -207,6 +224,8 @@ namespace Computer_Store.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
+                    DeliveryAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Payment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HistoryID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -408,6 +427,9 @@ namespace Computer_Store.Migrations
 
             migrationBuilder.DropTable(
                 name: "CartItems");
+
+            migrationBuilder.DropTable(
+                name: "DailyReports");
 
             migrationBuilder.DropTable(
                 name: "HistoryItems");

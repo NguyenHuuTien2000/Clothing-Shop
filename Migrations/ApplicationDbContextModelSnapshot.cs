@@ -255,9 +255,6 @@ namespace Computer_Store.Migrations
                     b.Property<double?>("TotalUnit")
                         .HasColumnType("float");
 
-                    b.Property<int?>("saleID")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("DailyReports");

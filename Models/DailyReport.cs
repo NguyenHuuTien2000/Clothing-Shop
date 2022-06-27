@@ -12,7 +12,5 @@ namespace Computer_Store.Models
         public double? TotalUnit { get; set; }
         public string? MostBoughtCategory { get; set; }
         public string? SecondBoughtCategory { get; set; }
-        
-        public int? saleID { get; set; }
     }
 }

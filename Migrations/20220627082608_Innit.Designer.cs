@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Computer_Store.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220627045518_Order")]
-    partial class Order
+    [Migration("20220627082608_Innit")]
+    partial class Innit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -248,9 +248,6 @@ namespace Computer_Store.Migrations
                     b.Property<string>("MostBoughtCategory")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SaleReportSaleID")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecondBoughtCategory")
                         .HasColumnType("nvarchar(max)");
 
@@ -260,12 +257,7 @@ namespace Computer_Store.Migrations
                     b.Property<double?>("TotalUnit")
                         .HasColumnType("float");
 
-                    b.Property<int?>("saleID")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SaleReportSaleID");
 
                     b.ToTable("DailyReports");
                 });
@@ -298,8 +290,14 @@ namespace Computer_Store.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DeliveryAddress")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("HistoryID")
                         .HasColumnType("int");
+
+                    b.Property<string>("Payment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -342,7 +340,7 @@ namespace Computer_Store.Migrations
                         .IsRequired()
                         .HasColumnType("float");
 
-                    b.Property<int?>("Sell")
+                    b.Property<int>("Sell")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -350,19 +348,6 @@ namespace Computer_Store.Migrations
                     b.ToTable("Products");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Product");
-                });
-
-            modelBuilder.Entity("Computer_Store.Models.SaleReport", b =>
-                {
-                    b.Property<int>("SaleID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SaleID"), 1L, 1);
-
-                    b.HasKey("SaleID");
-
-                    b.ToTable("saleReports");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -566,13 +551,6 @@ namespace Computer_Store.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Computer_Store.Models.DailyReport", b =>
-                {
-                    b.HasOne("Computer_Store.Models.SaleReport", null)
-                        .WithMany("dailyReports")
-                        .HasForeignKey("SaleReportSaleID");
-                });
-
             modelBuilder.Entity("Computer_Store.Models.HistoryItems", b =>
                 {
                     b.HasOne("Computer_Store.Models.History", "MyHistory")
@@ -667,11 +645,6 @@ namespace Computer_Store.Migrations
             modelBuilder.Entity("Computer_Store.Models.History", b =>
                 {
                     b.Navigation("HistoryItems");
-                });
-
-            modelBuilder.Entity("Computer_Store.Models.SaleReport", b =>
-                {
-                    b.Navigation("dailyReports");
                 });
 #pragma warning restore 612, 618
         }
