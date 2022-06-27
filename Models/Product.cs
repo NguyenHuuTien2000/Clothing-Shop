@@ -22,7 +22,7 @@ namespace Computer_Store.Models
         public Brand Brand { get; set; }
 
 
-        public int? Sell { get; set; } = 0;
+        public int Sell { get; set; } = 0;
 
 
         public string? DisplayPrice

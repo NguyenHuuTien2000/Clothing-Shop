@@ -23,6 +23,10 @@ namespace Computer_Store.Data
         public DbSet<History> History { get; set; }
         public DbSet<HistoryItems> HistoryItems { get; set; }
         public DbSet<DailyReport> DailyReports { get; set; }
+        public DbSet<SaleReport> saleReports{ get; set; }
+
+
+
 
     }
 }
