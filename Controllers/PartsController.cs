@@ -24,28 +24,28 @@ namespace Computer_Store.Controllers
         }
 
         // GET: Parts
-        public IActionResult Index(string searchString, string sortOrder)
+        public IActionResult Index(string? category, string? brand, string searchString, string sortOrder)
         {
             ViewData["PriceSort"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";
             ViewData["NameSort"] = searchString;
 
             var allParts = _context.Parts.AsNoTracking().ToList();
 
-            //if (category != null)
-            //{
-            //    if (Enum.TryParse(category, out PartCategory reqCategory))
-            //    {
-            //        allParts = allParts.Where(c => c.Category == reqCategory).ToList();
-            //    }
-            //}
+            if (category != null)
+            {
+                if (Enum.TryParse(category, out PartCategory reqCategory))
+                {
+                    allParts = allParts.Where(c => c.Category == reqCategory).ToList();
+                }
+            }
 
-            //if (brand != null)
-            //{
-            //    if (Enum.TryParse(brand, out Brand reqBrand))
-            //    {
-            //        allParts = allParts.Where(c => c.Brand == reqBrand).ToList();
-            //    }
-            //}
+            if (brand != null)
+            {
+                if (Enum.TryParse(brand, out Brand reqBrand))
+                {
+                    allParts = allParts.Where(c => c.Brand == reqBrand).ToList();
+                }
+            }
 
             if (!string.IsNullOrEmpty(searchString))
             {

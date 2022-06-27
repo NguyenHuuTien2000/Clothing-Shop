@@ -21,7 +21,7 @@
         Price sort <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             @ViewData["CurrentSort"]
         </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <ul class="dropdown-menu">
             <li>
                 <a class="dropdown-item"
                     asp-action="Index"
@@ -67,7 +67,7 @@
             <select class="form-select col-4 ms-1" name="category">
                 @if (ViewBag.Category == null)
                 {
-                    <option selected>Type</option>
+                    <option selected>Category</option>
                 }
                 else
                 {
@@ -86,7 +86,7 @@
             <select class="form-select col-2 ms-1" name="brand">
                 @if (ViewBag.Brand == null)
                 {
-                    <option selected>Type</option>
+                    <option selected>Brand</option>
                 }
                 else
                 {

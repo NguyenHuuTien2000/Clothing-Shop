@@ -14,13 +14,16 @@ namespace Computer_Store.Models
     public enum PartCategory
     {
         CPU,
+        VGA,
         Mainboard,
         RAM,
         SSD,
         HDD,
+        PSU,
         Keyboard,
         Mouse,
         HeadPhone,
-        VGA,
+        Screen,
+        Speaker
     }
 }
