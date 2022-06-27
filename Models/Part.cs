@@ -13,7 +13,6 @@ namespace Computer_Store.Models
 
     public enum PartCategory
     {
-        
         CPU,
         Mainboard,
         RAM,
