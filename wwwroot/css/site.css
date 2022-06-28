@@ -27,6 +27,14 @@ form {
     position: relative;
 }
 
+th {
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}
+
 .spec-table {
     max-width: 600px !important;
     padding: 10px !important;

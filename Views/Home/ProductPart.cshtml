@@ -13,21 +13,21 @@
                 <p>Buy now</p>
                 @if (Model.Discount == 0)
                 {
-                    <p>@Model.Price</p>
+                    <p>@Model.DisplayPrice VND</p>
                 } 
                 else
                 {
-                    <p class="text-danger">@Model.DisplayDiscountedPrice đ</p>
-                    <p class="card-price-discounted">@Model.DisplayPrice đ</p>
+                    <p class="text-danger">@Model.DisplayDiscountedPrice VND</p>
+                    <p class="card-price-discounted">@Model.DisplayPrice VND</p>
                 }
             </div>
             <div class="text-center mb-2">
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <form asp-action="AddToCart">
-                        <input type="hidden" name="pi" value="@Model.Id" />
-                        <input type="number" min="1" name="quantity" value="1" class="rounded-pill">
-                        <button type="submit" class="btn btn-outline-dark rounded-pill"><i class="fa fa-shopping-cart"></i> Add to cart</button>
+                    <form asp-action="AddToCart" class="input-group m-auto w-50">
+                        <input type="hidden" name="pid" value="@Model.Id" />
+                        <input type="number" min="1" name="quantity" maxlength="3" value="1" class="form-control text-center rounded-start">
+                        <button type="submit" class="btn btn-outline-dark rounded-end"><i class="fa fa-shopping-cart"></i> Add to cart</button>
                     </form>
                 }
                 else

@@ -30,6 +30,15 @@ namespace Computer_Store.Models
 
         public int Quantity { get; set; } = 0;
 
+        public double? Price
+        {
+            get { return Quantity * Product.FinalPrice; }
+        }
+
+        public string? DisplayPrice { 
+            get { return string.Format("{0:n0}", Product.FinalPrice * Quantity); } 
+        }
+
         public Product Product { get; set; }
 
         [Required]

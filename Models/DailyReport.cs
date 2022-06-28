@@ -8,6 +8,7 @@ namespace Computer_Store.Models
         [Key]
         public int Id { get; set; }
         public DateTime Date { get; set; }
+        public string? DateString { get; set; }
         public double? TotalRevenue { get; set; }
         public double? TotalUnit { get; set; }
         public string? MostBoughtCategory { get; set; }

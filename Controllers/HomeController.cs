@@ -183,9 +183,11 @@ namespace Computer_Store.Controllers
 
             var allItems = cart.CartItems.ToList();
 
+            ViewData["CurrentType"] = "All";
             if (type != null)
             {
                 ViewData["Type"] = type;
+                ViewData["CurrentType"] = type;
                 if (type.Equals("Computer"))
                 {
                     allItems = allItems.Where(c => c.Product.GetType() == typeof(Computer)).ToList();
@@ -271,9 +273,10 @@ namespace Computer_Store.Controllers
             double? currTotal = 0; 
             foreach (CartItem ci in cart.CartItems)
             {
-                currTotal += ci.Product.FinalPrice;
+                currTotal += ci.Product.FinalPrice * ci.Quantity;
             }
             ViewData["Total"] = string.Format("{0:n0}", currTotal);
+            ViewData["GotItem"] = cart.CartItems.Count > 0;
             return View(allItems);
         }
 
@@ -317,6 +320,35 @@ namespace Computer_Store.Controllers
                 cart.CartItems = new List<CartItem>();
             }
             cart.CartItems.Add(cartItem);
+            _context.Carts.Update(cart);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(CartPage));
+        }
+
+        public IActionResult UpdateQuantity(CartUpdate[] updates)
+        {
+            UserID = _userManager.GetUserId(User);
+
+            var cart = _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(c => c.Product)
+                .Single(x => x.UserId == UserID);
+
+            if (cart.CartItems == null)
+            {
+                return View(cart);
+            }
+
+            var itemList = cart.CartItems.ToList();
+
+            foreach (var item in updates)
+            {
+                CartItem? toUpdate = itemList.FirstOrDefault(c => c.Id == item.Id);
+                if (toUpdate != null)
+                {
+                    toUpdate.Quantity = item.Quantity;
+                }
+            }
             _context.Carts.Update(cart);
             _context.SaveChanges();
             return RedirectToAction(nameof(CartPage));
@@ -373,7 +405,7 @@ namespace Computer_Store.Controllers
 
             foreach (CartItem ci in cart.CartItems)
             {
-                currTotal += ci.Product.Price* (1- (ci.Product.Discount + userDiscount)/100);
+                currTotal += ci.Product.Price * (1- (ci.Product.Discount + userDiscount)/100) * ci.Quantity;
             }
             cart.SumPayment = currTotal;
             ViewData["Total"] = string.Format("{0:n0}", currTotal);
@@ -394,7 +426,8 @@ namespace Computer_Store.Controllers
                 {
                     Date = DateTime.Today,
                     TotalRevenue = 0,
-                    TotalUnit = 0
+                    TotalUnit = 0,
+                    DateString = DateTime.Today.ToString("dd/M")
                 };
                 _context.Add(todateReport);
                 _context.SaveChanges();
@@ -445,7 +478,7 @@ namespace Computer_Store.Controllers
 
                 c.Product.Sell++;
             }
-            cart.SumPayment = cart.CartItems.Sum(c => c.Product.FinalPrice);
+            cart.SumPayment = cart.CartItems.Sum(c => c.Price);
 
             todateReport.TotalRevenue += cart.SumPayment;
             todateReport.TotalUnit = cart.CartItems.Sum(c => c.Quantity);

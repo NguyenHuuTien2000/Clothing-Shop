@@ -2,7 +2,8 @@
 
 @{
     ViewData["Title"] = "Cart";
-    bool haveItem = Model.Count() >= 1;
+    bool haveItem = ViewBag.GotItem;
+    int count = 0;
 }
 @if (haveItem)
 {
@@ -42,10 +43,10 @@
         </div>
         <div class="col-6 p-0">
             <div class="row">
-                <div class="col-1 pt-1">Filter</div>
-                <div class="col-3">
+                <div class="col-1 pt-1 pe-0">Filter</div>
+                <div class="col-3 ps-0">
                     <button class="btn btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Select Type
+                        @ViewData["CurrentType"]
                     </button>
                     <ul class="dropdown-menu">
                         <li>
@@ -68,7 +69,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-4 ms-1">
+                <select class="col-4 ms-1">
                     @if (ViewBag.Category == null)
                     {
                         <option selected>Category</option>
@@ -102,8 +103,7 @@
                         <option selected>Select Type first</option>
                     }
                     }
-                    
-                </div>
+                </select>
                 <select class="form-select col-2 ms-1" name="brand">
                     <option>All Brand</option>
                     @if (ViewBag.Brand != null)
@@ -124,32 +124,40 @@
             </div>
         </div>
     </form>
-    <table class="table table-bordered table-striped align-middle cart-table">
-        <thead class="table-dark">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product.Image)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product.Brand)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product.Price) (Discount Applied)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
+    <form asp-action="UpdateQuantity">
+        <table class="table table-bordered table-striped align-middle cart-table">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product.Image)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quantity)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product.Brand)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product.Price) (Discount Applied)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model) {
             <tr>
                 <td>
                     <img src=\@item.Product.Image class="img-thumbnail" width="150">
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+                <td>
+                    <input type="hidden" value="@item.Id" name="updates[@count].Id"/>
+                    <input class="rounded-pill w-75 text-center" type="number" min="1" value="@item.Quantity" name="updates[@count].Quantity"/>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Product.Brand)
@@ -166,15 +174,18 @@
                     <a class="btn btn-outline-danger" asp-action="RemoveItem" asp-route-id="@item.Id">Remove</a>
                 </td>
             </tr>
-    }
+            count++;
+        }
         </tbody>
     </table>
-    <div class="price-summary">
+    <div class="price-summary ms-auto w-50">
         <span class="me-2">
             <strong>Total: @ViewBag.Total VND</strong>
         </span>
+        <button type="submit" class="btn btn-outline-info rounded rounded-pill btn-lg w-25">Update</button>
         <a asp-action="OrderPage" class="btn btn-outline-primary rounded rounded-pill btn-lg w-25">Order</a>
     </div>
+    </form>
 }
 else {
     <div id="cart-empty" class="bg-black mt-3">
