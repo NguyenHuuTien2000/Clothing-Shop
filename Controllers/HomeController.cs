@@ -483,9 +483,19 @@ namespace Computer_Store.Controllers
             todateReport.TotalUnit = cart.CartItems.Sum(c => c.Quantity);
             user.Expense += cart.SumPayment;
 
-            if (user.Expense >= 100_000_000)
+            string promoted = null;
+            if (user.Expense >= 100_000_000 && !roles.Contains("A_User"))
             {
-                
+                promoted = "A";
+                roles.Add("A_User");
+                await _userManager.AddToRolesAsync(user, roles);
+            }
+
+            if (user.Expense >= 250_000_000 && !roles.Contains("S_User"))
+            {
+                promoted = "S";
+                roles.Add("S_User");
+                await _userManager.AddToRolesAsync(user, roles);
             }
 
             cart.CartItems.Clear();
@@ -501,7 +511,7 @@ namespace Computer_Store.Controllers
             _context.Update(todateReport);
             await _context.SaveChangesAsync();
          
-            return RedirectToAction(nameof(HistoryPage));
+            return RedirectToAction(nameof(HistoryPage), promoted);
         }
  
         public ActionResult SaleReport()
@@ -512,7 +522,7 @@ namespace Computer_Store.Controllers
             return View(dailyReport);
         }
 
-        public IActionResult HistoryPage()
+        public IActionResult HistoryPage(string? promoted)
         {
             UserID = _userManager.GetUserId(User);
 
@@ -529,11 +539,10 @@ namespace Computer_Store.Controllers
             {
                 currTotal += ci.Product.FinalPrice;
             }
+            ViewData["Promoted"] = promoted;
             ViewData["Total"] = string.Format("{0:n0}", currTotal);
             return View(history.HistoryItems.ToList());
         }
-
-
 
     }
 }

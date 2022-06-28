@@ -84,6 +84,7 @@ namespace Computer_Store.Controllers
                 return View();
             }
             var roles = await _userManager.GetRolesAsync(user);
+            
             var result = await _userManager.RemoveFromRolesAsync(user, roles);
             if (!result.Succeeded)
             {
