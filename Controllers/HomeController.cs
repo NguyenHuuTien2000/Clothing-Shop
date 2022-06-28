@@ -268,7 +268,6 @@ namespace Computer_Store.Controllers
                     break;
             }
 
-
             double? currTotal = 0; 
             foreach (CartItem ci in cart.CartItems)
             {
@@ -457,6 +456,7 @@ namespace Computer_Store.Controllers
                 CreatedDate = DateTime.Today,
                 Total = cart.SumPayment,
                 PaymentMethod = payment,
+                DeliveryAddress = altDelivery
             };
             order.OrderItems = new List<OrderItem>();
 
@@ -471,6 +471,7 @@ namespace Computer_Store.Controllers
                     Price = c.Price
                 };
                 order.OrderItems.Add(orderItem);
+                order.ItemNum += orderItem.Quantity;
                 c.Product.Sell++;
             }
             _context.Add(order);
@@ -506,9 +507,28 @@ namespace Computer_Store.Controllers
             _context.Update(todateReport);
             await _context.SaveChangesAsync();
          
-            return RedirectToAction(nameof(SaleReport), promoted);
+            return RedirectToAction(nameof(OrderList), promoted);
         }
- 
+
+        public IActionResult OrderList(string? promoted)
+        {
+            UserID = _userManager.GetUserId(User);
+
+            var allOrders = _context.Orders
+                .Where(c => c.UserID == UserID)
+                .Where(c => c.Status == "Pending")
+                .Include(o => o.OrderItems)
+                .ThenInclude(p => p.Product)
+                .AsNoTracking()
+                .ToList();
+            if (allOrders == null)
+            {
+                return View();
+            }
+            ViewData["Promoted"] = promoted;
+            return View(allOrders);
+        }
+
         public ActionResult SaleReport()
         {
             UserID = _userManager.GetUserId(User);
@@ -516,28 +536,5 @@ namespace Computer_Store.Controllers
             dailyReport.Sort((a, b) => DateTime.Compare(b.Date, a.Date));
             return View(dailyReport);
         }
-
-        //public IActionResult HistoryPage(string? promoted)
-        //{
-        //    UserID = _userManager.GetUserId(User);
-
-        //    var history = _context.History
-        //        .Include(d => d.HistoryItems)
-        //        .ThenInclude(p => p.Product)
-        //        .FirstOrDefault(c => c.UserId == UserID);
-        //    if (history == null || history.HistoryItems == null)
-        //    {
-        //        return View();
-        //    }
-        //    double? currTotal = 0;
-        //    foreach (HistoryItems ci in history.HistoryItems)
-        //    {
-        //        currTotal += ci.Product.FinalPrice;
-        //    }
-        //    ViewData["Promoted"] = promoted;
-        //    ViewData["Total"] = string.Format("{0:n0}", currTotal);
-        //    return View(history.HistoryItems.ToList());
-        //}
-
     }
 }

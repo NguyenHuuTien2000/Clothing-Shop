@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Computer_Store.Models
@@ -11,11 +12,22 @@ namespace Computer_Store.Models
 
         public string Status { get; set; }
 
+        [DisplayName("Order Date")]
         public DateTime CreatedDate { get; set; }
 
         public double? Total { get; set; }
 
+        public string? DisplayTotal
+        {
+            get { return string.Format("{0:n0}", Total); }
+        }
+
+        [DisplayName("Number of Items")]
+        public int ItemNum { get; set; } = 0;
+
         public string PaymentMethod { get; set; }
+
+        public string? DeliveryAddress { get; set; }
 
         public ICollection<OrderItem> OrderItems { get; set; }
     }

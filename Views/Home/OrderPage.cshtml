@@ -84,6 +84,9 @@
                 <p>Account number: 12345678901234</p>
                 <p>Account name: Hyper Corp</p>
             </div>
+            <div class="alert alert-warning">
+                Orders cannot be canceled
+            </div>
             <button type="submit" class="btn btn-outline-dark w-100">Confirm</button>
         </div>
     </div>
@@ -92,6 +95,6 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
-        
+        $("#bank-detail").hide();
     </script>
 }

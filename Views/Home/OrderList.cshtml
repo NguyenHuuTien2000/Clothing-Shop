@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Orders List";
+    bool haveItem = Model.Count() >= 1;
+}
+
+@if (haveItem)
+{
+    <h1>Current Orders</h1>
+    @if (ViewBag.Promoted != null)
+    {
+        var statusMessageClass = ViewBag.Promoted.Contains("A Rank") ? "info" : "primary";
+        <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            You have been promoted to @ViewBag.Promoted!
+        </div>
+    }
+    <table class="table table-bordered table-striped align-middle cart-table">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ItemNum)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Total)
+                </th>
+                <th>
+                    Payment
+                </th>
+                <th>
+                    Delivery Address
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate.ToShortDateString())
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemNum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisplayTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentMethod)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryAddress)
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+}
+else {
+    <div id="cart-empty" class="bg-black mt-3">
+        <h1 class="text-white mb-5">No current Orders</h1>
+        <a class="btn btn-secondary btn-lg" asp-action="Index">Go back to the Main Page</a>
+    </div>
+}
+
+

@@ -151,6 +151,9 @@ namespace Computer_Store.Migrations
                     b.Property<int>("CartID")
                         .HasColumnType("int");
 
+                    b.Property<double>("CustomDiscount")
+                        .HasColumnType("float");
+
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
@@ -280,7 +283,7 @@ namespace Computer_Store.Migrations
                     b.ToTable("History");
                 });
 
-            modelBuilder.Entity("Computer_Store.Models.HistoryItems", b =>
+            modelBuilder.Entity("Computer_Store.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -288,28 +291,67 @@ namespace Computer_Store.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreateDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeliveryAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HistoryID")
+                    b.Property<int?>("HistoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Payment")
+                    b.Property<int>("ItemNum")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Total")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HistoryId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Computer_Store.Models.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HistoryID");
+                    b.HasIndex("OrderID");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductID");
 
-                    b.ToTable("HistoryItems");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Computer_Store.Models.Product", b =>
@@ -552,21 +594,28 @@ namespace Computer_Store.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Computer_Store.Models.HistoryItems", b =>
+            modelBuilder.Entity("Computer_Store.Models.Order", b =>
                 {
-                    b.HasOne("Computer_Store.Models.History", "MyHistory")
-                        .WithMany("HistoryItems")
-                        .HasForeignKey("HistoryID")
+                    b.HasOne("Computer_Store.Models.History", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("HistoryId");
+                });
+
+            modelBuilder.Entity("Computer_Store.Models.OrderItem", b =>
+                {
+                    b.HasOne("Computer_Store.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Computer_Store.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MyHistory");
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });
@@ -645,7 +694,12 @@ namespace Computer_Store.Migrations
 
             modelBuilder.Entity("Computer_Store.Models.History", b =>
                 {
-                    b.Navigation("HistoryItems");
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Computer_Store.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }
