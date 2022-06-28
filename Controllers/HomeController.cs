@@ -68,7 +68,6 @@ namespace Computer_Store.Controllers
                     {
                         allComputers = allComputers.Where(c => c.Brand == reqBrand).ToList();
                     }
-
                 }
             }
 
@@ -402,10 +401,11 @@ namespace Computer_Store.Controllers
             {
                 userDiscount = 10;
             }
-
+            
             foreach (CartItem ci in cart.CartItems)
             {
-                currTotal += ci.Product.Price * (1- (ci.Product.Discount + userDiscount)/100) * ci.Quantity;
+                ci.CustomDiscount = userDiscount;
+                currTotal += ci.Price;
             }
             cart.SumPayment = currTotal;
             ViewData["Total"] = string.Format("{0:n0}", currTotal);
@@ -415,9 +415,10 @@ namespace Computer_Store.Controllers
         public async Task<IActionResult> ConfirmOrder(string? altDelivery, string? payment)
         {
             UserID = _userManager.GetUserId(User);
+
             ApplicationUser user = _userManager.Users.Single(i => i.Id == UserID);
-            double userDiscount = 0;
             List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
+
             var todateReport = _context.DailyReports.FirstOrDefault(d => DateTime.Compare(d.Date, DateTime.Today) == 0);
             
             if (todateReport == null)
@@ -430,16 +431,7 @@ namespace Computer_Store.Controllers
                     DateString = DateTime.Today.ToString("dd/M")
                 };
                 _context.Add(todateReport);
-                _context.SaveChanges();
-            }
-
-            if (roles.Contains("A_User"))
-            {
-                userDiscount = 5;
-            }
-            if (roles.Contains("S_User"))
-            {
-                userDiscount = 10;
+                await _context.SaveChangesAsync();
             }
 
             if (altDelivery == null)
@@ -450,34 +442,38 @@ namespace Computer_Store.Controllers
             if (payment == null)
             {
                 payment = "COD";
-            }
-
-            ViewData["userDiscount"] = userDiscount; 
+            } 
             var cart = _context.Carts
                 .Include(c => c.CartItems)
                 .ThenInclude(b => b.Product)
                 .Single(x => x.UserId == UserID);
-
-            var history = _context.History.Single(x => x.UserId == UserID);
             
+            cart.SumPayment = cart.CartItems.Sum(c => c.Price);
+
+            var order = new Order
+            {
+                UserID = user.Id,
+                Status = "Pending",
+                CreatedDate = DateTime.Today,
+                Total = cart.SumPayment,
+                PaymentMethod = payment,
+            };
+            order.OrderItems = new List<OrderItem>();
+
             foreach (CartItem c in cart.CartItems)
             {
-                var historyStuff = new HistoryItems();
-                historyStuff.HistoryID = history.Id;
-                historyStuff.ProductId = c.ProductID;
-                historyStuff.Product = c.Product;
-                historyStuff.DeliveryAddress = altDelivery;
-                historyStuff.Payment = payment;
-                if (history.HistoryItems == null)
+                var orderItem = new OrderItem
                 {
-                    history.HistoryItems = new List<HistoryItems>();
-                }
-                history.HistoryItems.Add(historyStuff);
-                historyStuff.CreateDate = DateTime.Now;
-
+                    OrderID = order.Id,
+                    ProductID = c.ProductID,
+                    Product = c.Product,
+                    Quantity = c.Quantity,
+                    Price = c.Price
+                };
+                order.OrderItems.Add(orderItem);
                 c.Product.Sell++;
             }
-            cart.SumPayment = cart.CartItems.Sum(c => c.Price);
+            _context.Add(order);
 
             todateReport.TotalRevenue += cart.SumPayment;
             todateReport.TotalUnit = cart.CartItems.Sum(c => c.Quantity);
@@ -486,14 +482,14 @@ namespace Computer_Store.Controllers
             string promoted = null;
             if (user.Expense >= 100_000_000 && !roles.Contains("A_User"))
             {
-                promoted = "A";
+                promoted = "A Rank";
                 roles.Add("A_User");
                 await _userManager.AddToRolesAsync(user, roles);
             }
 
             if (user.Expense >= 250_000_000 && !roles.Contains("S_User"))
             {
-                promoted = "S";
+                promoted = "S Rank";
                 roles.Add("S_User");
                 await _userManager.AddToRolesAsync(user, roles);
             }
@@ -505,13 +501,12 @@ namespace Computer_Store.Controllers
             todateReport.MostBoughtCategory = sortedList[0].Name;
             todateReport.SecondBoughtCategory = sortedList[1].Name;
 
-            _context.Update(history);
             _context.Update(cart);
             _context.Update(user);
             _context.Update(todateReport);
             await _context.SaveChangesAsync();
          
-            return RedirectToAction(nameof(HistoryPage), promoted);
+            return RedirectToAction(nameof(SaleReport), promoted);
         }
  
         public ActionResult SaleReport()
@@ -522,27 +517,27 @@ namespace Computer_Store.Controllers
             return View(dailyReport);
         }
 
-        public IActionResult HistoryPage(string? promoted)
-        {
-            UserID = _userManager.GetUserId(User);
+        //public IActionResult HistoryPage(string? promoted)
+        //{
+        //    UserID = _userManager.GetUserId(User);
 
-            var history = _context.History
-                .Include(d => d.HistoryItems)
-                .ThenInclude(p => p.Product)
-                .FirstOrDefault(c => c.UserId == UserID);
-            if (history == null || history.HistoryItems == null)
-            {
-                return View();
-            }
-            double? currTotal = 0;
-            foreach (HistoryItems ci in history.HistoryItems)
-            {
-                currTotal += ci.Product.FinalPrice;
-            }
-            ViewData["Promoted"] = promoted;
-            ViewData["Total"] = string.Format("{0:n0}", currTotal);
-            return View(history.HistoryItems.ToList());
-        }
+        //    var history = _context.History
+        //        .Include(d => d.HistoryItems)
+        //        .ThenInclude(p => p.Product)
+        //        .FirstOrDefault(c => c.UserId == UserID);
+        //    if (history == null || history.HistoryItems == null)
+        //    {
+        //        return View();
+        //    }
+        //    double? currTotal = 0;
+        //    foreach (HistoryItems ci in history.HistoryItems)
+        //    {
+        //        currTotal += ci.Product.FinalPrice;
+        //    }
+        //    ViewData["Promoted"] = promoted;
+        //    ViewData["Total"] = string.Format("{0:n0}", currTotal);
+        //    return View(history.HistoryItems.ToList());
+        //}
 
     }
 }

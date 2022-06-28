@@ -1,12 +1,21 @@
-﻿@model IEnumerable<Computer_Store.Models.HistoryItems>
+﻿@model IEnumerable<Computer_Store.Models.D>
 
 @{
     ViewData["Title"] = "History";
     bool haveItem = Model.Count() >= 1;
 }
+
 @if (haveItem)
 {
     <h1>Your Purchase History</h1>
+    @if (ViewBag.Promoted != null)
+    {
+        var statusMessageClass = ViewBag.Promoted.Contains("A Rank") ? "info" : "primary";
+        <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            You have been promoted to @ViewBag.Promoted
+        </div>
+    }
     <table class="table table-bordered table-striped align-middle cart-table">
         <thead class="table-dark">
             <tr>
