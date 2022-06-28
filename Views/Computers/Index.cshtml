@@ -54,10 +54,10 @@
                 {
                     <option value="@ViewBag.Type" selected>@ViewBag.Type</option>
                 }
-
+                <option>All</option>
                 @foreach(var item in Enum.GetValues(typeof(ComputerType)))
                 {
-                    if (item == ViewBag.Type)
+                    if (item.ToString() == ViewBag.Type)
                     {
                         continue;
                     }
@@ -73,10 +73,10 @@
                 {
                     <option value="@ViewBag.Category" selected>@ViewBag.Category</option>
                 }
-
+                <option>All</option>
                 @foreach(var item in Enum.GetValues(typeof(ComputerCategory)))
                 {
-                    if (item == ViewBag.Category)
+                    if (item.ToString() == ViewBag.Category)
                     {
                         continue;
                     }
@@ -92,10 +92,10 @@
                 {
                     <option value="@ViewBag.Brand" selected>@ViewBag.Brand</option>
                 }
-
+                <option>All</option>
                 @foreach(var item in Enum.GetValues(typeof(Brand)))
                 {
-                    if (item == ViewBag.Brand)
+                    if (item.ToString() == ViewBag.Brand)
                     {
                         continue;
                     }

@@ -452,7 +452,6 @@ namespace Computer_Store.Controllers
                 payment = "COD";
             }
 
-
             ViewData["userDiscount"] = userDiscount; 
             var cart = _context.Carts
                 .Include(c => c.CartItems)
@@ -483,6 +482,11 @@ namespace Computer_Store.Controllers
             todateReport.TotalRevenue += cart.SumPayment;
             todateReport.TotalUnit = cart.CartItems.Sum(c => c.Quantity);
             user.Expense += cart.SumPayment;
+
+            if (user.Expense >= 100_000_000)
+            {
+                
+            }
 
             cart.CartItems.Clear();
             cart.SumPayment = 0;
