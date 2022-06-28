@@ -164,25 +164,116 @@ namespace Computer_Store.Controllers
             return View(part);
         }
 
-        public IActionResult CartPage()
+        public IActionResult CartPage(string? type, string? brand, string? category, string searchString, string sortOrder)
         {
+            ViewData["PriceSort"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";
+            ViewData["NameSort"] = searchString;
             UserID = _userManager.GetUserId(User);
 
             var cart = _context.Carts
                 .Include(d => d.CartItems)
                 .ThenInclude(p => p.Product)
                 .FirstOrDefault(c => c.UserId == UserID);
+            
             if (cart == null || cart.CartItems == null)
             {
                 return View();
             }
+
+            var allItems = cart.CartItems.ToList();
+
+            if (type != null)
+            {
+                ViewData["Type"] = type;
+                if (type.Equals("Computer"))
+                {
+                    allItems = allItems.Where(c => c.Product.GetType() == typeof(Computer)).ToList();
+                }
+                else
+                {
+                    allItems = allItems.Where(c => c.Product.GetType() == typeof(Part)).ToList();
+                }
+            }
+
+            if (category != null && type != null)
+            {
+                var newList = new List<CartItem>();
+                ViewData["Category"] = category;
+                if (type.Equals("Computer"))
+                {
+                    foreach (var item in allItems)
+                    {
+                        if (item.Product.GetType() == typeof(Computer))
+                        {
+                            Computer computer = (Computer)item.Product;
+                            if (computer.Category.ToString().Equals(category))
+                            {
+                                newList.Add(item);
+                            }
+                        }
+                    }
+                }
+
+                if (type.Equals("Part"))
+                {
+                    foreach (var item in allItems)
+                    {
+                        if (item.Product.GetType() == typeof(Part))
+                        {
+                            Part computer = (Part)item.Product;
+                            if (computer.Category.ToString().Equals(category))
+                            {
+                                newList.Add(item);
+                            }
+                        }
+                    }
+                }
+
+                if (newList.Count > 0)
+                {
+                    allItems = newList;
+                }
+            }
+
+            if (brand != null)
+            {
+                ViewData["Brand"] = brand;
+                if (Enum.TryParse(brand, out Brand reqBrand))
+                {
+                    allItems = allItems.Where(c => c.Product.Brand == reqBrand).ToList();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                allItems = allItems.Where(s => s.Product.Name.ToLower().Contains(searchString)).ToList();
+            }
+
+            ViewData["CurrentSort"] = "Ascending";
+
+            switch (sortOrder)
+            {
+                case "price_desc":
+                    allItems = allItems.OrderByDescending(p => p.Product.FinalPrice).ToList();
+                    ViewData["CurrentSort"] = "Descending";
+                    break;
+                case "price_asc":
+                    allItems = allItems.OrderBy(p => p.Product.FinalPrice).ToList();
+                    break;
+                default:
+                    allItems = allItems.OrderBy(p => p.Product.FinalPrice).ToList();
+                    break;
+            }
+
+
             double? currTotal = 0; 
             foreach (CartItem ci in cart.CartItems)
             {
                 currTotal += ci.Product.FinalPrice;
             }
             ViewData["Total"] = string.Format("{0:n0}", currTotal);
-            return View(cart.CartItems.ToList());
+            return View(allItems);
         }
 
         public IActionResult AddToCart(int? pid)
@@ -347,9 +438,10 @@ namespace Computer_Store.Controllers
                 }
                 history.HistoryItems.Add(historyStuff);
                 historyStuff.CreateDate = DateTime.Now;
-                todateReport.TotalRevenue += cart.SumPayment;
+                
                 c.Product.Sell++;
             }
+            todateReport.TotalRevenue += cart.SumPayment;
             user.Expense += cart.SumPayment;
 
             cart.CartItems.Clear();
@@ -395,6 +487,11 @@ namespace Computer_Store.Controllers
             ViewData["Total"] = string.Format("{0:n0}", currTotal);
             return View(history.HistoryItems.ToList());
         }
+
+        //public static bool IsClass<T>(this object obj) where T : class
+        //{
+        //    return obj != null && obj.GetType() == typeof(T);
+        //}
 
 
     }

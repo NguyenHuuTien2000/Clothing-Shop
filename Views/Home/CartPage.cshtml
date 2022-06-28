@@ -7,6 +7,124 @@
 @if (haveItem)
 {
     <h1>Your Cart</h1>
+    <form asp-action="CartPage" class="row mb-3 border-bottom border-dark pb-2">
+        <div class="col-4">
+            <div class="input-group no-color">
+                <input class="form-control" placeholder="Search" type="text" name="searchString" value="@ViewData["NameSort"]" />
+                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-search"></i></button>
+                <a asp-action="ComputerPage" class="btn btn-secondary ms-1">Full List</a>
+            </div>
+        </div>
+        <div class="col-2 pe-0">
+            Price sort <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @ViewData["CurrentSort"]
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item"
+                        asp-action="CartPage"
+                        asp-route-searchString="@ViewData["NameSort"]"
+                        asp-route-sortOrder="price_asc"
+                        asp-route-type="@ViewBag.Type"
+                        asp-route-category="@ViewBag.Category"
+                        asp-route-brand="@ViewBag.Brand">Ascending</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                        asp-action="CartPage"
+                        asp-route-searchString="@ViewData["NameSort"]"
+                        asp-route-sortOrder="price_desc"
+                        asp-route-type="@ViewBag.Type"
+                        asp-route-category="@ViewBag.Category"
+                        asp-route-brand="@ViewBag.Brand">Descending</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-6 p-0">
+            <div class="row">
+                <div class="col-1 pt-1">Filter</div>
+                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Select Type
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item"
+                                asp-action="CartPage"
+                                asp-route-searchString="@ViewData["NameSort"]"
+                                asp-route-sortOrder=@ViewData["PriceSort"]
+                                asp-route-type="Computer"
+                                asp-route-category="@ViewBag.Category"
+                                asp-route-brand="@ViewBag.Brand">Computer</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                                asp-action="CartPage"
+                                asp-route-searchString="@ViewData["NameSort"]"
+                                asp-route-sortOrder=@ViewData["PriceSort"]
+                                asp-route-type="Part"
+                                asp-route-category="@ViewBag.Category"
+                                asp-route-brand="@ViewBag.Brand">Part</a>
+                        </li>
+                    </ul>
+                <div class="col-4 ms-1">
+                    @if (ViewBag.Category == null)
+                    {
+                        <option selected>Category</option>
+                    }
+                    else
+                    {
+                        <option value="@ViewBag.Category" selected>@ViewBag.Category</option>
+                        @if (ViewBag.Type.Equals("Computer")) {
+                        foreach(var item in Enum.GetValues(typeof(ComputerCategory)))
+                            {
+                                if (item == ViewBag.Category)
+                                {
+                                    continue;
+                                }
+                                <option value="@item">@item</option>
+                            }
+                    } 
+                    else if (ViewBag.Type.Equals("Part"))
+                    {
+                        foreach(var item in Enum.GetValues(typeof(PartCategory)))
+                        {
+                            if (item == ViewBag.Category)
+                            {
+                                continue;
+                            }
+                            <option value="@item">@item</option>
+                        }
+                    } 
+                    else
+                    {
+                        <option selected>Select Type first</option>
+                    }
+                    }
+                    
+                </div>
+                <select class="form-select col-2 ms-1" name="brand">
+                    @if (ViewBag.Brand == null)
+                    {
+                        <option selected>Brand</option>
+                    }
+                    else
+                    {
+                        <option value="@ViewBag.Brand" selected>@ViewBag.Brand</option>
+                    }
+
+                    @foreach(var item in Enum.GetValues(typeof(Brand)))
+                    {
+                        if (item == ViewBag.Brand)
+                        {
+                            continue;
+                        }
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-outline-info col-1 ms-1"><i class="fa fa-filter"></i></button>
+            </div>
+        </div>
+    </form>
     <table class="table table-bordered table-striped align-middle cart-table">
         <thead class="table-dark">
             <tr>

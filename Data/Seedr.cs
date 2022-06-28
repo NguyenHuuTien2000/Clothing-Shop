@@ -99,6 +99,7 @@ namespace Computer_Store.Data
             }
 
         }
+
         public static void SeedPart(ApplicationDbContext context)
         {
             Enum.TryParse("Part", out PartCategory type);
@@ -115,20 +116,20 @@ namespace Computer_Store.Data
             Part part;
             Random rand = new Random();
 
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 60; i++)
             {
                 PartCategory category = (PartCategory)categories.GetValue(rand.Next(0, categories.Length - 4));
                 Brand brand = (Brand)brands.GetValue(rand.Next(0, brands.Length));
                 string categoriesName = Enum.GetName(category);
-                string imgPath = Path.Combine("images", "parts", categoriesName, rand.Next(1, 4) + ".jpg");
+                string imgPath = Path.Combine("images", "parts", categoriesName, rand.Next(1, 7) + ".jpg");
 
                 part = new Part
                 {
                     Brand = brand,
                     Category = category,
                     Price = rand.Next(5_000, 20_001) * 1_000,
-                    Discount = rand.Next(0, 21),
-                    Name = string.Join(" ", category, "Place holder"),
+                    Discount = rand.Next(0, 11),
+                    Name = string.Join(" ", category, brand, "Place holder"),
                     Image = imgPath
                 };
 
