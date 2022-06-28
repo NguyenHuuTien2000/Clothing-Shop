@@ -8,7 +8,10 @@
             <div class="input-group no-color">
                 <input class="form-control" placeholder="Search" type="text" name="searchString" value="@ViewData["NameSort"]" />
                 <button type="submit" class="btn btn-outline-primary"><i class="fa fa-search"></i></button>
-                <a asp-action="ComputerPage" class="btn btn-secondary ms-1">Full List</a>
+                <a asp-action="ComputerPage"
+                   asp-route-brand="@ViewBag.Brand"
+                   asp-route-type="@ViewBag.Type"
+                   class="btn btn-secondary ms-1">Full List</a>
             </div>
         </form>
         <div class="col-3">

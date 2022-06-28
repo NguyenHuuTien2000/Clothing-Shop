@@ -2,13 +2,14 @@
 
 <div class="container mt-5">
     <div class="row mb-3 border-bottom border-dark pb-2">
-        <form asp-action="PartPage" method="get" class="col-6">
-            <div class="form-actions no-color">
-                <p>
-                    Find by name: <input type="text" name="searchString" value="@ViewData["NameSort"]" />
-                    <input type="submit" value="Search" class="btn btn-outline-primary" /> |
-                    <a asp-action="ComputerPage" class="btn btn-secondary">Back to Full List</a>
-                </p>
+        <form asp-action="PartPage" method="get" class="col-4">
+            <div class="input-group no-color">
+                <input class="form-control" placeholder="Search" type="text" name="searchString" value="@ViewData["NameSort"]" />
+                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-search"></i></button>
+                <a asp-action="PartPage"
+                   asp-route-brand="@ViewBag.Brand"
+                   asp-route-type="@ViewBag.Type"
+                   class="btn btn-secondary ms-1">Full List</a>
             </div>
         </form>
         <div class="ms-2 col-4">

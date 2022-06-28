@@ -29,6 +29,7 @@ namespace Computer_Store.Models
         public int ProductID { get; set; }
 
         public int Quantity { get; set; } = 0;
+
         public Product Product { get; set; }
 
         [Required]

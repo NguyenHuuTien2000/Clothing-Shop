@@ -40,11 +40,11 @@ namespace Computer_Store.Controllers
             ViewData["PriceSort"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";
             ViewData["NameSort"] = searchString;
 
-
             var allComputers = _context.Computers.Include(c => c.Spec).AsNoTracking().ToList();
 
             if (type != null)
             {
+                ViewData["Type"] = type;
                 if (Enum.TryParse(type, out ComputerType reqType))
                 {
                     allComputers = allComputers.Where(c => c.Type == reqType).ToList();
@@ -53,6 +53,7 @@ namespace Computer_Store.Controllers
 
             if (brand != null)
             {
+                ViewData["Brand"] = brand;
                 if (Enum.TryParse(brand, out Brand reqBrand))
                 {
                     if (reqBrand == Brand.AMD)
@@ -276,7 +277,7 @@ namespace Computer_Store.Controllers
             return View(allItems);
         }
 
-        public IActionResult AddToCart(int? pid)
+        public IActionResult AddToCart(int? pid, int quantity)
         {
             UserID = _userManager.GetUserId(User);
 
@@ -301,6 +302,7 @@ namespace Computer_Store.Controllers
             {
                 if (ci.ProductID == product.Id)
                 {
+                    ci.Quantity += quantity;
                     return RedirectToAction(nameof(CartPage));
                 }
             }
@@ -309,7 +311,7 @@ namespace Computer_Store.Controllers
             cartItem.ProductID = product.Id;
             cartItem.Product = product;
             cartItem.MyCart = cart;
-            cartItem.Quantity = 1;
+            cartItem.Quantity = quantity;
             if (cart.CartItems == null)
             {
                 cart.CartItems = new List<CartItem>();
@@ -394,6 +396,8 @@ namespace Computer_Store.Controllers
                     TotalRevenue = 0,
                     TotalUnit = 0
                 };
+                _context.Add(todateReport);
+                _context.SaveChanges();
             }
 
             if (roles.Contains("A_User"))
@@ -438,10 +442,13 @@ namespace Computer_Store.Controllers
                 }
                 history.HistoryItems.Add(historyStuff);
                 historyStuff.CreateDate = DateTime.Now;
-                
+
                 c.Product.Sell++;
             }
+            cart.SumPayment = cart.CartItems.Sum(c => c.Product.FinalPrice);
+
             todateReport.TotalRevenue += cart.SumPayment;
+            todateReport.TotalUnit = cart.CartItems.Sum(c => c.Quantity);
             user.Expense += cart.SumPayment;
 
             cart.CartItems.Clear();
@@ -467,6 +474,7 @@ namespace Computer_Store.Controllers
             dailyReport.Sort((a, b) => DateTime.Compare(b.Date, a.Date));
             return View(dailyReport);
         }
+
         public IActionResult HistoryPage()
         {
             UserID = _userManager.GetUserId(User);
@@ -488,10 +496,6 @@ namespace Computer_Store.Controllers
             return View(history.HistoryItems.ToList());
         }
 
-        //public static bool IsClass<T>(this object obj) where T : class
-        //{
-        //    return obj != null && obj.GetType() == typeof(T);
-        //}
 
 
     }
