@@ -46,13 +46,13 @@ namespace Computer_Store.Data
                     var cart = new Cart
                     {
                         UserId = defaultUser.Id
-};
+                    };
                     context.Add(cart);
 
                     var history = new History
                     {
                         UserId = defaultUser.Id
-};
+                    };
                     context.Add(history);
                 }
 

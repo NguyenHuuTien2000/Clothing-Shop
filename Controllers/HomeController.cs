@@ -521,12 +521,31 @@ namespace Computer_Store.Controllers
                 .ThenInclude(p => p.Product)
                 .AsNoTracking()
                 .ToList();
+
             if (allOrders == null)
             {
                 return View();
             }
+
             ViewData["Promoted"] = promoted;
+            ViewData["GotItem"] = true;
             return View(allOrders);
+        }
+
+        public IActionResult OrderDetail(int oid)
+        {
+            UserID = _userManager.GetUserId(User);
+
+            var order = _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(p => p.Product)
+                .AsNoTracking()
+                .FirstOrDefault(o => o.Id == oid);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return View(order.OrderItems.ToList());
         }
 
         public ActionResult SaleReport()
@@ -535,6 +554,22 @@ namespace Computer_Store.Controllers
             var dailyReport = _context.DailyReports.ToList();
             dailyReport.Sort((a, b) => DateTime.Compare(b.Date, a.Date));
             return View(dailyReport);
+        }
+
+        public IActionResult HistoryPage(string uid)
+        {
+            var history = _context.History
+                .Include(h => h.Orders)
+                .FirstOrDefault(h => h.UserId == uid);
+            if (history == null)
+            {
+                ViewData["GotItem"] = false;
+                return View();
+            }
+            var orders = history.Orders.Where(o => o.Status == "Completed").ToList();
+            ViewData["GotItem"] = orders.Any();
+
+            return View(orders);
         }
     }
 }

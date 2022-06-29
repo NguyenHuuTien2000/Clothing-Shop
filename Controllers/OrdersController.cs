@@ -8,11 +8,13 @@ using System.Data;
 
 namespace Computer_Store.Controllers
 {
+    [Authorize(Roles ="Moderator,Admin")]
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        
         public OrdersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
@@ -25,7 +27,8 @@ namespace Computer_Store.Controllers
                 .Include(o => o.OrderItems)
                 .ThenInclude(p => p.Product)
                 .ToList();
-            return View();
+            ViewData["GotItem"] = allOrders != null && allOrders.Any();
+            return View(allOrders);
         }
 
         [Authorize(Roles = "Admin,Moderator")]
