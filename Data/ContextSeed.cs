@@ -47,6 +47,7 @@ namespace Computer_Store.Data
                     {
                         UserId = defaultUser.Id
                     };
+                    cart.CartItems = new List<CartItem>();
                     context.Add(cart);
 
                     var history = new History
@@ -85,6 +86,7 @@ namespace Computer_Store.Data
                     {
                         UserId = defaultUser.Id
                     };
+                    cart.CartItems = new List<CartItem>();
                     context.Add(cart);
 
                     var history = new History
@@ -120,6 +122,7 @@ namespace Computer_Store.Data
                     {
                         UserId = defaultUser.Id
                     };
+                    cart.CartItems = new List<CartItem>();
                     context.Add(cart);
 
                     var history = new History

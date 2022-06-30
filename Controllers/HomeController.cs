@@ -320,7 +320,6 @@ namespace Computer_Store.Controllers
             cartItem.Product = product;
             cartItem.MyCart = cart;
             cartItem.Quantity = quantity;
-      
             cart.CartItems.Add(cartItem);
             _context.Carts.Update(cart);
             _context.SaveChanges();

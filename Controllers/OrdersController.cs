@@ -24,8 +24,10 @@ namespace Computer_Store.Controllers
 
         public async Task<IActionResult> Index(string? sortOrder, string? quantity, string? day, int? pageNumber)
         {
-
+            
             var orders = from o in _context.Orders select o;
+
+            ViewData["CurrTotal"] = sortOrder == null ? "price_asc" : sortOrder;
             ViewData["TotalSort"] = "Ascending";
             switch (sortOrder)
             {
@@ -40,6 +42,7 @@ namespace Computer_Store.Controllers
                     break;
             }
 
+            ViewData["CurrQuantity"] = quantity == null ? "q_asc" : quantity;
             ViewData["QuantitySort"] = "Ascending";
             switch (quantity)
             {
@@ -54,6 +57,7 @@ namespace Computer_Store.Controllers
                     break;
             }
 
+            ViewData["CurrDate"] = day == null ? "date_asc" : day;
             ViewData["DateSort"] = "Ascending";
             switch (day)
             {
