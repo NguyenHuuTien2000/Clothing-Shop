@@ -92,8 +92,12 @@ namespace Computer_Store.Controllers
             }
             order.Status = "Completed";
             var history = _context.History
-                .Include(h => h.Orders)
                 .Single(h => h.UserId == order.UserID);
+            if (history.Orders == null)
+            {
+                history.Orders = new List<Order>();
+            }
+
             history.Orders.Add(order);
             _context.Update(history);
             _context.SaveChanges();

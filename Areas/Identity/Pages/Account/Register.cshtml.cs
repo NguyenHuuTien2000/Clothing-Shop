@@ -158,6 +158,7 @@ namespace Computer_Store.Areas.Identity.Pages.Account
                     {
                         UserId = user.Id
                     };
+                    history.Orders = new List<Order>();
                     _context.Add(history);
 
                     _logger.LogInformation("User created a new account with password.");

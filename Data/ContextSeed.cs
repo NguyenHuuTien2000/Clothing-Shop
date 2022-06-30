@@ -54,6 +54,7 @@ namespace Computer_Store.Data
                     {
                         UserId = defaultUser.Id
                     };
+                    history.Orders = new List<Order>();
                     context.Add(history);
                 }
             }
@@ -93,6 +94,7 @@ namespace Computer_Store.Data
                     {
                         UserId = defaultUser.Id
                     };
+                    history.Orders = new List<Order>();
                     context.Add(history);
                 }
             }
@@ -129,6 +131,7 @@ namespace Computer_Store.Data
                     {
                         UserId = defaultUser.Id
                     };
+                    history.Orders = new List<Order>();
                     context.Add(history);
                 }
             }
