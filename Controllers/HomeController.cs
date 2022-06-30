@@ -300,12 +300,10 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
-
             if (cart.CartItems == null)
             {
                 cart.CartItems = new List<CartItem>();
             }
-
             foreach (CartItem ci in cart.CartItems)
             {
                 if (ci.ProductID == product.Id)
