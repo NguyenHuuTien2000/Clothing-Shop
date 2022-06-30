@@ -55,8 +55,82 @@ namespace Computer_Store.Data
                     };
                     context.Add(history);
                 }
-
             }
+
+            defaultUser = new ApplicationUser
+            {
+                UserName = "mod",
+                Email = "mod@gmail.com",
+                FirstName = "Lee",
+                LastName = "Palefire",
+                Address = "73 Tự Cường, Phường 4, Tân Bình, Hồ Chí Minh",
+                PhoneNumber = "0123456789",
+                Phone = "0123456789",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Mod@123");
+                    await userManager.AddToRoleAsync(defaultUser, Roles.Moderator.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, Roles.B_User.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, Roles.A_User.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, Roles.S_User.ToString());
+
+                    var cart = new Cart
+                    {
+                        UserId = defaultUser.Id
+                    };
+                    context.Add(cart);
+
+                    var history = new History
+                    {
+                        UserId = defaultUser.Id
+                    };
+                    context.Add(history);
+                }
+            }
+
+            defaultUser = new ApplicationUser
+            {
+                UserName = "userB",
+                Email = "userB@gmail.com",
+                FirstName = "Liv",
+                LastName = "Luminance",
+                Address = "73 Tự Cường, Phường 4, Tân Bình, Hồ Chí Minh",
+                PhoneNumber = "0123456789",
+                Phone = "0123456789",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "User@123");
+                    await userManager.AddToRoleAsync(defaultUser, Roles.B_User.ToString());
+
+                    var cart = new Cart
+                    {
+                        UserId = defaultUser.Id
+                    };
+                    context.Add(cart);
+
+                    var history = new History
+                    {
+                        UserId = defaultUser.Id
+                    };
+                    context.Add(history);
+                }
+            }
+
+
         }
     }
 }
