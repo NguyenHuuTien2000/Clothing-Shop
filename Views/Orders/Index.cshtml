@@ -8,11 +8,67 @@
 @if (haveItem)
 {
     <h1>Current Orders</h1>
+    <div class="row mb-2">
+        <div class="col-2 pe-0">
+            Total sort <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @ViewData["TotalSort"]
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item"
+                        asp-action="Index"
+                        asp-route-sortOrder="price_asc">Ascending</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                        asp-action="Index"
+                        asp-route-sortOrder="price_desc">Descending</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-2 pe-0">
+            Date sort <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @ViewData["DateSort"]
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item"
+                        asp-action="Index"
+                        asp-route-day="date_asc">Ascending</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                        asp-action="Index"
+                        asp-route-day="date_desc">Descending</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-3 pe-0">
+            Quantity sort <button class="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @ViewData["QuantitySort"]
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item"
+                        asp-action="Index"
+                        asp-route-quantity="q_asc">Ascending</a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                        asp-action="Index"
+                        asp-route-quantity="q_desc">Descending</a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <table class="table table-bordered table-striped align-middle cart-table">
         <thead class="table-dark">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    User
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Status)
@@ -32,13 +88,20 @@
                 <th>
                     Delivery Address
                 </th>
+                <th>
+
+                </th>
             </tr>
         </thead>
         <tbody>
     @foreach (var item in Model) {
+        ApplicationUser user = UserManager.Users.First(u => u.Id == item.UserID);
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @user.Fullname
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
@@ -48,7 +111,7 @@
                     }
                 </td>
                 <td>
-                    @item.CreatedDate.ToString("dd/MM/yyyy");
+                    @item.CreatedDate.ToString("dd/MM/yyyy")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ItemNum)
@@ -61,6 +124,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DeliveryAddress)
+                </td>
+                <td>
+                    <a class="btn btn-outline-dark" asp-route-oid="@item.Id" asp-controller="Home" asp-action="OrderDetail">Detail</a>
                 </td>
             </tr>
     }

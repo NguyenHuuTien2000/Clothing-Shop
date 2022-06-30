@@ -7,8 +7,8 @@
     <div class="col-3 bg-light p-3">
         <p><strong>Total Revenue: </strong><span id="total-revenue"></span> VND</p>
         <p><strong>Total Unit: </strong><span id="total-unit"></span> Units</p>
-        <p><strong>Most Bought: </strong><span id="total-unit"></span></p>
-        <p><strong>Total Unit: </strong><span id="total-unit"></span> Units</p>
+        <p><strong>Most Bought: </strong><span id="most-unit"></span></p>
+        <p><strong>Second Most Bought: </strong><span id="second-unit"></span> Units</p>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
@@ -39,10 +39,9 @@
             let units = 0;
 
             for (let result of data) {
-                labels.push(result.date);
-                console.log(result.date);
-                totalUnit.push(result.totalUnit);
-                totalRevenue.push(result.totalRevenue);
+                labels.unshift(result.date);
+                totalUnit.unshift(result.totalUnit);
+                totalRevenue.unshift(result.totalRevenue);
 
                 revenue += result.totalRevenue;
                 units += result.totalUnit;
@@ -52,6 +51,8 @@
 
             $('#total-revenue').text(formatter.format(revenue));
             $('#total-unit').text(formatter.format(units));
+            $('#most-unit').text(data.mostBoughtCategory);
+            $('#total-unit').text(data.secondBoughtCategory);
 
             let options = {
                 responsive: true,

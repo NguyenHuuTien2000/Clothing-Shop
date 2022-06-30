@@ -4,6 +4,7 @@ using Computer_Store.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.IO.Pipelines;
@@ -299,11 +300,14 @@ namespace Computer_Store.Controllers
             {
                 return NotFound();
             }
+
             foreach (CartItem ci in cart.CartItems)
             {
                 if (ci.ProductID == product.Id)
                 {
                     ci.Quantity += quantity;
+                    _context.Carts.Update(cart);
+                    _context.SaveChanges();
                     return RedirectToAction(nameof(CartPage));
                 }
             }
@@ -430,7 +434,6 @@ namespace Computer_Store.Controllers
                     DateString = DateTime.Today.ToString("dd/M")
                 };
                 _context.Add(todateReport);
-                await _context.SaveChangesAsync();
             }
 
             if (altDelivery == null)
@@ -477,7 +480,7 @@ namespace Computer_Store.Controllers
             _context.Add(order);
 
             todateReport.TotalRevenue += cart.SumPayment;
-            todateReport.TotalUnit = cart.CartItems.Sum(c => c.Quantity);
+            todateReport.TotalUnit += cart.CartItems.Sum(c => c.Quantity);
             user.Expense += cart.SumPayment;
 
             string promoted = null;
@@ -510,8 +513,10 @@ namespace Computer_Store.Controllers
             return RedirectToAction(nameof(OrderList), promoted);
         }
 
-        public IActionResult OrderList(string? promoted)
+        public IActionResult OrderList(string? promoted, string? quantity, string? day, string? sortOrder)
         {
+            
+
             UserID = _userManager.GetUserId(User);
 
             var allOrders = _context.Orders
@@ -525,6 +530,48 @@ namespace Computer_Store.Controllers
             if (allOrders == null)
             {
                 return View();
+            }
+
+            ViewData["TotalSort"] = "Ascending";
+            switch (sortOrder)
+            {
+                case "price_desc":
+                    allOrders = allOrders.OrderByDescending(p => p.Total).ToList();
+                    ViewData["TotalSort"] = "Descending";
+                    break;
+                case "price_asc":
+                    allOrders = allOrders.OrderBy(p => p.Total).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            ViewData["QuantitySort"] = "Ascending";
+            switch (quantity)
+            {
+                case "q_desc":
+                    allOrders = allOrders.OrderByDescending(p => p.ItemNum).ToList();
+                    ViewData["QuantitySort"] = "Descending";
+                    break;
+                case "q_asc":
+                    allOrders = allOrders.OrderBy(p => p.ItemNum).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            ViewData["DateSort"] = "Ascending";
+            switch (day)
+            {
+                case "date_desc":
+                    allOrders = allOrders.OrderByDescending(p => p.CreatedDate).ToList();
+                    ViewData["DateSort"] = "Descending";
+                    break;
+                case "date_asc":
+                    allOrders = allOrders.OrderBy(p => p.CreatedDate).ToList();
+                    break;
+                default:
+                    break;
             }
 
             ViewData["Promoted"] = promoted;
@@ -556,20 +603,69 @@ namespace Computer_Store.Controllers
             return View(dailyReport);
         }
 
-        public IActionResult HistoryPage(string uid)
+        public IActionResult HistoryPage(string? quantity, string? day, string? sortOrder)
         {
+            UserID = _userManager.GetUserId(User);
             var history = _context.History
                 .Include(h => h.Orders)
-                .FirstOrDefault(h => h.UserId == uid);
+                .FirstOrDefault(h => h.UserId == UserID);
             if (history == null)
             {
                 ViewData["GotItem"] = false;
                 return View();
             }
-            var orders = history.Orders.Where(o => o.Status == "Completed").ToList();
-            ViewData["GotItem"] = orders.Any();
+            var allOrders = history.Orders.Where(o => o.Status == "Completed").ToList();
 
-            return View(orders);
+            if (!allOrders.Any())
+            {
+                ViewData["GotItem"] = false;
+                return View();
+            }
+
+            ViewData["TotalSort"] = "Ascending";
+            switch (sortOrder)
+            {
+                case "price_desc":
+                    allOrders = allOrders.OrderByDescending(p => p.Total).ToList();
+                    ViewData["TotalSort"] = "Descending";
+                    break;
+                case "price_asc":
+                    allOrders = allOrders.OrderBy(p => p.Total).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            ViewData["QuantitySort"] = "Ascending";
+            switch (quantity)
+            {
+                case "q_desc":
+                    allOrders = allOrders.OrderByDescending(p => p.ItemNum).ToList();
+                    ViewData["QuantitySort"] = "Descending";
+                    break;
+                case "q_asc":
+                    allOrders = allOrders.OrderBy(p => p.ItemNum).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            ViewData["DateSort"] = "Ascending";
+            switch (day)
+            {
+                case "date_desc":
+                    allOrders = allOrders.OrderByDescending(p => p.CreatedDate).ToList();
+                    ViewData["DateSort"] = "Descending";
+                    break;
+                case "date_asc":
+                    allOrders = allOrders.OrderBy(p => p.CreatedDate).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            ViewData["GotItem"] = true;
+            return View(allOrders);
         }
     }
 }
