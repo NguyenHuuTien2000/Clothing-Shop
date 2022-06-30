@@ -434,6 +434,7 @@ namespace Computer_Store.Controllers
                     DateString = DateTime.Today.ToString("dd/M")
                 };
                 _context.Add(todateReport);
+                await _context.SaveChangesAsync();
             }
 
             if (altDelivery == null)

@@ -22,24 +22,23 @@ namespace Computer_Store.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(string? sortOrder, string? quantity, string? day)
+        public async Task<IActionResult> Index(string? sortOrder, string? quantity, string? day, int? pageNumber)
         {
             var allOrders = _context.Orders
                 .Include(o => o.OrderItems)
-                .ThenInclude(p => p.Product)
-                .ToList();
+                .ThenInclude(p => p.Product);
 
             
-
+            var orders = from o in _context.Orders select o;
             ViewData["TotalSort"] = "Ascending";
             switch (sortOrder)
             {
                 case "price_desc":
-                    allOrders = allOrders.OrderByDescending(p => p.Total).ToList();
+                    orders = orders.OrderByDescending(p => p.Total);
                     ViewData["TotalSort"] = "Descending";
                     break;
                 case "price_asc":
-                    allOrders = allOrders.OrderBy(p => p.Total).ToList();
+                    orders = orders.OrderBy(p => p.Total);
                     break;
                 default:
                     break;
@@ -49,11 +48,11 @@ namespace Computer_Store.Controllers
             switch (quantity)
             {
                 case "q_desc":
-                    allOrders = allOrders.OrderByDescending(p => p.ItemNum).ToList();
+                    orders = orders.OrderByDescending(p => p.ItemNum);
                     ViewData["QuantitySort"] = "Descending";
                     break;
                 case "q_asc":
-                    allOrders = allOrders.OrderBy(p => p.ItemNum).ToList();
+                    orders = orders.OrderBy(p => p.ItemNum);
                     break;
                 default:
                     break;
@@ -63,18 +62,19 @@ namespace Computer_Store.Controllers
             switch (day)
             {
                 case "date_desc":
-                    allOrders = allOrders.OrderByDescending(p => p.CreatedDate).ToList();
+                    orders = orders.OrderByDescending(p => p.CreatedDate);
                     ViewData["DateSort"] = "Descending";
                     break;
                 case "date_asc":
-                    allOrders = allOrders.OrderBy(p => p.CreatedDate).ToList();
+                    orders = orders.OrderBy(p => p.CreatedDate);
                     break;
                 default:
                     break;
             }
 
+            int pageSize = 10;
             ViewData["GotItem"] = allOrders != null && allOrders.Any();
-            return View(allOrders);
+            return View(await PaginatedList<Order>.CreateAsync(orders.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         [Authorize(Roles = "Admin,Moderator")]

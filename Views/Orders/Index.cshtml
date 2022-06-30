@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Order>
+﻿@model PaginatedList<Order>
 
 @{
     ViewData["Title"] = "Orders List";
@@ -65,22 +65,22 @@
         <thead class="table-dark">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Id)
+                    ID
                 </th>
                 <th>
                     User
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Status)
+                    Status
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CreatedDate)
+                    Order Date
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ItemNum)
+                    Number of Items
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Total)
+                    Total
                 </th>
                 <th>
                     Payment
@@ -132,6 +132,25 @@
     }
         </tbody>
     </table>
+    
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    
+
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
 }
 else {
     <div id="cart-empty" class="bg-black mt-3">
