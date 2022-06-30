@@ -301,6 +301,11 @@ namespace Computer_Store.Controllers
                 return NotFound();
             }
 
+            if (cart.CartItems == null)
+            {
+                cart.CartItems = new List<CartItem>();
+            }
+
             foreach (CartItem ci in cart.CartItems)
             {
                 if (ci.ProductID == product.Id)
@@ -317,10 +322,6 @@ namespace Computer_Store.Controllers
             cartItem.Product = product;
             cartItem.MyCart = cart;
             cartItem.Quantity = quantity;
-            if (cart.CartItems == null)
-            {
-                cart.CartItems = new List<CartItem>();
-            }
             cart.CartItems.Add(cartItem);
             _context.Carts.Update(cart);
             _context.SaveChanges();

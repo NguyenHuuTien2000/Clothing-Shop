@@ -24,12 +24,10 @@ namespace Computer_Store.Controllers
 
         public async Task<IActionResult> Index(string? sortOrder, string? quantity, string? day, int? pageNumber)
         {
-            var allOrders = _context.Orders
-                .Include(o => o.OrderItems)
-                .ThenInclude(p => p.Product);
-
             
             var orders = from o in _context.Orders select o;
+
+            ViewData["CurrTotal"] = sortOrder == null ? "price_asc" : sortOrder;
             ViewData["TotalSort"] = "Ascending";
             switch (sortOrder)
             {
@@ -44,6 +42,7 @@ namespace Computer_Store.Controllers
                     break;
             }
 
+            ViewData["CurrQuantity"] = quantity == null ? "q_asc" : quantity;
             ViewData["QuantitySort"] = "Ascending";
             switch (quantity)
             {
@@ -58,6 +57,7 @@ namespace Computer_Store.Controllers
                     break;
             }
 
+            ViewData["CurrDate"] = day == null ? "date_asc" : day;
             ViewData["DateSort"] = "Ascending";
             switch (day)
             {
@@ -73,7 +73,7 @@ namespace Computer_Store.Controllers
             }
 
             int pageSize = 10;
-            ViewData["GotItem"] = allOrders != null && allOrders.Any();
+            ViewData["GotItem"] = orders != null && orders.Any();
             return View(await PaginatedList<Order>.CreateAsync(orders.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
