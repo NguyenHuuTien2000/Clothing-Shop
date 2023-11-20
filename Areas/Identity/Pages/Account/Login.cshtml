@@ -5,33 +5,39 @@
     ViewData["Title"] = "Log in";
 }
 
-<section id="form-detail" class="login-form">
-    <form id="account" method="post">
-        <h2 class="mid">Login</h2>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input placeholder="Email" asp-for="Input.Email" autocomplete="username" aria-required="true" />
+<form class="loginForm" id="account" method="post">
+    <h3 class="text-danger">Log In</h3>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Input.Email" class="form-label"></label>
+        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
         <span asp-validation-for="Input.Email" class="text-danger"></span>
-
-        <input placeholder="Password" asp-for="Input.Password" autocomplete="current-password" aria-required="true" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Input.Password" class="form-label"></label>
+        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
         <span asp-validation-for="Input.Password" class="text-danger"></span>
-
-        <label>
-            <input asp-for="Input.RememberMe" />
-            @Html.DisplayNameFor(m => m.Input.RememberMe)
-        </label>
-        <button id="login-submit" type="submit" class="normal mid">Log in</button>
-
-        <div>
-            <p>
-                <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-            </p>
-            <p>
-                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-            </p>
+    </div>
+    <div>
+        <div class="checkbox">
+            <label asp-for="Input.RememberMe" class="form-label">
+                <input class="form-check-input" asp-for="Input.RememberMe" />
+                @Html.DisplayNameFor(m => m.Input.RememberMe)
+            </label>
         </div>
-    </form>
-</section>
-
+    </div>
+    <div>
+        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-outline-primary">Log in</button>
+    </div>
+    <div>
+        <p>
+            <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+        </p>
+        <p>
+            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+        </p>
+    </div>
+</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

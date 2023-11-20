@@ -4,15 +4,13 @@
     ViewData["Title"] = "Log out";
 }
 
-<div class="mid" id="logout">
-    
+<header>
+    <h1>@ViewData["Title"]</h1>
     @{
-        if (User.Identity != null && User.Identity.IsAuthenticated)
+        if (User.Identity.IsAuthenticated)
         {
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                <h1>@ViewData["Title"]</h1>
-                <p>Please confirm that you want to logout</p>
-                <button type="submit" class="normal orange mid">Click here to Logout</button>
+                <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
             </form>
         }
         else
@@ -20,4 +18,4 @@
             <p>You have successfully logged out of the application.</p>
         }
     }
-</div>
+</header>

@@ -34,28 +34,7 @@ namespace Computer_Store.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult Shop()
-        {
-            return View();
-        }
-
-        public IActionResult Blog()
-        {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            return View();
-        }
-
         
-
 
         public IActionResult ComputerPage(string? type, string? brand, string searchString, string sortOrder)
         {
