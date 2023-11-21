@@ -1,22 +1,20 @@
-﻿<ul class="navbar-nav">
+﻿
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a class="nav-link text-white" asp-controller="Home" asp-action="CartPage"><i class="fa fa-shopping-cart cart-icon"></i></a>
-    </li>
-    <li class="nav-item">
+    <li class="nav-item" id="avatar">
         @if (UserManager.GetUserAsync(User).Result.Avatar != null)
         {
             <img width="40" height="40" style="object-fit:cover; border-radius:30px" src="/@UserManager.GetUserAsync(User).Result.Avatar">
+        } else
+        {
+            <img width="40" height="40" style="object-fit:cover; border-radius:30px" src="/img/user.png">
         }
     </li>
-    <li class="nav-item">
+    <li class="nav-item" id="user-manage">
         <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>
     <li class="nav-item">
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button type="submit" class="nav-link btn btn-link text-white">Logout</button>
-        </form>
+        <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Logout</a>
     </li>
 }
 else
@@ -28,4 +26,3 @@ else
         <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
 }
-</ul>
