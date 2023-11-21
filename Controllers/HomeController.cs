@@ -25,18 +25,20 @@ namespace Computer_Store.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var allClothes = _context.Clothes.ToList().Take(8);
+            return View(allClothes);
         }
 
         public IActionResult Shop()
         {
-            return View();
+            var allClothes = _context.Clothes.ToList();
+            return View(allClothes);
+        }
+
+        public IActionResult ProductClothes(int id)
+        {
+            var clothes = _context.Clothes.SingleOrDefault(c => c.Id == id);
+            return View(clothes);
         }
 
         public IActionResult Blog()
@@ -54,8 +56,11 @@ namespace Computer_Store.Controllers
             return View();
         }
 
-        
-
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
 
         public IActionResult ComputerPage(string? type, string? brand, string searchString, string sortOrder)
         {

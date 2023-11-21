@@ -1,10 +1,7 @@
 ﻿using Computer_Store.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using System.Diagnostics.Metrics;
-using System;
+using Clothing_Shop.Models;
 
 namespace Computer_Store.Data
 {
@@ -24,7 +21,7 @@ namespace Computer_Store.Data
         public DbSet<DailyReport> DailyReports { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
-
+        public DbSet<Clothes> Clothes { get; set; }
 
     }
 }

@@ -1,3 +1,4 @@
+using Clothing_Shop.Data;
 using Computer_Store.Data;
 using Computer_Store.Models;
 using Microsoft.AspNetCore.Identity;
@@ -36,6 +37,7 @@ using (var scope = app.Services.CreateScope())
         await ContextSeed.SeedRolesAsync(userManager, roleManager);
         await ContextSeed.SeedAdminAsync(userManager, roleManager, context);
         Seedr.Seed(context);
+        SeedClothes.Seed(context);
     }
     catch (Exception ex)
     {

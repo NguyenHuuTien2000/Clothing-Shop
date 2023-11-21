@@ -32,18 +32,15 @@ namespace Computer_Store.Data
             Array brands = Enum.GetValues(typeof(Brand));
             Array categories = Enum.GetValues(typeof(ComputerCategory));
 
-            Dictionary<string, string[]> nameMap = new Dictionary<string, string[]>();
-            nameMap.Add("Acer", new string[] { "Nitro 5", "Aspire 7", "Helios 300", "Helios 500", "Trition 500" });
-
-            nameMap.Add("Asus", new string[] { "Vivobook", "TUF F15", "TUF A17", "ROG", "Strix SCAR", "ROG Zephyrus" });
-
-            nameMap.Add("Dell", new string[] { "G15", "Alienware", "G3" });
-
-            nameMap.Add("Gigabyte", new string[] { "G5", "AERO 5", "Aorus 15P", "U4D", "Aorus 5" });
-
-            nameMap.Add("Lenovo", new string[] { "Ideapad Gaming 3", "Ideapad Gaming 5", "Legion 5", "Legion 7", "Ideapad 5 Pro" });
-
-            nameMap.Add("Msi", new string[] { "Alpha", "Delta", "GP76", "GF65", "Bravo" });
+            Dictionary<string, string[]> nameMap = new Dictionary<string, string[]>
+            {
+                { "Acer", new string[] { "Nitro 5", "Aspire 7", "Helios 300", "Helios 500", "Trition 500" } },
+                { "Asus", new string[] { "Vivobook", "TUF F15", "TUF A17", "ROG", "Strix SCAR", "ROG Zephyrus" } },
+                { "Dell", new string[] { "G15", "Alienware", "G3" } },
+                { "Gigabyte", new string[] { "G5", "AERO 5", "Aorus 15P", "U4D", "Aorus 5" } },
+                { "Lenovo", new string[] { "Ideapad Gaming 3", "Ideapad Gaming 5", "Legion 5", "Legion 7", "Ideapad 5 Pro" } },
+                { "Msi", new string[] { "Alpha", "Delta", "GP76", "GF65", "Bravo" } }
+            };
 
             Computer computer;
             ComputerSpec spec;

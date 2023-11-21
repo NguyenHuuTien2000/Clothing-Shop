@@ -1,0 +1,61 @@
+﻿@model Clothing_Shop.Models.Clothes
+@{
+    ViewData["Title"] = "Product";
+}
+
+<section id="productdetails" class="section-p1">
+    <div class="single-pro-image">
+        <img src="/@Model.Image" width="100%" id="MainImg" alt="">
+
+        <div class="small-img-group">
+            <div class="small-img-col">
+                <img src="img/products/f1.jpg" width="100%" class="small-img" alt="">
+            </div>
+            <div class="small-img-col">
+                <img src="img/products/f2.jpg" width="100%" class="small-img" alt="">
+            </div>
+            <div class="small-img-col">
+                <img src="img/products/f3.jpg" width="100%" class="small-img" alt="">
+            </div>
+            <div class="small-img-col">
+                <img src="img/products/f4.jpg" width="100%" class="small-img" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="single-pro-details">
+        <h6>Home / T-Shirts</h6>
+        <h4>@Model.Name</h4>
+        <h2>$@Model.Price</h2>
+        <select>
+            <option>Select Size</option>
+            <option>XXL</option>
+            <option>XL</option>
+            <option>Large</option>
+            <option>Small</option>
+        </select>
+        <input type="number" value="1">
+        <button class="normal">Add To Cart</button>
+        <h4>Product Details</h4>
+        <span>The T-shirt we offer is a high-quality garment designed to provide both comfort and style. It is made from a soft and breathable fabric, ensuring a pleasant wearing experience throughout the day. The T-shirt features a classic crew neck design, suitable for both men and women. The fabric used in the T-shirt is durable and long-lasting, ensuring that it withstands regular wear and washing without losing its shape or color. It is also easy to care for, as it can be machine washed and dried without any special requirements.</span>
+    </div>
+</section>
+
+<script>
+    // script for image change on click
+    var MainImg = document.getElementById("MainImg");
+    var smallimg = document.getElementsByClassName("small-img");
+
+    smallimg[0].onclick = function () {
+        MainImg.src = smallimg[0].src;
+    }
+    smallimg[1].onclick = function () {
+        MainImg.src = smallimg[1].src;
+    }
+    smallimg[2].onclick = function () {
+        MainImg.src = smallimg[2].src;
+    }
+    smallimg[3].onclick = function () {
+        MainImg.src = smallimg[3].src;
+    }
+</script>

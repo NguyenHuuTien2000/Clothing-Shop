@@ -1032,3 +1032,7 @@ footer {
 #user-manage {
     padding-left: 10px !important;
 }
+
+.pro-container a {
+    text-decoration: none;
+}
