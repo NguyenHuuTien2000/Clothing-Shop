@@ -7,6 +7,9 @@ namespace Clothing_Shop.Data
     {
         public static void Seed(ApplicationDbContext context)
         {
+            var clear = context.Carts.First(c => c.Id == -1);
+            context.Carts.Remove(clear);
+            context.SaveChanges();
             if (context.Clothes.Count() >= 20)
             {
                 return;

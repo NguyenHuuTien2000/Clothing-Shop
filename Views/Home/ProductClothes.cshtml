@@ -34,8 +34,11 @@
             <option>Large</option>
             <option>Small</option>
         </select>
-        <input type="number" value="1">
-        <button class="normal">Add To Cart</button>
+        <form asp-action="AddClothesToCart">
+            <input type="hidden" name="pid" value="@Model.Id" />
+            <input type="number" name="quantity" value="1">
+            <button class="normal" type="submit">Add To Cart</button>
+        </form>
         <h4>Product Details</h4>
         <span>The T-shirt we offer is a high-quality garment designed to provide both comfort and style. It is made from a soft and breathable fabric, ensuring a pleasant wearing experience throughout the day. The T-shirt features a classic crew neck design, suitable for both men and women. The fabric used in the T-shirt is durable and long-lasting, ensuring that it withstands regular wear and washing without losing its shape or color. It is also easy to care for, as it can be machine washed and dried without any special requirements.</span>
     </div>

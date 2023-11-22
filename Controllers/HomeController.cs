@@ -4,10 +4,8 @@ using Computer_Store.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.IO.Pipelines;
 
 namespace Computer_Store.Controllers
 {
@@ -21,6 +19,7 @@ namespace Computer_Store.Controllers
         {
             _context = context;
             _userManager = userManager;
+            tempCart = _context.Carts.FirstOrDefault(c => c.Id == -1);
         }
 
         public IActionResult Index()
@@ -39,6 +38,177 @@ namespace Computer_Store.Controllers
         {
             var clothes = _context.Clothes.SingleOrDefault(c => c.Id == id);
             return View(clothes);
+        }
+
+        public IActionResult ClothesCartPage()
+        {
+            ViewData["Total"] = 0;
+            ViewData["GotItem"] = false;
+
+            UserID = _userManager.GetUserId(User);
+
+            var cart = _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(c => c.Product)
+                .FirstOrDefault(x => x.UserId == UserID);
+
+            if (cart == null)
+            {
+                cart = new Cart
+                {
+                    UserId = UserID
+                };
+                cart.CartItems = new List<CartItem>();
+                _context.Carts.Add(cart);
+            }
+
+            if (UserID == null)
+            {
+                if (tempCart == null)
+                {
+                    tempCart = new Cart();
+                    tempCart.CartItems = new List<CartItem>();
+                    tempCart.Id = -1;
+                    _context.Carts.Add(tempCart);
+                }
+            }
+
+            double? currTotal = 0;
+            foreach (CartItem ci in cart.CartItems)
+            {
+                currTotal += ci.Product.Price * ci.Quantity;
+            }
+            ViewData["Total"] = string.Format("{0:n0}", currTotal);
+            ViewData["GotItem"] = cart.CartItems.Count > 0;
+
+            return View(cart.CartItems.ToList());
+        }
+
+        public Cart tempCart;
+
+        public IActionResult AddClothesToCart(int pid, int quantity)
+        {
+            UserID = _userManager.GetUserId(User);
+
+            if (UserID == null)
+            {
+                if (tempCart == null)
+                {
+                    tempCart = new Cart();
+                    tempCart.CartItems = new List<CartItem>();
+                }
+            }
+
+            var cart = _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(c => c.Product)
+                .FirstOrDefault(x => x.UserId == UserID);
+
+            if (cart == null)
+            {
+                if (tempCart != null)
+                {
+                    cart = tempCart;
+                } else {
+                    cart = new Cart
+                    {
+                        UserId = UserID
+                    };
+                }
+            }
+
+            var product = _context.Products.FirstOrDefault(p => p.Id == pid);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            cart.CartItems ??= new List<CartItem>();
+
+            foreach (CartItem ci in cart.CartItems)
+            {
+                if (ci.ProductID == product.Id)
+                {
+                    ci.Quantity += quantity;
+                    if (UserID != null)
+                    {
+                        _context.Carts.Update(cart);
+                        _context.SaveChanges();
+                    }
+                    return RedirectToAction(nameof(ClothesCartPage));
+                }
+            }
+            var cartItem = new CartItem();
+            cartItem.CartID = cart.Id;
+            cartItem.ProductID = product.Id;
+            cartItem.Product = product;
+            cartItem.MyCart = cart;
+            cartItem.Quantity = quantity;
+            cart.CartItems.Add(cartItem);
+            if (UserID != null)
+            {
+                _context.Carts.Update(cart);
+                _context.SaveChanges();
+            } else
+            {
+                tempCart.CartItems = cart.CartItems;
+            }
+            return RedirectToAction(nameof(ClothesCartPage));
+        }
+
+        public IActionResult RemoveFromCart(int? id)
+        {
+            UserID = _userManager.GetUserId(User);
+
+            var cart = _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(c => c.Product)
+                .Single(x => x.UserId == UserID);
+
+            if (cart.CartItems == null)
+            {
+                return View(cart);
+            }
+
+            var itemList = cart.CartItems.ToList();
+            foreach (var item in itemList)
+            {
+                if (item.Id == id)
+                {
+                    cart.CartItems.Remove(item);
+                }
+            }
+            _context.Carts.Update(cart);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(ClothesCartPage));
+        }
+
+        public IActionResult UpdateCartQuantity(CartUpdate[] updates)
+        {
+            UserID = _userManager.GetUserId(User);
+
+            var cart = _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(c => c.Product)
+                .Single(x => x.UserId == UserID);
+
+            if (cart.CartItems == null)
+            {
+                return View(cart);
+            }
+
+            var itemList = cart.CartItems.ToList();
+
+            foreach (var item in updates)
+            {
+                CartItem? toUpdate = itemList.FirstOrDefault(c => c.Id == item.Id);
+                if (toUpdate != null)
+                {
+                    toUpdate.Quantity = item.Quantity;
+                }
+            }
+            _context.Carts.Update(cart);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(ClothesCartPage));
         }
 
         public IActionResult Blog()
@@ -62,6 +232,13 @@ namespace Computer_Store.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+
+
+
+
+
+
+        //------------------------------>Computer Store functions<------------------------------//
         public IActionResult ComputerPage(string? type, string? brand, string searchString, string sortOrder)
         {
             ViewData["PriceSort"] = string.IsNullOrEmpty(sortOrder) ? "price_desc" : "price_asc";

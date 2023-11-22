@@ -1,0 +1,78 @@
+﻿@model IEnumerable<CartItem>
+
+@{
+    ViewData["Title"] = "Cart";
+    bool haveItem = ViewBag.GotItem;
+    int count = 0;
+}
+
+<section id="page-header" class="about-header">
+    <h2>#cart</h2>
+    <p>Happy shopping</p>
+</section>
+
+<section id="cart" class="section-p1">
+    <form asp-action="UpdateCartQuantity">
+    <table width="100%">
+        <thead>
+            <tr>
+                <td>Remove</td>
+                <td>Image</td>
+                <td>Product</td>
+                <td>Price</td>
+                <td>Quantity</td>
+                <td>Subtotal</td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td><a asp-action="RemoveFromCart" asp-route-id="@item.Id"><i class="fa-regular fa-circle-xmark"></i></a></td>
+                        <td><img src=/@item.Product.Image alt=""></td>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Product.Price</td>
+                        <td>
+                            <input type="hidden" value="@item.Id" name="updates[@count].Id" />
+                            <input type="number" value="@item.Quantity" name="updates[@count].Quantity">
+                        </td>
+                        <td>@item.Product.Price * @item.Quantity</td>
+                    </tr>
+                    count++;
+                }
+            }
+        </tbody>
+    </table>
+    <button class="normal" type="submit" id="update-button">Update Cart</button>
+    </form>
+</section>
+
+<section id="cart-add" class="section-p1">
+    <div id="coupon">
+        <h3>Apply Coupon</h3>
+        <div>
+            <input type="text" placeholder="Enter Your Coupon">
+            <button class="normal">Apply</button>
+        </div>
+    </div>
+
+    <div id="subtotal">
+        <h3> Cart Totals</h3>
+        <table>
+            <tr>
+                <td>Cart Subtotal</td>
+                <td>$ @ViewBag.Total</td>
+            </tr>
+            <tr>
+                <td>Shipping</td>
+                <td>Free</td>
+            </tr>
+            <tr>
+                <td><strong>Total</strong></td>
+                <td><strong>$ @ViewBag.Total</strong></td>
+            </tr>
+        </table>
+        <button class="normal">Proceedto checkout</button>
+    </div>
+</section>
